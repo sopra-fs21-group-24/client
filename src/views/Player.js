@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import {DefaultButton} from "./design/Button.js"
 
 const Container = styled.div`
   margin: 6px 0;
@@ -16,8 +17,9 @@ const UserName = styled.div`
   margin-left: 5px;
 `;
 
-const Name = styled.div`
+const Name = styled.a`
   font-weight: bold;
+  text-decoration: underline;
   color: #06c4ff;
 `;
 
@@ -35,11 +37,27 @@ const Id = styled.div`
  * https://reactjs.org/docs/components-and-props.html
  * @FunctionalComponent
  */
-const Player = ({ user }) => {
+
+ function isUserOnline(user) {
+  if (user.logged_in == "ONLINE") {
+    return true
+  }
+  else {
+    return false
+  }
+}
+
+const Player = ({ user, action }) => {
+
+  
+
   return (
-    <Container>
+    <Container  style={{
+      backgroundColor: isUserOnline(user) ? 'green' : 'red'
+    }}>
       <Name>{user.name}</Name> <UserName>{user.username}</UserName>
       <Id>Id: {user.id}</Id>
+    <DefaultButton onClick={action}>Profile</DefaultButton>
     </Container>
   );
 };

@@ -34,6 +34,7 @@ class Game extends React.Component {
 
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('currentUserId');
     this.props.history.push('/login');
   }
 
@@ -62,11 +63,19 @@ class Game extends React.Component {
     }
   }
 
+  profile(userId){
+    this.props.history.push({
+      pathname: '/profile',
+      state: { userId:userId,currentUserId:localStorage.getItem("currentUserId") }
+    })
+  }
+ 
+
   render() {
     return (
       <Container>
-        <h2>Happy Coding! </h2>
-        <p>Get all users from secure end point:</p>
+        {/* <h2>Happy Coding! </h2> */}
+        <p>All users of this app:</p>
         {!this.state.users ? (
           <Spinner />
         ) : (
@@ -74,8 +83,16 @@ class Game extends React.Component {
             <Users>
               {this.state.users.map(user => {
                 return (
-                  <PlayerContainer key={user.id}>
-                    <Player user={user} />
+                  <PlayerContainer key={user.id} onClick={() => {
+                    console.log(user)
+                    // this.profile(user.id)
+            
+                  }}>
+                    <Player user={user} action ={() => {
+                    console.log(user)
+                    this.profile(user.id)
+            
+                  }}/>
                   </PlayerContainer>
                 );
               })}
