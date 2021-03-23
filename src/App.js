@@ -10,16 +10,12 @@ import AppRouter from "./components/shared/routers/AppRouter";
  */
 class App extends Component {
   render() {
-    return ( <
-      div >
-      <
-      Header height = {
-        "100"
-      }
-      /> <
-      AppRouter / >
-      <
-      /div>
+    return ( 
+    <div>
+       {/* { props.location.pathname!=='/' ? <Header/>:null} */}
+      
+      <AppRouter/>
+    </div>
     );
   }
 }

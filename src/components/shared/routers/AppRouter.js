@@ -6,7 +6,8 @@ import { LoginGuard } from "../routeProtectors/LoginGuard";
 import Login from "../../login/Login";
 import Register from "../../register/Register"
 import Profile from "../../profile/Profile"
-
+import Launch from "../../launch/Launch";
+import Header from "../../../views/Header"
 /**
  * Main router of your application.
  * In the following class, different routes are rendered. In our case, there is a Login Route with matches the path "/login"
@@ -26,6 +27,7 @@ class AppRouter extends React.Component {
               path="/game"
               render={() => (
                 <GameGuard>
+                  <Header height = {"50"}/> 
                   <GameRouter base={"/game"} />
                 </GameGuard>
               )}
@@ -35,6 +37,7 @@ class AppRouter extends React.Component {
               exact
               render={() => (
                 <LoginGuard>
+                  <Header height = {"50"}/> 
                   <Login />
                 </LoginGuard>
               )}
@@ -43,9 +46,10 @@ class AppRouter extends React.Component {
               path="/register"
               exact
               render={() => (
-
+                <div>
+                  <Header height = {"50"}/> 
                   <Register />
-               
+               </div>
               )}
             />
              <Route
@@ -53,13 +57,14 @@ class AppRouter extends React.Component {
               exact
               render={() => (
 <GameGuard>
-
+<Header height = {"50"}/> 
   <Profile />
 </GameGuard>
                
               )}
             />
-            <Route path="/" exact render={() => <Redirect to={"/game"} />} />
+
+            <Route path="/" exact render={() => <Launch />} />
           </div>
         </Switch>
       </BrowserRouter>
