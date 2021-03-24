@@ -203,7 +203,7 @@ class Launch extends React.Component {
             <br/>
             <Label>...</Label>
             <br/>
-            <Label>...</Label>
+            <Label>Hoàng Ben Lê Giang</Label>
             <br/>
             <Label>Claudio Gebbia</Label>
             <br/>
