@@ -203,9 +203,9 @@ class Launch extends React.Component {
             <br/>
             <Label>...</Label>
             <br/>
-            <Label>...</Label>
+            <Label>Hoàng Ben Lê Giang</Label>
             <br/>
-            <Label>David Diener</Label>
+            <Label>Claudio Gebbia</Label>
             <br/>
             <Label>Jerome Hadorn</Label>
             <br/>
