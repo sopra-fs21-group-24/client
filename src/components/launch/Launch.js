@@ -209,6 +209,7 @@ class Launch extends React.Component {
             <br/>
             <Label>Jerome Hadorn</Label>
             <br/>
+            <Label>Philip Giryes</Label>
             <br/>
             <br/>
         <Button onClick={() => {
