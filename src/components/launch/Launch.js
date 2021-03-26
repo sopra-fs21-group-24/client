@@ -199,8 +199,6 @@ class Launch extends React.Component {
 
             <Label>Group 24</Label>
             <br/>
-            <Label>...</Label>
-            <br/>
             <Label>David Diener</Label>
             <br/>
             <Label>Hoàng Ben Lê Giang</Label>
