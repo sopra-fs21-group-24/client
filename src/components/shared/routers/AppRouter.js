@@ -63,6 +63,15 @@ class AppRouter extends React.Component {
                
               )}
             />
+            <Route
+              path="/gamepage"
+              render={() => (
+                <GameGuard>
+                  <Header height = {"50"}/> 
+                  <GameRouter base={"/gamepage"} />
+                </GameGuard>
+              )}
+            />
 
             <Route path="/" exact render={() => <Launch />} />
           </div>
