@@ -4,7 +4,8 @@ import { BaseContainer } from '../../helpers/layout';
 import { api, handleError } from '../../helpers/api';
 import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
-import { Button } from '../../views/design/Button';
+// import { Button } from '../../views/design/Button';
+import { Button } from 'semantic-ui-react'
 // import sample from '../../video.mp4';
 
 const Title = styled.h1`
@@ -154,7 +155,7 @@ class Launch extends React.Component {
     this.props.history.push('/login');
   }
   async goToGame() {
-    this.props.history.push('/game/dashboard');
+    this.props.history.push('/home');
   }
 
   /**
