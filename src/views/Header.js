@@ -1,5 +1,7 @@
 import React from "react";
+import { withRouter } from "react-router";
 import styled from "styled-components";
+import { Button } from "./design/Button";
 import { ReactLogo } from "./ReactLogo";
 
 /**
@@ -20,6 +22,30 @@ const Title = styled.h1`
   font-weight: bold;
   color: white;
   text-align: center;
+  cursor: pointer;
+`;
+
+const LogOutButton = styled.button`
+  &:hover {
+    transform: translateY(-2px);
+  }
+  padding: 6px;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 13px;
+  text-align: center;
+  color: rgba(255, 255, 255, 1);
+  width: ${props => props.width || null};
+  height: 35px;
+  border: none;
+  border-radius: 20px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  background: rgb(16, 89, 255);
+  transition: all 0.3s ease;
+  position: absolute;
+  right: 10px;
+  top: 5px;
 `;
 /**
  * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
@@ -29,10 +55,38 @@ const Title = styled.h1`
  * https://reactjs.org/docs/components-and-props.html
  * @FunctionalComponent
  */
+
+ function isUserLoggedIn(){
+  let token = localStorage.getItem('token')
+  let userId = localStorage.getItem('currentUserId')
+  console.log(token != null && userId != null)
+  return token != null && userId != null
+}
+
+function logout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('currentUserId');
+}
+
 const Header = props => {
   return (
+    
     <Container height={props.height}>
-      <Title>MAPGUESSЯ</Title>
+      <Title ><a onClick={()=>{
+
+        props.history.push('/')
+      }}>MAPGUESSЯ</a></Title>
+      
+      
+        { isUserLoggedIn() ?  
+          
+         <LogOutButton onClick={()=>{
+          logout()
+          props.history.push('/login')
+          }}
+          >Logout</LogOutButton> : null
+        }
+
     </Container>
   );
 };
@@ -40,4 +94,6 @@ const Header = props => {
 /**
  * Don't forget to export your component!
  */
-export default Header;
+// export default Header;
+const NewHeader = withRouter(Header)
+export default NewHeader;
