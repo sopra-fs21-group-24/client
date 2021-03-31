@@ -4,9 +4,8 @@ import { BaseContainer } from '../../helpers/layout';
 import { api, handleError } from '../../helpers/api';
 import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
-// import { Button } from '../../views/design/Button';
-import { Button } from 'semantic-ui-react'
-// import sample from '../../video.mp4';
+import { Button, Form } from 'semantic-ui-react'
+
 
 const Title = styled.h1`
   font-weight: bold;
@@ -22,20 +21,20 @@ const FormContainer = styled.div`
   justify-content: center;
 `;
 
-const Form = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 60%;
-  height: 375px;
-  font-size: 16px;
-  font-weight: 300;
-  padding-left: 37px;
-  padding-right: 37px;
-  border-radius: 5px;
-  background: linear-gradient(rgb(27, 124, 186), rgb(2, 46, 101));
-  transition: opacity 0.5s ease, transform 0.5s ease;
-`;
+// const Form = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   width: 60%;
+//   height: 375px;
+//   font-size: 16px;
+//   font-weight: 300;
+//   padding-left: 37px;
+//   padding-right: 37px;
+//   border-radius: 5px;
+//   background: linear-gradient(rgb(27, 124, 186), rgb(2, 46, 101));
+//   transition: opacity 0.5s ease, transform 0.5s ease;
+// `;
 
 const InputField = styled.input`
   &::placeholder {
@@ -66,6 +65,7 @@ padding: none;
 // position: fixed;
 `;
 
+
 const VideoBox =  styled.div`
 float:left;
 `;
@@ -78,41 +78,12 @@ min-height:370px;
 background-color:transparent;
 z-index:300000;
 `;
-
-// const TopRightButton =styled.button`
-//     line-height: 12px;
-//     width: 50px;
-//     font-size: 8pt;
-//     font-family: tahoma;
-//     margin-top: 10px;
-//     margin-right: 10px;
-//     position:absolute;
-//     top:0;
-//     right:0;
-// `;
-export const TopRightButton = styled.button`
-  &:hover {
-    transform: translateY(-2px);
-  }
-  padding: 6px;
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: 13px;
-  text-align: center;
-  color: rgba(255, 255, 255, 1);
-  width: ${props => props.width || null};
-  height: 35px;
-  border: none;
-  border-radius: 20px;
-  cursor: ${props => (props.disabled ? "default" : "pointer")};
-  opacity: ${props => (props.disabled ? 0.4 : 1)};
-  background: rgb(16, 89, 255);
-  transition: all 0.3s ease;
-  margin-top: 10px;
-  margin-right: 10px;
+export const TopRightButton = styled(Button)`
+  margin-top: 50px;
+  margin-right: 50px;
   position:absolute;
-  top:0;
-  right:0;
+  top:20px;
+  right:20px;
 `;
 const ButtonContainer = styled.div`
   display: flex;
@@ -214,6 +185,18 @@ class Launch extends React.Component {
         <Button onClick={() => {
                   this.goToGame();
                 }}>Start Playing</Button>
+
+<br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <Title>The worlds #2 Map Game*</Title>
+       
+            <Label>*Unverified Statisic</Label>
         </center>
         </VideoOverlays>
 

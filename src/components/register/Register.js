@@ -11,9 +11,8 @@ import User from '../shared/models/User';
 import {
   withRouter
 } from 'react-router-dom';
-import {
-  Button
-} from '../../views/design/Button';
+
+import { Button, Form, Label, Input } from 'semantic-ui-react'
 
 const FormContainer = styled.div `
   margin-top: 2em;
@@ -24,40 +23,8 @@ const FormContainer = styled.div `
   justify-content: center;
 `;
 
-const Form = styled.div `
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 60%;
-  height: 375px;
-  font-size: 16px;
-  font-weight: 300;
-  padding-left: 37px;
-  padding-right: 37px;
-  border-radius: 5px;
-  background: linear-gradient(rgb(27, 124, 186), rgb(2, 46, 101));
-  transition: opacity 0.5s ease, transform 0.5s ease;
-`;
 
-const InputField = styled.input `
-  &::placeholder {
-    color: rgba(255, 255, 255, 1.0);
-  }
-  height: 35px;
-  padding-left: 15px;
-  margin-left: -4px;
-  border: none;
-  border-radius: 20px;
-  margin-bottom: 20px;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-`;
-
-const Label = styled.label `
-  color: white;
-  margin-bottom: 10px;
-  text-transform: uppercase;
-`;
+const InputField = styled(Input) ``
 
 const ButtonContainer = styled.div `
   display: flex;
@@ -65,15 +32,6 @@ const ButtonContainer = styled.div `
   margin-top: 20px;
 `;
 
-/**
- * Classes in React allow you to have an internal state within the class and to have the React life-cycle for your component.
- * You should have a class (instead of a functional component) when:
- * - You need an internal state that cannot be achieved via props from other parent components
- * - You fetch data from the server (e.g., in componentDidMount())
- * - You want to access the DOM via Refs
- * https://reactjs.org/docs/react-component.html
- * @Class
- */
 class Register extends React.Component {
   /**
    * If you don’t initialize the state and you don’t bind methods, you don’t need to implement a constructor for your React component.
@@ -153,43 +111,43 @@ class Register extends React.Component {
   componentDidMount() {}
 
   render() {
-    return ( <
-      BaseContainer >
-      <
-      FormContainer >
-      <
-      Form >
-      <
-      Label > Username < /Label> <
-      InputField placeholder = "Enter here.."
-      onChange = {
-        e => {
-          this.handleInputChange('username', e.target.value);
-        }
-      }
-      /> <
-      Label > Name < /Label> <
-      InputField placeholder = "Enter here.."
-      onChange = {
-        e => {
-          this.handleInputChange('name', e.target.value);
-        }
-      }
-      /> <
-      Label > Password < /Label> <
-      InputField type = "password"
-      placeholder = "Enter here.."
-      onChange = {
-        e => {
-          this.handleInputChange('password', e.target.value);
-        }
-      }
-      />
+    return ( 
+    <BaseContainer >
+    <FormContainer>
 
-      <
-      ButtonContainer >
-      <
-      Button disabled = {
+      <Form>
+      <h1>Register</h1>
+        <Form.Field>
+          <InputField placeholder = "Username"
+          onChange = {
+            e => {
+              this.handleInputChange('username', e.target.value);
+            }
+          }
+          />
+        </Form.Field>
+        <Form.Field>
+          <InputField placeholder = "Name"
+          onChange = {
+            e => {
+              this.handleInputChange('name', e.target.value);
+            }
+          } /> 
+        </Form.Field>
+        <Form.Field>
+         
+          <InputField type = "password"
+            placeholder = "Enter here.."
+            onChange = {
+              e => {
+                this.handleInputChange('password', e.target.value);
+              }
+            }/>
+        </Form.Field>
+      
+
+      <ButtonContainer>
+      <Button disabled = {
         !this.state.username || !this.state.name || !this.state.password
       }
       width = "50%"
@@ -197,24 +155,22 @@ class Register extends React.Component {
         () => {
           this.register();
         }
-      } >
-      Register <
-      /Button> <
-      /ButtonContainer> <
-      ButtonContainer >
-      <
-      Button width = "50%"
+      } >Register</Button>
+      </ButtonContainer>
+      
+      <ButtonContainer >
+      <Button width = "50%"
       onClick = {
         () => {
           this.login();
         }
       } >
-      Already have an account ? Login here <
-      /Button> <
-      /ButtonContainer> <
-      /Form> <
-      /FormContainer> <
-      /BaseContainer>
+      Already have an account ? Login here 
+      </Button>
+      </ButtonContainer>
+      </Form>
+        </FormContainer>
+      </BaseContainer>
     );
   }
 }
