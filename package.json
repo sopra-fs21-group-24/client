@@ -8,6 +8,8 @@
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.2",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^2.0.3",
     "styled-components": "^5.2.1"
   },
   "scripts": {
@@ -16,7 +18,8 @@
     "build": "react-scripts build",
     "eject": "react-scripts eject",
     "test": "react-scripts test --env=jsdom",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm run build",
+    "db" :"json-server --watch src/db.json --port 3004"
   },
   "eslintConfig": {
     "extends": "react-app"
