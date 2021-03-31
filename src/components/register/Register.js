@@ -100,7 +100,7 @@ class Register extends React.Component {
         name: this.state.name,
         password: this.state.password
       });
-      await api.post('/users', requestBody)
+      await api.post('/register', requestBody)
       .then((response1) => {
         console.log("Users post respone: ", response1)
         return api.post('/login', requestBody);
@@ -113,8 +113,8 @@ class Register extends React.Component {
         localStorage.setItem('token', user.token);
         localStorage.setItem('currentUserId', user.id);
 
-        // Register successfully worked --> navigate to the route /game in the GameRouter
-        this.props.history.push(`/game`);
+        // Register successfully worked --> navigate to the route /home in the HomeRouter
+        this.props.history.push(`/home`);
       }).catch((error) =>{
         alert(`Something went wrong during the register: \n${handleError(error)}`);
       })
