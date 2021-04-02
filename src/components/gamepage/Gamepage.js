@@ -17,8 +17,8 @@ class Gamepage extends React.Component {
   render() {
     return (
       <div>
-        {Header}
-        <h1>GAME IS RUNNING</h1>
+        <Header/>
+        <img src = 'https://miro.medium.com/max/3000/1*BzaxmZjEVpTFtKJeex_ayg.jpeg' alt = 'nan' />
       </div>
     );
   }
