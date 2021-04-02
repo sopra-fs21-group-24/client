@@ -1,29 +1,26 @@
-import React from "react";
+/* import React from "react";
 import styled from "styled-components";
 import {
   Redirect,
   Route
 } from "react-router-dom";
-import Game from "../../game/Game";
+import Home from "../../home/Home";
 
 const Container = styled.div `
   display: flex;
   flex-direction: column;
-`;
+`; */
 
-class HomeRouter extends React.Component {
+/* class HomeRouter extends React.Component {
     render() {
-      /**
-       * "this.props.base" is "/app" because as been passed as a prop in the parent of HomeRouter, i.e., App.js
-       */
-      return ( <
-        Container >
+      return ( 
+      <Container >
         <
         Route exact path = {
           `${this.props.base}`
         }
         render = {
-          () => < Game / >
+          () => < Home / >
         }
         />
 
@@ -37,12 +34,11 @@ class HomeRouter extends React.Component {
           }
           />} /
           >
-          <
-          /Container>
+          </Container>
         );
       }
-    }
+    } */
     /*
      * Don't forget to export your component!
      */
-    export default HomeRouter;
+    /* export default HomeRouter; */

@@ -28,7 +28,8 @@ class AppRouter extends React.Component {
       <BrowserRouter>
         <Switch>
           <div>
-            <Route
+            
+            {/* <Route
               path="/home"
               render={() => (
                 <HomeGuard>
@@ -36,7 +37,7 @@ class AppRouter extends React.Component {
                   <HomeRouter base={"/home"} />
                 </HomeGuard>
               )}
-            />
+            /> */}
             <Route
               path="/gamepage"
               render={()=>(
@@ -76,16 +77,6 @@ class AppRouter extends React.Component {
                
               )}
             />
-            <Route
-              path="/gamepage"
-              render={() => (
-                <GameGuard>
-                  <Header height = {"50"}/> 
-                  <GameRouter base={"/gamepage"} />
-                </GameGuard>
-              )}
-            />
-
             <Route path="/" exact render={() => <Launch />} />
           </div>
         </Switch>
