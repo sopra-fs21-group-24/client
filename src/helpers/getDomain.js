@@ -9,6 +9,9 @@ import { isProduction } from './isProduction';
 export const getDomain = () => {
   const prodUrl = 'https://sopra-fs21-group-24-server.herokuapp.com/';
   const devUrl = 'http://localhost:8080';
+  const localURL = 'http://localhost:3004';
 
-  return isProduction() ? prodUrl : devUrl;
+  // SEARCH FOR QWERTZUIO if you want to switch to a different endpoint
+
+  return isProduction() ? prodUrl : localURL;
 };

@@ -12,6 +12,7 @@ const Container = styled(BaseContainer)`
   text-align: center;
 `;
 
+
 const Users = styled.ul`
   list-style: none;
   padding-left: 0;
@@ -32,81 +33,40 @@ class Game extends React.Component {
     };
   }
 
-  logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('currentUserId');
-    this.props.history.push('/login');
-  }
+
 
   async componentDidMount() {
     try {
-      const response = await api.get('/users');
-      // delays continuous execution of an async operation for 1 second.
-      // This is just a fake async call, so that the spinner can be displayed
-      // feel free to remove it :)
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // const response = await api.get('/users');
+      // // delays continuous execution of an async operation for 1 second.
+      // // This is just a fake async call, so that the spinner can be displayed
+      // // feel free to remove it :)
+      // await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // Get the returned users and update the state.
-      this.setState({ users: response.data });
+      // // Get the returned users and update the state.
+      // this.setState({ users: response.data });
 
-      // This is just some data for you to see what is available.
-      // Feel free to remove it.
-      console.log('request to:', response.request.responseURL);
-      console.log('status code:', response.status);
-      console.log('status text:', response.statusText);
-      console.log('requested data:', response.data);
+      // // This is just some data for you to see what is available.
+      // // Feel free to remove it.
+      // console.log('request to:', response.request.responseURL);
+      // console.log('status code:', response.status);
+      // console.log('status text:', response.statusText);
+      // console.log('requested data:', response.data);
 
-      // See here to get more data.
-      console.log(response);
+      // // See here to get more data.
+      // console.log(response);
     } catch (error) {
       alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
     }
   }
 
-  profile(userId){
-    this.props.history.push({
-      pathname: '/profile',
-      state: { userId:userId,currentUserId:localStorage.getItem("currentUserId") }
-    })
-  }
+
  
 
   render() {
     return (
       <Container>
-        {/* <h2>Happy Coding! </h2> */}
-        <p>All users of this app:</p>
-        {!this.state.users ? (
-          <Spinner />
-        ) : (
-          <div>
-            <Users>
-              {this.state.users.map(user => {
-                return (
-                  <PlayerContainer key={user.id} onClick={() => {
-                    console.log(user)
-                    // this.profile(user.id)
-            
-                  }}>
-                    <Player user={user} action ={() => {
-                    console.log(user)
-                    this.profile(user.id)
-            
-                  }}/>
-                  </PlayerContainer>
-                );
-              })}
-            </Users>
-            <Button
-              width="100%"
-              onClick={() => {
-                this.logout();
-              }}
-            >
-              Logout
-            </Button>
-          </div>
-        )}
+        <p>Let's guess them coordinates:</p>
       </Container>
     );
   }

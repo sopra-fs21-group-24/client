@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
-import { GameGuard } from "../routeProtectors/GameGuard";
-import GameRouter from "./GameRouter";
+import { HomeGuard } from "../routeProtectors/HomeGuard";
+import HomeRouter from "./HomeRouter";
 import { LoginGuard } from "../routeProtectors/LoginGuard";
 import Login from "../../login/Login";
 import Register from "../../register/Register"
@@ -10,28 +10,31 @@ import Launch from "../../launch/Launch";
 import Header from "../../../views/Header"
 import {GamepageGuard} from "../routeProtectors/GamepageGuard";
 import GamepageRouter from "./GamepageRouter";
+import NewHeader from "../../../views/Header"
 /**
  * Main router of your application.
  * In the following class, different routes are rendered. In our case, there is a Login Route with matches the path "/login"
- * and another Router that matches the route "/game".
+ * and another Router that matches the route "/home".
  * The main difference between these two routes is the following:
  * /login renders another component without any sub-route
- * /game renders a Router that contains other sub-routes that render in turn other react components
+ * /home renders a Router that contains other sub-routes that render in turn other react components
  * Documentation about routing in React: https://reacttraining.com/react-router/web/guides/quick-start
  */
 class AppRouter extends React.Component {
+
+
   render() {
     return (
       <BrowserRouter>
         <Switch>
           <div>
             <Route
-              path="/game"
+              path="/home"
               render={() => (
-                <GameGuard>
-                  <Header height = {"50"}/> 
-                  <GameRouter base={"/game"} />
-                </GameGuard>
+                <HomeGuard>
+                  <NewHeader height = {"50"}/> 
+                  <HomeRouter base={"/home"} />
+                </HomeGuard>
               )}
             />
             <Route
@@ -47,7 +50,7 @@ class AppRouter extends React.Component {
               exact
               render={() => (
                 <LoginGuard>
-                  <Header height = {"50"}/> 
+                  <NewHeader height = {"50"}/> 
                   <Login />
                 </LoginGuard>
               )}
@@ -57,7 +60,7 @@ class AppRouter extends React.Component {
               exact
               render={() => (
                 <div>
-                  <Header height = {"50"}/> 
+                  <NewHeader height = {"50"}/> 
                   <Register />
                </div>
               )}
@@ -66,10 +69,10 @@ class AppRouter extends React.Component {
               path="/profile"
               exact
               render={() => (
-<GameGuard>
-<Header height = {"50"}/> 
+<HomeGuard>
+<NewHeader height = {"50"}/> 
   <Profile />
-</GameGuard>
+</HomeGuard>
                
               )}
             />

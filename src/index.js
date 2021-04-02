@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
+import 'semantic-ui-css/semantic.min.css'
 
 /**
  * This is the entry point of your React application where the root element is in the public/index.html.

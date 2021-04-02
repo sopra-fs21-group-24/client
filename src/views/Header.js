@@ -1,5 +1,7 @@
 import React from "react";
+import { withRouter } from "react-router";
 import styled from "styled-components";
+import { Button } from 'semantic-ui-react'
 import { ReactLogo } from "./ReactLogo";
 
 /**
@@ -20,6 +22,13 @@ const Title = styled.h1`
   font-weight: bold;
   color: white;
   text-align: center;
+  cursor: pointer;
+`;
+
+const LogOutButton = styled(Button)`
+  position: absolute;
+  right: 10px;
+  top: 5px;
 `;
 /**
  * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
@@ -29,10 +38,37 @@ const Title = styled.h1`
  * https://reactjs.org/docs/components-and-props.html
  * @FunctionalComponent
  */
+
+ function isUserLoggedIn(){
+  let token = localStorage.getItem('token')
+  let userId = localStorage.getItem('currentUserId')
+  console.log(token != null && userId != null)
+  return token != null && userId != null
+}
+
+function logout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('currentUserId');
+}
+
 const Header = props => {
   return (
+    
     <Container height={props.height}>
-      <Title>MAPGUESSЯ</Title>
+      <Title ><a onClick={()=>{
+        props.history.push('/')
+      }}>MAPGUESSЯ</a></Title>
+      
+      
+        { isUserLoggedIn() ?  
+          
+         <LogOutButton onClick={()=>{
+          logout()
+          props.history.push('/login')
+          }}
+          >Logout</LogOutButton> : null
+        }
+
     </Container>
   );
 };
@@ -40,4 +76,6 @@ const Header = props => {
 /**
  * Don't forget to export your component!
  */
-export default Header;
+// export default Header;
+const NewHeader = withRouter(Header)
+export default NewHeader;
