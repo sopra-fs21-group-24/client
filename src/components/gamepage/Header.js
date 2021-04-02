@@ -1,6 +1,5 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import React, { Component } from 'react'
 import { Button, Dropdown, Menu } from 'semantic-ui-react'
 
 class Header extends React.Component{
@@ -15,8 +14,8 @@ class Header extends React.Component{
     return (
       <Menu size='small' inverted>
         <Menu.Item>
-          <img src='https://react.semantic-ui.com/logo.png' alt ={NaN}/>
-        </Menu.Item>
+            <h2>MAPGUESSЯ</h2>
+        </Menu.Item>                
         <Menu.Item
           name='Score'
           active={activeItem === 'Score'}
