@@ -4,7 +4,7 @@ import {
   Redirect,
   Route
 } from "react-router-dom";
-import Game from "../../game/Game";
+import Home from "../../home/Home";
 
 const Container = styled.div `
   display: flex;
@@ -23,7 +23,7 @@ class HomeRouter extends React.Component {
           `${this.props.base}`
         }
         render = {
-          () => < Game / >
+          () => < Home / >
         }
         />
 
