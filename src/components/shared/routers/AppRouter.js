@@ -8,6 +8,8 @@ import Register from "../../register/Register"
 import Profile from "../../profile/Profile"
 import Launch from "../../launch/Launch";
 import Header from "../../../views/Header"
+import {GamepageGuard} from "../routeProtectors/GamepageGuard";
+import GamepageRouter from "./GamepageRouter";
 /**
  * Main router of your application.
  * In the following class, different routes are rendered. In our case, there is a Login Route with matches the path "/login"
@@ -30,6 +32,14 @@ class AppRouter extends React.Component {
                   <Header height = {"50"}/> 
                   <GameRouter base={"/game"} />
                 </GameGuard>
+              )}
+            />
+            <Route
+              path="/gamepage"
+              render={()=>(
+                <GamepageGuard>
+                  <GamepageRouter base = {"/gamepage"}/>
+                </GamepageGuard>
               )}
             />
             <Route

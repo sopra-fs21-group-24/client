@@ -1,21 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
-import { BaseContainer } from '../../helpers/layout';
 import { withRouter } from 'react-router-dom';
+import Header from './Header'
 
-const Users = styled.ul`
-  list-style: none;
-  padding-left: 0;
-`;
-
-const PlayerContainer = styled.li`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-
-class Game extends React.Component {
+class Gamepage extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -29,6 +16,7 @@ class Game extends React.Component {
   render() {
     return (
       <Container>
+        {Header}
         <h1>GAME IS RUNNING</h1>
       </Container>
     );
