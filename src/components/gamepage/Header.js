@@ -4,36 +4,54 @@ import { Button, Dropdown, Menu } from 'semantic-ui-react'
 
 class Header extends React.Component{
 
-    state = { activeItem: 'home' }
+	constructor(props){
+		super(props);
+		this.state={};
+		this.exitGame = this.exitGame.bind(this);
+	}
 
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+	displayScore = () =>{
+		return 13000;
+	}
 
-  render() {
-    const { activeItem } = this.state
+	clock = () =>{
+		return '00:00';
+	}
 
-    return (
-      <Menu size='small' inverted>
-        <Menu.Item>
-            <h2>MAPGUESSЯ</h2>
-        </Menu.Item>                
-        <Menu.Item
-          name='Score'
-          active={activeItem === 'Score'}
-          onClick={this.handleItemClick}
-        />
-        <Menu.Item
-          name='Time'
-          active={activeItem === 'Time'}
-          onClick={this.handleItemClick}
-        />
+	exitGame = () =>{
+		alert("Are you sure you want to quit the game?");
+		return 0;
+	}
 
+	displayRound = () =>{
+		return '1/5';
+	}
 
-          <Menu.Item position ='right'>
-            <Button color='red'>exit</Button>
-          </Menu.Item>
-      </Menu>
-    )
-  }
+	render() {
+
+		return (
+			<Menu size='small' inverted borderless size = 'mini' attached>
+				<Menu.Item>
+						<h2>MAPGUESSЯ</h2>
+				</Menu.Item>                
+				<Menu.Item position = 'right'>
+					<h4>Score: {this.displayScore()}</h4>
+				</Menu.Item>
+
+				<Menu.Item position = 'right'>
+					<h4>Time: {this.clock()}</h4>
+				</Menu.Item>
+				
+				<Menu.Item position = 'right'>
+					<h4>Round: {this.displayRound()}</h4>
+				</Menu.Item>
+
+				<Menu.Item position ='right'>
+				<Button color='red' onClick = {()=>{this.exitGame()}}>EXIT</Button>
+				</Menu.Item>
+			</Menu>
+		)
+	}
 
 }
 
