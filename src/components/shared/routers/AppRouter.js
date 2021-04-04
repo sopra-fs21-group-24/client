@@ -4,10 +4,10 @@ import { HomeGuard } from "../routeProtectors/HomeGuard";
 import HomeRouter from "./HomeRouter";
 import { LoginGuard } from "../routeProtectors/LoginGuard";
 import Login from "../../login/Login";
-import Register from "../../register/Register"
-import Profile from "../../profile/Profile"
+import Register from "../../register/Register";
+import Profile from "../../profile/Profile";
 import Launch from "../../launch/Launch";
-import NewHeader from "../../../views/Header"
+import NewHeader from "../../../views/Header";
 /**
  * Main router of your application.
  * In the following class, different routes are rendered. In our case, there is a Login Route with matches the path "/login"
@@ -18,8 +18,6 @@ import NewHeader from "../../../views/Header"
  * Documentation about routing in React: https://reacttraining.com/react-router/web/guides/quick-start
  */
 class AppRouter extends React.Component {
-
-
   render() {
     return (
       <BrowserRouter>
@@ -29,7 +27,7 @@ class AppRouter extends React.Component {
               path="/home"
               render={() => (
                 <HomeGuard>
-                  <NewHeader height = {"50"}/> 
+                  <NewHeader height={"50"} />
                   <HomeRouter base={"/home"} />
                 </HomeGuard>
               )}
@@ -39,7 +37,7 @@ class AppRouter extends React.Component {
               exact
               render={() => (
                 <LoginGuard>
-                  <NewHeader height = {"50"}/> 
+                  <NewHeader height={"50"} />
                   <Login />
                 </LoginGuard>
               )}
@@ -49,20 +47,19 @@ class AppRouter extends React.Component {
               exact
               render={() => (
                 <div>
-                  <NewHeader height = {"50"}/> 
+                  <NewHeader height={"50"} />
                   <Register />
-               </div>
+                </div>
               )}
             />
-             <Route
+            <Route
               path="/profile"
               exact
               render={() => (
-<HomeGuard>
-<NewHeader height = {"50"}/> 
-  <Profile />
-</HomeGuard>
-               
+                <HomeGuard>
+                  <NewHeader height={"50"} />
+                  <Profile />
+                </HomeGuard>
               )}
             />
 
@@ -74,6 +71,6 @@ class AppRouter extends React.Component {
   }
 }
 /*
-* Don't forget to export your component!
+ * Don't forget to export your component!
  */
 export default AppRouter;
