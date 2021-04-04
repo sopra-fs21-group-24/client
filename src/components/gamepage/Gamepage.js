@@ -25,11 +25,12 @@ class Gamepage extends React.Component {
     }
 }
 
-
+//Img has to be replaced with Satelite and Minimap has to be added
   render() {
     return (
       <div>
         <Header players = {this.state}/>
+        
         <img src = 'https://miro.medium.com/max/3000/1*BzaxmZjEVpTFtKJeex_ayg.jpeg' alt = 'nan' />
       </div>
     );
