@@ -1,11 +1,11 @@
 import React from 'react';
-import { Button, Menu } from 'semantic-ui-react'
+import { Button, Menu, Modal,Icon } from 'semantic-ui-react'
 
 class Header extends React.Component{
 
 	constructor(props){
 		super(props);
-		this.state = {}
+		this.state = {};
 	}
 
 	componentDidMount(){
@@ -14,7 +14,7 @@ class Header extends React.Component{
 
 
 	displayScore = () =>{
-		return 13000;
+		return this.props.players.player1.totalScore;
 	}
 
 	clock = () =>{
@@ -27,16 +27,15 @@ class Header extends React.Component{
 		return '1/5';
 	}
 
-	exitGame = () =>{
-		alert("Are you sure you want to quit the game?");
-	}
+	exitGame = () =>(
+		alert("are you sure you want to leave the game?")
+	)
+
 
 	render() {
-		
-	
 
 		return (
-			<Menu size='small' inverted borderless size = 'mini' attached>
+			<Menu inverted borderless size = 'small' attached>
 				<Menu.Item>
 						<h2>MAPGUESSЯ</h2>
 				</Menu.Item>                
@@ -53,12 +52,13 @@ class Header extends React.Component{
 				</Menu.Item>
 
 				<Menu.Item position ='right'>
-				<Button color='red' onClick = {()=>{this.exitGame()}}>EXIT</Button>
+					<Button color='red' onClick = {()=>{this.exitGame()}}>EXIT</Button>
 				</Menu.Item>
 			</Menu>
 		)
 	}
 
 }
+
 
 export default Header;

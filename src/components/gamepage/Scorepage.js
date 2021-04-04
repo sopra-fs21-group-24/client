@@ -1,8 +1,8 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Button, Form, Grid, Header, Menu, Segment, Progress } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Menu, Segment, Progress, Icon } from 'semantic-ui-react'
 import { api } from '../../helpers/api';
-import { Image, List } from 'semantic-ui-react';
+import { List } from 'semantic-ui-react';
 
 class Scorepage extends React.Component {
   constructor(props) {
@@ -28,24 +28,25 @@ class Scorepage extends React.Component {
       }
   }
 
-  render() {
-    const nextRound = ()=>{
-        this.props.history.push("/gamepage");
-    }
+  nextRound = ()=>{
+    this.props.history.push("/gamepage");
+  }
 
-    const exit = ()=>{
-        this.props.history.push("/home");
-    }
+  exit = ()=>{
+      this.props.history.push("/home");
+  }
+
+  render() {
 
     return (
         
       <div>
         <Menu borderless secondary>
         <Menu.Item position ='right'>
-		<Button color='red' onClick = {()=>{exit()}}>EXIT</Button>
+		<Button color='red' onClick = {()=>{this.exit()}}>EXIT</Button>
 	    </Menu.Item>
         </Menu>
-        <ScoreBox players = {this.state} nextRound={nextRound}/>
+        <ScoreBox players = {this.state} nextRound={this.nextRound}/>
 
       </div>
     );
@@ -94,8 +95,9 @@ const ScoreBox = (props) => {
     
     const NextRound= () =>{
         return(
-            <Button color='teal' fluid size='large' onClick={()=>{props.nextRound()}}>
-                Next Round
+            <Button animated='fade' color='teal' fluid size='large' onClick={()=>{props.nextRound()}}>
+              <Button.Content visible>Next round starts in : 00:00</Button.Content>
+              <Button.Content hidden>Next round</Button.Content>
             </Button>
         )
     }
