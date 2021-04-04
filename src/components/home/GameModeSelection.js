@@ -1,7 +1,13 @@
 import React from "react";
 import { Button } from "semantic-ui-react";
 
-const GameModeSelection = ({ toggleGamemode, setGamemode }) => {
+const GameModeSelection = ({
+  toggleGamemodeDisplay,
+  toggleUsermodeDisplay,
+  toggleCreateJoinRoomDisplay,
+  setGamemode,
+  usermode,
+}) => {
   return (
     <div class="ui list">
       <p>Choose which gamemode you want to play!</p>
@@ -39,7 +45,13 @@ const GameModeSelection = ({ toggleGamemode, setGamemode }) => {
         <Button
           color="black"
           onClick={() => {
-            toggleGamemode();
+            if (usermode == "multiplayer") {
+              toggleGamemodeDisplay();
+              toggleCreateJoinRoomDisplay();
+            } else {
+              toggleGamemodeDisplay();
+              toggleUsermodeDisplay();
+            }
           }}
         >
           Go back

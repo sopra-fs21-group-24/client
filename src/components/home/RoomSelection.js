@@ -1,41 +1,43 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "semantic-ui-react";
 
-const UserModeSelection = ({
+const RoomSelection = ({
   toggleUsermodeDisplay,
-  toggleGamemodeDisplay,
   toggleCreateJoinRoomDisplay,
-  setUsermode,
+  toggleGamemodeDisplay,
 }) => {
   return (
     <div class="ui list">
-      <p>Start a singleplayer game or play with friends!</p>
+      <p>Create a new room or join an existing room!</p>
       <div class="item">
         <Button
-          color="green"
+          color="blue"
           onClick={() => {
-            toggleUsermodeDisplay();
+            toggleCreateJoinRoomDisplay();
             toggleGamemodeDisplay();
-            setUsermode("singleplayer");
           }}
         >
-          Singleplayer
+          Create
+        </Button>
+      </div>
+      <div class="item">
+        <Button color="blue" onClick={() => {}}>
+          Join
         </Button>
       </div>
       <div class="item">
         <Button
-          color="red"
+          color="black"
           onClick={() => {
-            toggleUsermodeDisplay();
             toggleCreateJoinRoomDisplay();
-            setUsermode("multiplayer");
+            toggleUsermodeDisplay();
           }}
         >
-          Multiplayer
+          Go back
         </Button>
       </div>
     </div>
   );
 };
 
-export default UserModeSelection;
+export default RoomSelection;

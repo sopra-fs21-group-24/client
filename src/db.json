@@ -22,8 +22,7 @@
     "password": "admin"
   },
   "login": {
-    "username": "admin",
-    "name": "admin",
-    "password": "admin"
+    "username": "1",
+    "password": "1"
   }
 }

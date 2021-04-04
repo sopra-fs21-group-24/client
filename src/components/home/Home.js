@@ -3,22 +3,32 @@ import { api, handleError } from "../../helpers/api";
 import { withRouter } from "react-router-dom";
 import UserModeSelection from "./UserModeSelection";
 import GameModeSelection from "./GameModeSelection";
+import RoomSelection from "./RoomSelection";
 
 class Home extends React.Component {
   constructor() {
     super();
     this.state = {
-      users: null,
       isUsermodeDisplayed: true,
       isGamemodeDisplayed: false,
+      isCreateJoinRoomDisplayed: false,
       selectedUsermode: null,
       selectedGamemode: null,
     };
   }
 
-  toggleGamemode = () => {
+  toggleUsermodeDisplay = () => {
     this.setState({ isUsermodeDisplayed: !this.state.isUsermodeDisplayed });
+  };
+
+  toggleGamemodeDisplay = () => {
     this.setState({ isGamemodeDisplayed: !this.state.isGamemodeDisplayed });
+  };
+
+  toggleCreateJoinRoomDisplay = () => {
+    this.setState({
+      isCreateJoinRoomDisplayed: !this.state.isCreateJoinRoomDisplayed,
+    });
   };
 
   setUsermode = (usermode) => {
@@ -40,20 +50,34 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div class="ui segment">
+      <div class="ui center aligned container">
         <h1>Welcome to MAPGUESSЯ</h1>
         {this.state.isUsermodeDisplayed == true ? (
           <UserModeSelection
-            toggleGamemode={this.toggleGamemode}
+            toggleUsermodeDisplay={this.toggleUsermodeDisplay}
+            toggleGamemodeDisplay={this.toggleGamemodeDisplay}
+            toggleCreateJoinRoomDisplay={this.toggleCreateJoinRoomDisplay}
             setUsermode={this.setUsermode}
           />
         ) : null}
         {this.state.isGamemodeDisplayed == true ? (
           <GameModeSelection
-            toggleGamemode={this.toggleGamemode}
+            toggleUsermodeDisplay={this.toggleUsermodeDisplay}
+            toggleGamemodeDisplay={this.toggleGamemodeDisplay}
+            toggleCreateJoinRoomDisplay={this.toggleCreateJoinRoomDisplay}
+            usermode={this.state.selectedUsermode}
             setGamemode={this.setGamemode}
           />
         ) : null}
+        {this.state.isCreateJoinRoomDisplayed == true ? (
+          <RoomSelection
+            toggleUsermodeDisplay={this.toggleUsermodeDisplay}
+            toggleCreateJoinRoomDisplay={this.toggleCreateJoinRoomDisplay}
+            toggleGamemodeDisplay={this.toggleGamemodeDisplay}
+          />
+        ) : null}
+        <p> SELECTED USERMODE: {this.state.selectedUsermode}</p>
+        <p> SELECTED GAMEMODE: {this.state.selectedGamemode}</p>
       </div>
     );
   }
