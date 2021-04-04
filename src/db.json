@@ -7,7 +7,9 @@
     ],
     "profile":[ { "name": "typicode" }
     ],
-    "score":[{"name":"player1", "score":3000, "totalScore":5000}]
+    "score":{"player1":{"name":"Player1", "score":3000, "totalScore":5000},
+              "player2":{"name":"Player2", "score":2000, "totalScore":6000},
+              "player3":{"name":"Player3", "score":1000, "totalScore":2000}}
     
 
   }

@@ -1,11 +1,10 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import Header from './Header'
-import { Button, Form } from 'semantic-ui-react'
 
 class Gamepage extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
     };
   }
