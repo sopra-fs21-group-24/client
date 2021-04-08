@@ -7,6 +7,7 @@ import {Button, Grid,Modal, Header, Label} from 'semantic-ui-react'
 import { calculateDistance } from "../shared/models/GeoMath";
 import GameHeader from "./GameHeader"
 import Scorepage from "./Scorepage";
+import {key} from "./key"
 // import {useWindowDimensions} from '../shared/models/GeoMath';
 
 // This Check will happen in BE
@@ -36,7 +37,8 @@ const BaseContainer = styled.div`
 const gameDummy = {
     questions:['1','2','3','4','5']
 }
-let key = "AIzaSyAimOiAOXNImxCmJeFaaPMsmSSmZWoMaAk"
+// let key = process.env.REACT_APP_GOOGLE_API_KEY
+
 class GameController extends React.Component {
 
     constructor(props){
@@ -51,6 +53,7 @@ class GameController extends React.Component {
             currentQuestionId:null,
             players:staticPlayer
         }
+        console.log("KKKKKEEEY",key)
         console.log(props.gameId)
 
        
