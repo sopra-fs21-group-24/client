@@ -4,7 +4,6 @@ import { withRouter } from "react-router-dom";
 import UserModeSelection from "./UserModeSelection";
 import GameModeSelection from "./GameModeSelection";
 import LobbySelection from "./LobbySelection";
-import RoomSelection from "./RoomSelection";
 import { Button, Grid, Segment, Image, Advertisement } from "semantic-ui-react";
 import styled from 'styled-components';
 import { BaseContainer } from '../../helpers/layout';
@@ -118,6 +117,27 @@ class Home extends React.Component {
       </Grid>
       </div>
     );
+  }
+
+  async getUser(){
+    try {
+      let userId = localStorage.getItem('currentUserId')
+      const response = await api.get('/users/'+userId);
+      // delays continuous execution of an async operation for 1 second.
+      // This is just a fake async call, so that the spinner can be displayed
+      // feel free to remove it :slight_smile:
+      // await new Promise(resolve => setTimeout(resolve, 500));
+
+      // Get the returned users and update the state.
+      let st = this.state
+      st.user = response.data
+      this.setState(st);
+
+      // See here to get more data.
+      console.log(this.state);
+    } catch (error) {
+      alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
+    }
   }
 
   async updateUser(username, password){
