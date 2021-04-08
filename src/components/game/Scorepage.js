@@ -29,7 +29,7 @@ class Scorepage extends React.Component {
   }
 
   nextRound = ()=>{
-    this.props.history.push("/gamepage");
+    // this.props.history.push("/gamepage");
   }
 
   exit = ()=>{

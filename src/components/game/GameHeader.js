@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Menu, Modal,Icon } from 'semantic-ui-react'
 
-class Header extends React.Component{
+class GameHeader extends React.Component{
 
 	constructor(props){
 		super(props);
@@ -63,4 +63,4 @@ class Header extends React.Component{
 }
 
 
-export default Header;
+export default GameHeader;
