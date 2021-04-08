@@ -4,11 +4,11 @@ import { Button, Grid, Icon } from "semantic-ui-react";
 const UserModeSelection = ({
   toggleUsermodeDisplay,
   toggleGamemodeDisplay,
-  toggleCreateJoinRoomDisplay,
+  toggleCreateJoinLobbyDisplay,
   setUsermode,
 }) => {
   return (
-    <Grid centered> 
+    <Grid centered>
       <Grid.Row>
         <p>Start a singleplayer game or play with friends!</p>
       </Grid.Row>
@@ -30,7 +30,7 @@ const UserModeSelection = ({
               <Icon name="user" />
             </Button.Content>
           </Button>
-          </Grid.Column>
+        </Grid.Column>
       </Grid.Row>
       <Grid.Row>
         <Grid.Column width="4">
@@ -41,7 +41,7 @@ const UserModeSelection = ({
             color="red"
             onClick={() => {
               toggleUsermodeDisplay();
-              toggleCreateJoinRoomDisplay();
+              toggleCreateJoinLobbyDisplay();
               setUsermode("multiplayer");
             }}
           >
@@ -50,9 +50,9 @@ const UserModeSelection = ({
               <Icon name="users" />
             </Button.Content>
           </Button>
-          </Grid.Column>
+        </Grid.Column>
       </Grid.Row>
-      </Grid>
+    </Grid>
   );
 };
 

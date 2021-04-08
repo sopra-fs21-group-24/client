@@ -2,12 +2,15 @@ import React from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { HomeGuard } from "../routeProtectors/HomeGuard";
 import HomeRouter from "./HomeRouter";
+import LobbyRouter from "./LobbyRouter";
 import { LoginGuard } from "../routeProtectors/LoginGuard";
+import { LobbyGuard } from "../routeProtectors/LobbyGuard";
 import Login from "../../login/Login";
 import Register from "../../register/Register";
 import Profile from "../../profile/Profile";
 import Launch from "../../launch/Launch";
 import NewHeader from "../../../views/Header";
+import Lobby from "../../lobby/Lobby";
 /**
  * Main router of your application.
  * In the following class, different routes are rendered. In our case, there is a Login Route with matches the path "/login"
@@ -62,7 +65,15 @@ class AppRouter extends React.Component {
                 </HomeGuard>
               )}
             />
-
+            <Route
+              path="/lobby"
+              render={() => (
+                <LobbyGuard>
+                <NewHeader height={"50"} />
+                <LobbyRouter base={"/lobby"}/>
+                </LobbyGuard>
+              )}
+            />
             <Route path="/" exact render={() => <Launch />} />
           </div>
         </Switch>

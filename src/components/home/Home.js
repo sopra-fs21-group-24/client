@@ -3,7 +3,7 @@ import { api, handleError } from "../../helpers/api";
 import { withRouter } from "react-router-dom";
 import UserModeSelection from "./UserModeSelection";
 import GameModeSelection from "./GameModeSelection";
-import RoomSelection from "./RoomSelection";
+import LobbySelection from "./LobbySelection";
 import { Button, Grid, Segment, Image } from "semantic-ui-react";
 
 class Home extends React.Component {
@@ -12,7 +12,7 @@ class Home extends React.Component {
     this.state = {
       isUsermodeDisplayed: true,
       isGamemodeDisplayed: false,
-      isCreateJoinRoomDisplayed: false,
+      isCreateJoinLobbyDisplayed: false,
       selectedUsermode: null,
       selectedGamemode: null,
     };
@@ -26,9 +26,9 @@ class Home extends React.Component {
     this.setState({ isGamemodeDisplayed: !this.state.isGamemodeDisplayed });
   };
 
-  toggleCreateJoinRoomDisplay = () => {
+  toggleCreateJoinLobbyDisplay = () => {
     this.setState({
-      isCreateJoinRoomDisplayed: !this.state.isCreateJoinRoomDisplayed,
+      isCreateJoinLobbyDisplayed: !this.state.isCreateJoinLobbyDisplayed,
     });
   };
 
@@ -60,7 +60,7 @@ class Home extends React.Component {
             <UserModeSelection
               toggleUsermodeDisplay={this.toggleUsermodeDisplay}
               toggleGamemodeDisplay={this.toggleGamemodeDisplay}
-              toggleCreateJoinRoomDisplay={this.toggleCreateJoinRoomDisplay}
+              toggleCreateJoinLobbyDisplay={this.toggleCreateJoinLobbyDisplay}
               setUsermode={this.setUsermode}
             />
           ) : null}
@@ -68,21 +68,21 @@ class Home extends React.Component {
             <GameModeSelection
               toggleUsermodeDisplay={this.toggleUsermodeDisplay}
               toggleGamemodeDisplay={this.toggleGamemodeDisplay}
-              toggleCreateJoinRoomDisplay={this.toggleCreateJoinRoomDisplay}
+              toggleCreateJoinLobbyDisplay={this.toggleCreateJoinLobbyDisplay}
               usermode={this.state.selectedUsermode}
               setGamemode={this.setGamemode}
             />
           ) : null}
-          {this.state.isCreateJoinRoomDisplayed == true ? (
-            <RoomSelection
+          {this.state.isCreateJoinLobbyDisplayed == true ? (
+            <LobbySelection
               toggleUsermodeDisplay={this.toggleUsermodeDisplay}
-              toggleCreateJoinRoomDisplay={this.toggleCreateJoinRoomDisplay}
+              toggleCreateJoinLobbyDisplay={this.toggleCreateJoinLobbyDisplay}
               toggleGamemodeDisplay={this.toggleGamemodeDisplay}
             />
           ) : null}
         </Grid.Column>
         <Grid.Column>
-          <p>Leaderboard will be displayed in this segment!</p>
+          <p>Leaderboard will be displayed in this column!</p>
         </Grid.Column>
       </Grid>
     );

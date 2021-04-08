@@ -10,9 +10,6 @@ const Container = styled.div`
 
 class HomeRouter extends React.Component {
   render() {
-    /**
-     * "this.props.base" is "/app" because as been passed as a prop in the parent of HomeRouter, i.e., App.js
-     */
     return (
       <Container>
         <Route exact path={`${this.props.base}`} render={() => <Home />} />
@@ -26,7 +23,5 @@ class HomeRouter extends React.Component {
     );
   }
 }
-/*
- * Don't forget to export your component!
- */
+
 export default HomeRouter;
