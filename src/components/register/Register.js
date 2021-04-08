@@ -32,6 +32,8 @@ const ButtonContainer = styled.div `
   margin-top: 20px;
 `;
 
+
+
 class Register extends React.Component {
   /**
    * If you don’t initialize the state and you don’t bind methods, you don’t need to implement a constructor for your React component.
@@ -110,6 +112,8 @@ class Register extends React.Component {
    */
   componentDidMount() {}
 
+
+
   render() {
     return ( 
     <BaseContainer >
@@ -147,7 +151,7 @@ class Register extends React.Component {
       
 
       <ButtonContainer>
-      <Button disabled = {
+      <Button primary disabled = {
         !this.state.username || !this.state.name || !this.state.password
       }
       width = "50%"
@@ -159,7 +163,7 @@ class Register extends React.Component {
       </ButtonContainer>
       
       <ButtonContainer >
-      <Button width = "50%"
+      <Button secondary width = "50%"
       onClick = {
         () => {
           this.login();
