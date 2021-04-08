@@ -7,9 +7,15 @@ import Login from "../../login/Login";
 import Register from "../../register/Register";
 import Profile from "../../profile/Profile";
 import Launch from "../../launch/Launch";
+<<<<<<< Updated upstream
+=======
+
+import Game from "../../game/Game"
+import GameController from "../../game/GameController";
+>>>>>>> Stashed changes
 import Header from "../../../views/Header"
-import {GamepageGuard} from "../routeProtectors/GamepageGuard";
-import GamepageRouter from "./GamepageRouter";
+// import {GamepageGuard} from "../routeProtectors/GamepageGuard";
+// import GamepageRouter from "./GamepageRouter";
 import NewHeader from "../../../views/Header"
 /**
  * Main router of your application.
@@ -27,29 +33,39 @@ class AppRouter extends React.Component {
         <Switch>
           <div>
             
-            {/* <Route
+            <Route
               path="/home"
               render={() => (
                 <HomeGuard>
-                  <NewHeader height={"50"} />
+               
                   <HomeRouter base={"/home"} />
                 </HomeGuard>
               )}
-            /> */}
-            <Route
+            />
+            {/* <Route
               path="/gamepage"
               render={()=>(
                 <GamepageGuard>
                   <GamepageRouter base = {"/gamepage"}/>
                 </GamepageGuard>
               )}
+<<<<<<< Updated upstream
+=======
+            /> */}
+<Route
+              path="/game"
+              render={() => (
+                //TODO: add guard at some point
+                
+                  <GameController gameId="5"/>
+              )}
+>>>>>>> Stashed changes
             />
             <Route
               path="/login"
               exact
               render={() => (
                 <LoginGuard>
-                  <NewHeader height={"50"} />
                   <Login />
                 </LoginGuard>
               )}
@@ -58,9 +74,9 @@ class AppRouter extends React.Component {
               path="/register"
               exact
               render={() => (
-                <div>
-                  <NewHeader height={"50"} />
+                <LoginGuard>
                   <Register />
+<<<<<<< Updated upstream
                 </div>
               )}
             />
@@ -72,8 +88,12 @@ class AppRouter extends React.Component {
                   <NewHeader height={"50"} />
                   <Profile />
                 </HomeGuard>
+=======
+                  </LoginGuard>
+>>>>>>> Stashed changes
               )}
             />
+     
             <Route path="/" exact render={() => <Launch />} />
           </div>
         </Switch>
