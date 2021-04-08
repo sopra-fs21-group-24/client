@@ -5,6 +5,17 @@ import UserModeSelection from "./UserModeSelection";
 import GameModeSelection from "./GameModeSelection";
 import RoomSelection from "./RoomSelection";
 import { Button, Grid, Segment, Image } from "semantic-ui-react";
+import styled from 'styled-components';
+import { BaseContainer } from '../../helpers/layout';
+import Player from '../../views/Player';
+import { Spinner } from '../../views/design/Spinner';
+import { Label } from 'semantic-ui-react';
+import HomeHeader from '../../views/Header';
+
+const Container = styled(BaseContainer)`
+  color: white;
+  text-align: center;
+`;
 
 class Home extends React.Component {
   constructor() {
@@ -15,8 +26,18 @@ class Home extends React.Component {
       isCreateJoinRoomDisplayed: false,
       selectedUsermode: null,
       selectedGamemode: null,
+      user: {
+        // username:""
+      }
     };
-  }
+  
+
+  this.getUser()
+
+  this.updateUser = this.updateUser.bind(this);
+  this.logout = this.logout.bind(this);
+}
+  
 
   toggleUsermodeDisplay = () => {
     this.setState({ isUsermodeDisplayed: !this.state.isUsermodeDisplayed });
@@ -51,42 +72,121 @@ class Home extends React.Component {
 
   render() {
     return (
-      <Grid columns={2} divided centered>
-        <Grid.Row>
-          <h1>Welcome to MAPGUESSЯ</h1>
-        </Grid.Row>
-        <Grid.Column>
-          {this.state.isUsermodeDisplayed == true ? (
-            <UserModeSelection
+      <div>
+
+          <HomeHeader logout={this.logout} updateUser={this.updateUser} user={this.state.user} height = {"50"}/> 
+        
+        <Grid columns={2} divided centered>
+          <Grid.Row>
+        
+          </Grid.Row>
+          <Grid.Column>
+            {this.state.isUsermodeDisplayed == true ? (
+              <UserModeSelection
               toggleUsermodeDisplay={this.toggleUsermodeDisplay}
               toggleGamemodeDisplay={this.toggleGamemodeDisplay}
               toggleCreateJoinRoomDisplay={this.toggleCreateJoinRoomDisplay}
               setUsermode={this.setUsermode}
-            />
-          ) : null}
-          {this.state.isGamemodeDisplayed == true ? (
-            <GameModeSelection
+              />
+              ) : null}
+            {this.state.isGamemodeDisplayed == true ? (
+              <GameModeSelection
               toggleUsermodeDisplay={this.toggleUsermodeDisplay}
               toggleGamemodeDisplay={this.toggleGamemodeDisplay}
               toggleCreateJoinRoomDisplay={this.toggleCreateJoinRoomDisplay}
               usermode={this.state.selectedUsermode}
               setGamemode={this.setGamemode}
-            />
-          ) : null}
-          {this.state.isCreateJoinRoomDisplayed == true ? (
-            <RoomSelection
+              />
+              ) : null}
+            {this.state.isCreateJoinRoomDisplayed == true ? (
+              <RoomSelection
               toggleUsermodeDisplay={this.toggleUsermodeDisplay}
               toggleCreateJoinRoomDisplay={this.toggleCreateJoinRoomDisplay}
               toggleGamemodeDisplay={this.toggleGamemodeDisplay}
-            />
-          ) : null}
-        </Grid.Column>
-        <Grid.Column>
-          <p>Leaderboard will be displayed in this segment!</p>
-        </Grid.Column>
-      </Grid>
-    );
+              />
+              ) : null}
+          </Grid.Column>
+          <Grid.Column>
+            <Label>Leaderboard will be displayed in this segment!</Label>
+          </Grid.Column>
+        </Grid>
+     </div>
+      )
+      }
+
+     
+
+
+  async getUser(){
+    try {
+      let userId = localStorage.getItem('currentUserId')
+      const response = await api.get('/users/'+userId);
+      // delays continuous execution of an async operation for 1 second.
+      // This is just a fake async call, so that the spinner can be displayed
+      // feel free to remove it :)
+      // await new Promise(resolve => setTimeout(resolve, 500));
+
+      // Get the returned users and update the state.
+      this.setState({ user: response.data });
+
+      // See here to get more data.
+      console.log(response);
+    } catch (error) {
+      alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
+    }
   }
+
+  async updateUser(username:string, password:string){
+    console.log(username,password)
+    try {
+      let userId = localStorage.getItem('currentUserId')
+      let token = localStorage.getItem('token')
+      let data = {
+        username:username,
+        password:password,
+        // id:userId
+      }
+      let config = {
+        headers: {
+          'Authorization': `Basic ${token}` 
+        }
+      }
+      const response = await api.put('/users/'+userId, data, config);
+      console.log(response)
+      // this.setState({user:response})
+      // delays continuous execution of an async operation for 1 second.
+      // This is just a fake async call, so that the spinner can be displayed
+      // feel free to remove it :)
+      // await new Promise(resolve => setTimeout(resolve, 500));
+
+     this.getUser()
+
+    } catch (error) {
+      alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
+    }
+  }
+
+  
+  // async componentDidMount() {
+     
+  // }
+
+  logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('currentUserId');
+    this.props.history.push('/login');
+  }
+
+ 
+
+  // render() {
+  //   return (
+  //     <Container>
+  //      <HomeHeader logout={this.logout} updateUser={this.updateUser} user={this.state.user} height = {"50"}/> 
+  //       <Label>Let's guess them coordinates:</Label>
+  //     </Container>
+  //   );
+  // }
 }
 
 export default withRouter(Home);

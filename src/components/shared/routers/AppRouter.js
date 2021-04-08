@@ -8,6 +8,9 @@ import Register from "../../register/Register";
 import Profile from "../../profile/Profile";
 import Launch from "../../launch/Launch";
 import NewHeader from "../../../views/Header";
+import HomeHeader from "../../../views/Header"
+import Game from "../../game/Game"
+import GameController from "../../game/GameController";
 /**
  * Main router of your application.
  * In the following class, different routes are rendered. In our case, there is a Login Route with matches the path "/login"
@@ -30,6 +33,14 @@ class AppRouter extends React.Component {
                   <NewHeader height={"50"} />
                   <HomeRouter base={"/home"} />
                 </HomeGuard>
+              )}
+            />
+<Route
+              path="/game"
+              render={() => (
+                //TODO: add guard at some point
+                
+                  <GameController gameId="5"/>
               )}
             />
             <Route
@@ -56,10 +67,11 @@ class AppRouter extends React.Component {
               path="/profile"
               exact
               render={() => (
-                <HomeGuard>
-                  <NewHeader height={"50"} />
-                  <Profile />
-                </HomeGuard>
+<HomeGuard>
+<HomeHeader height = {"50"}/> 
+  <Profile />
+</HomeGuard>
+               
               )}
             />
 

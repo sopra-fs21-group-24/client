@@ -12,43 +12,6 @@ const Title = styled.h1`
   color: white;
   text-align: center;
 `;
-const FormContainer = styled.div`
-  margin-top: 2em;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 300px;
-  justify-content: center;
-`;
-
-// const Form = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-//   width: 60%;
-//   height: 375px;
-//   font-size: 16px;
-//   font-weight: 300;
-//   padding-left: 37px;
-//   padding-right: 37px;
-//   border-radius: 5px;
-//   background: linear-gradient(rgb(27, 124, 186), rgb(2, 46, 101));
-//   transition: opacity 0.5s ease, transform 0.5s ease;
-// `;
-
-const InputField = styled.input`
-  &::placeholder {
-    color: rgba(255, 255, 255, 1.0);
-  }
-  height: 35px;
-  padding-left: 15px;
-  margin-left: -4px;
-  border: none;
-  border-radius: 20px;
-  margin-bottom: 20px;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-`;
 
 const Label = styled.label`
   color: white;
@@ -79,16 +42,11 @@ background-color:transparent;
 z-index:300000;
 `;
 export const TopRightButton = styled(Button)`
-  margin-top: 50px;
+  margin-top: 50pPx;
   margin-right: 50px;
   position:absolute;
   top:20px;
   right:20px;
-`;
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
 `;
 
 /**
@@ -154,16 +112,17 @@ class Launch extends React.Component {
       
        <VideoBox>
         <VideoOverlays>
-        <TopRightButton
+        <TopRightButton inverted='top'
                 // width="50%"
                 onClick={() => {
                   this.goToLogin();
                 }}
               > Login </TopRightButton>
-        {/* <TopRightButton onClick={}>Press me </TopRightButton> */}
+       
         <center>
         <br/>
         <br/>
+        <img width="50" height="50" src="logo.png" />
         <br/>
         <br/>
         <br/>
