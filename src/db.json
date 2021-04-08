@@ -716,7 +716,6 @@
   "users": [
     {
       "username": "lou chaier",
-      "password": "aaaa",
       "id": 10
     }
   ],
@@ -730,6 +729,11 @@
       "username": "a",
       "password": "a",
       "id": 22
+    },
+    {
+      "username": "a",
+      "password": "a",
+      "id": 23
     }
   ],
   "posts": [
