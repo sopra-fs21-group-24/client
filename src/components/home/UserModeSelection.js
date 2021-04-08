@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Button } from "semantic-ui-react";
+import React from "react";
+import { Button, Grid, Icon } from "semantic-ui-react";
 
 const UserModeSelection = ({
   toggleUsermodeDisplay,
@@ -8,33 +8,51 @@ const UserModeSelection = ({
   setUsermode,
 }) => {
   return (
-    <div class="ui list">
-      <p>Start a singleplayer game or play with friends!</p>
-      <div class="item">
-        <Button
-          color="green"
-          onClick={() => {
-            toggleUsermodeDisplay();
-            toggleGamemodeDisplay();
-            setUsermode("singleplayer");
-          }}
-        >
-          Singleplayer
-        </Button>
-      </div>
-      <div class="item">
-        <Button
-          color="red"
-          onClick={() => {
-            toggleUsermodeDisplay();
-            toggleCreateJoinRoomDisplay();
-            setUsermode("multiplayer");
-          }}
-        >
-          Multiplayer
-        </Button>
-      </div>
-    </div>
+    <Grid centered> 
+      <Grid.Row>
+        <p>Start a singleplayer game or play with friends!</p>
+      </Grid.Row>
+      <Grid.Row>
+        <Grid.Column width="4">
+          <Button
+            size="big"
+            fluid
+            animated
+            color="green"
+            onClick={() => {
+              toggleUsermodeDisplay();
+              toggleGamemodeDisplay();
+              setUsermode("singleplayer");
+            }}
+          >
+            <Button.Content visible>Singleplayer</Button.Content>
+            <Button.Content hidden>
+              <Icon name="user" />
+            </Button.Content>
+          </Button>
+          </Grid.Column>
+      </Grid.Row>
+      <Grid.Row>
+        <Grid.Column width="4">
+          <Button
+            size="big"
+            fluid
+            animated
+            color="red"
+            onClick={() => {
+              toggleUsermodeDisplay();
+              toggleCreateJoinRoomDisplay();
+              setUsermode("multiplayer");
+            }}
+          >
+            <Button.Content visible>Multiplayer</Button.Content>
+            <Button.Content hidden>
+              <Icon name="users" />
+            </Button.Content>
+          </Button>
+          </Grid.Column>
+      </Grid.Row>
+      </Grid>
   );
 };
 

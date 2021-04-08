@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import UserModeSelection from "./UserModeSelection";
 import GameModeSelection from "./GameModeSelection";
 import RoomSelection from "./RoomSelection";
+import { Button, Grid, Segment, Image } from "semantic-ui-react";
 
 class Home extends React.Component {
   constructor() {
@@ -50,35 +51,40 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div class="ui center aligned container">
-        <h1>Welcome to MAPGUESSЯ</h1>
-        {this.state.isUsermodeDisplayed == true ? (
-          <UserModeSelection
-            toggleUsermodeDisplay={this.toggleUsermodeDisplay}
-            toggleGamemodeDisplay={this.toggleGamemodeDisplay}
-            toggleCreateJoinRoomDisplay={this.toggleCreateJoinRoomDisplay}
-            setUsermode={this.setUsermode}
-          />
-        ) : null}
-        {this.state.isGamemodeDisplayed == true ? (
-          <GameModeSelection
-            toggleUsermodeDisplay={this.toggleUsermodeDisplay}
-            toggleGamemodeDisplay={this.toggleGamemodeDisplay}
-            toggleCreateJoinRoomDisplay={this.toggleCreateJoinRoomDisplay}
-            usermode={this.state.selectedUsermode}
-            setGamemode={this.setGamemode}
-          />
-        ) : null}
-        {this.state.isCreateJoinRoomDisplayed == true ? (
-          <RoomSelection
-            toggleUsermodeDisplay={this.toggleUsermodeDisplay}
-            toggleCreateJoinRoomDisplay={this.toggleCreateJoinRoomDisplay}
-            toggleGamemodeDisplay={this.toggleGamemodeDisplay}
-          />
-        ) : null}
-        <p> SELECTED USERMODE: {this.state.selectedUsermode}</p>
-        <p> SELECTED GAMEMODE: {this.state.selectedGamemode}</p>
-      </div>
+      <Grid columns={2} divided centered>
+        <Grid.Row>
+          <h1>Welcome to MAPGUESSЯ</h1>
+        </Grid.Row>
+        <Grid.Column>
+          {this.state.isUsermodeDisplayed == true ? (
+            <UserModeSelection
+              toggleUsermodeDisplay={this.toggleUsermodeDisplay}
+              toggleGamemodeDisplay={this.toggleGamemodeDisplay}
+              toggleCreateJoinRoomDisplay={this.toggleCreateJoinRoomDisplay}
+              setUsermode={this.setUsermode}
+            />
+          ) : null}
+          {this.state.isGamemodeDisplayed == true ? (
+            <GameModeSelection
+              toggleUsermodeDisplay={this.toggleUsermodeDisplay}
+              toggleGamemodeDisplay={this.toggleGamemodeDisplay}
+              toggleCreateJoinRoomDisplay={this.toggleCreateJoinRoomDisplay}
+              usermode={this.state.selectedUsermode}
+              setGamemode={this.setGamemode}
+            />
+          ) : null}
+          {this.state.isCreateJoinRoomDisplayed == true ? (
+            <RoomSelection
+              toggleUsermodeDisplay={this.toggleUsermodeDisplay}
+              toggleCreateJoinRoomDisplay={this.toggleCreateJoinRoomDisplay}
+              toggleGamemodeDisplay={this.toggleGamemodeDisplay}
+            />
+          ) : null}
+        </Grid.Column>
+        <Grid.Column>
+          <p>Leaderboard will be displayed in this segment!</p>
+        </Grid.Column>
+      </Grid>
     );
   }
 }
