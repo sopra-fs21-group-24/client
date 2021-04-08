@@ -8,8 +8,10 @@ import Register from "../../register/Register";
 import Profile from "../../profile/Profile";
 import Launch from "../../launch/Launch";
 
-import Game from "../../game/Game"
+
+// import Game from "../../game/Game"
 import GameController from "../../game/GameController";
+
 import Header from "../../../views/Header"
 // import {GamepageGuard} from "../routeProtectors/GamepageGuard";
 // import GamepageRouter from "./GamepageRouter";
@@ -46,6 +48,8 @@ class AppRouter extends React.Component {
                   <GamepageRouter base = {"/gamepage"}/>
                 </GamepageGuard>
               )}
+
+
             /> */}
 <Route
               path="/game"

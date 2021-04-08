@@ -30,7 +30,14 @@ class Home extends React.Component {
         username:""
       }
     };
-  }
+  
+
+  this.getUser()
+
+  this.updateUser = this.updateUser.bind(this);
+  this.logout = this.logout.bind(this);
+}
+  
 
   toggleUsermodeDisplay = () => {
     this.setState({ isUsermodeDisplayed: !this.state.isUsermodeDisplayed });
@@ -69,7 +76,7 @@ class Home extends React.Component {
 
           <HomeHeader logout={this.logout} updateUser={this.updateUser} user={this.state.user} height = {"50"}/> 
         
-        <Grid columns={adsEnabled  ? 3:2} divided centered>
+        <Grid columns={3} divided centered>
           <Grid.Row>
         
           </Grid.Row>
@@ -85,19 +92,19 @@ class Home extends React.Component {
               toggleGamemodeDisplay={this.toggleGamemodeDisplay}
               toggleCreateJoinRoomDisplay={this.toggleCreateJoinRoomDisplay}
               setUsermode={this.setUsermode}
-            />
-          ) : null}
-          {this.state.isGamemodeDisplayed == true ? (
-            <GameModeSelection
+              />
+              ) : null}
+            {this.state.isGamemodeDisplayed == true ? (
+              <GameModeSelection
               toggleUsermodeDisplay={this.toggleUsermodeDisplay}
               toggleGamemodeDisplay={this.toggleGamemodeDisplay}
               toggleCreateJoinRoomDisplay={this.toggleCreateJoinRoomDisplay}
               usermode={this.state.selectedUsermode}
               setGamemode={this.setGamemode}
-            />
-          ) : null}
-          {this.state.isCreateJoinRoomDisplayed == true ? (
-            <RoomSelection
+              />
+              ) : null}
+            {this.state.isCreateJoinRoomDisplayed == true ? (
+              <RoomSelection
               toggleUsermodeDisplay={this.toggleUsermodeDisplay}
               toggleCreateJoinRoomDisplay={this.toggleCreateJoinRoomDisplay}
               toggleGamemodeDisplay={this.toggleGamemodeDisplay}
@@ -135,6 +142,58 @@ class Home extends React.Component {
       alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
     }
   }
+
+  async updateUser(username:string, password:string){
+    console.log(username,password)
+    try {
+      let userId = localStorage.getItem('currentUserId')
+      let token = localStorage.getItem('token')
+      let data = {
+        username:username,
+        password:password,
+        // id:userId
+      }
+      let config = {
+        headers: {
+          'Authorization': `Basic ${token}` 
+        }
+      }
+      const response = await api.put('/users/'+userId, data, config);
+      console.log(response)
+      // this.setState({user:response})
+      // delays continuous execution of an async operation for 1 second.
+      // This is just a fake async call, so that the spinner can be displayed
+      // feel free to remove it :)
+      // await new Promise(resolve => setTimeout(resolve, 500));
+
+     this.getUser()
+
+    } catch (error) {
+      alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
+    }
+  }
+
+  
+  // async componentDidMount() {
+     
+  // }
+
+  logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('currentUserId');
+    this.props.history.push('/login');
+  }
+
+ 
+
+  // render() {
+  //   return (
+  //     <Container>
+  //      <HomeHeader logout={this.logout} updateUser={this.updateUser} user={this.state.user} height = {"50"}/> 
+  //       <Label>Let's guess them coordinates:</Label>
+  //     </Container>
+  //   );
+  // }
 }
 
 export default withRouter(Home);
