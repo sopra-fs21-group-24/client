@@ -1,21 +1,7 @@
 {
-  "posts": [
-    {
-      "id": 1,
-      "title": "json-server",
-      "author": "typicode"
-    }
-  ],
-  "comments": [
-    {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
-    }
-  ],
-  "profile": {
-    "name": "typicode"
-  },
+
+
+  
   "register": {
     "username": "admin",
     "name": "admin",
@@ -24,5 +10,19 @@
   "login": {
     "username": "1",
     "password": "1"
+  },
+
+    "posts": [
+      { "id": 1, "title": "json-server", "author": "typicode" }
+    ],
+    "comments": [
+      { "id": 1, "body": "some comment", "postId": 1 }
+    ],
+    "profile":[ { "name": "typicode" }
+    ],
+    "score":{"player1":{"name":"Player1", "score":3000, "totalScore":5000},
+              "player2":{"name":"Player2", "score":2000, "totalScore":6000},
+              "player3":{"name":"Player3", "score":1000, "totalScore":2000}}
+    
+
   }
-}
