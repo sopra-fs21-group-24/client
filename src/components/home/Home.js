@@ -3,7 +3,6 @@ import { api, handleError } from "../../helpers/api";
 import { withRouter } from "react-router-dom";
 import UserModeSelection from "./UserModeSelection";
 import GameModeSelection from "./GameModeSelection";
-import LobbySelection from "./LobbySelection";
 import { Button, Grid, Segment, Image, Advertisement } from "semantic-ui-react";
 import styled from 'styled-components';
 import { BaseContainer } from '../../helpers/layout';
@@ -11,6 +10,7 @@ import Player from '../../views/Player';
 import { Spinner } from '../../views/design/Spinner';
 import { Label } from 'semantic-ui-react';
 import HomeHeader from '../../views/Header';
+import RoomSelection from "./RoomSelection";
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -104,7 +104,7 @@ class Home extends React.Component {
             />
           ) : null}
           {this.state.isCreateJoinLobbyDisplayed == true ? (
-            <LobbySelection
+            <RoomSelection
               toggleUsermodeDisplay={this.toggleUsermodeDisplay}
               toggleCreateJoinLobbyDisplay={this.toggleCreateJoinLobbyDisplay}
               toggleGamemodeDisplay={this.toggleGamemodeDisplay}
