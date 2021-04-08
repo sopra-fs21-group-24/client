@@ -12,3 +12,11 @@ export const BaseContainer = styled.div`
   padding-right: 15px;
   max-width: ${DESKTOP_WIDTH}px;
 `;
+
+export const BaseGameContainer = styled.div`
+  // margin-left: auto;
+  // padding-left: 15px;
+  // margin-right: auto;
+  // padding-right: 15px;
+  width: ${DESKTOP_WIDTH}px;
+`;

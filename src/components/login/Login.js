@@ -14,7 +14,6 @@ const FormContainer = styled.div`
   justify-content: center;
 `;
 
-const InputField = styled(Input)``;
 
 
 const ButtonContainer = styled.div`
@@ -37,7 +36,7 @@ class Login extends React.Component {
    * If you don’t initialize the state and you don’t bind methods, you don’t need to implement a constructor for your React component.
    * The constructor for a React component is called before it is mounted (rendered).
    * In this case the initial state is defined in the constructor. The state is a JS object containing two fields: name and username
-   * These fields are then handled in the onChange() methods in the resp. InputFields
+   * These fields are then handled in the onChange() methods in the resp. Inputs
    */
   constructor() {
     super();
@@ -64,7 +63,7 @@ class Login extends React.Component {
 
       // Store the token into the local storage.
       localStorage.setItem('token', user.token);
-      localStorage.setItem('currentUserId', user.id);
+      localStorage.setItem('currentUserId', /*user.id*/"10");
 
       // Login successfully worked --> navigate to the route /home in the HomeRouter
       this.props.history.push(`/home`);
@@ -106,7 +105,7 @@ class Login extends React.Component {
             <h1>Login</h1>
             <Form.Field>
 
-              <InputField
+              <Input
                 placeholder="Username"
                 onChange={e => {
                   this.handleInputChange('username', e.target.value);
@@ -116,7 +115,7 @@ class Login extends React.Component {
        
                 <Form.Field>
 
-            <InputField
+            <Input
               type="password"
               placeholder="Password"
               onChange={e => {
@@ -128,6 +127,7 @@ class Login extends React.Component {
          
             <ButtonContainer>
               <Button
+              primary
                 disabled={!this.state.username || !this.state.password}
                 width="50%"
                 onClick={() => {
@@ -139,6 +139,7 @@ class Login extends React.Component {
               </ButtonContainer>
               <ButtonContainer>
               <Button
+                secondary
                 width="50%"
                 onClick={() => {
                   this.register();

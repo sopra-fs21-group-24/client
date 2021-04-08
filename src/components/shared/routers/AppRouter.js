@@ -11,6 +11,13 @@ import Profile from "../../profile/Profile";
 import Launch from "../../launch/Launch";
 import NewHeader from "../../../views/Header";
 import Lobby from "../../lobby/Lobby";
+
+
+// import Game from "../../game/Game"
+import GameController from "../../game/GameController";
+
+// import {GamepageGuard} from "../routeProtectors/GamepageGuard";
+// import GamepageRouter from "./GamepageRouter";
 /**
  * Main router of your application.
  * In the following class, different routes are rendered. In our case, there is a Login Route with matches the path "/login"
@@ -26,13 +33,32 @@ class AppRouter extends React.Component {
       <BrowserRouter>
         <Switch>
           <div>
+            
             <Route
               path="/home"
               render={() => (
                 <HomeGuard>
-                  <NewHeader height={"50"} />
+               
                   <HomeRouter base={"/home"} />
                 </HomeGuard>
+              )}
+            />
+            {/* <Route
+              path="/gamepage"
+              render={()=>(
+                <GamepageGuard>
+                  <GamepageRouter base = {"/gamepage"}/>
+                </GamepageGuard>
+              )}
+
+
+            /> */}
+<Route
+              path="/game"
+              render={() => (
+                //TODO: add guard at some point
+                
+                  <GameController gameId="5"/>
               )}
             />
             <Route
@@ -40,7 +66,6 @@ class AppRouter extends React.Component {
               exact
               render={() => (
                 <LoginGuard>
-                  <NewHeader height={"50"} />
                   <Login />
                 </LoginGuard>
               )}
@@ -49,20 +74,9 @@ class AppRouter extends React.Component {
               path="/register"
               exact
               render={() => (
-                <div>
-                  <NewHeader height={"50"} />
+                <LoginGuard>
                   <Register />
-                </div>
-              )}
-            />
-            <Route
-              path="/profile"
-              exact
-              render={() => (
-                <HomeGuard>
-                  <NewHeader height={"50"} />
-                  <Profile />
-                </HomeGuard>
+                  </LoginGuard>
               )}
             />
             <Route
@@ -74,6 +88,7 @@ class AppRouter extends React.Component {
                 </LobbyGuard>
               )}
             />
+     
             <Route path="/" exact render={() => <Launch />} />
           </div>
         </Switch>

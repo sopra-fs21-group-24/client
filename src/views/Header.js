@@ -1,81 +1,106 @@
-import React from "react";
-import { withRouter } from "react-router";
-import styled from "styled-components";
-import { Button } from 'semantic-ui-react'
-import { ReactLogo } from "./ReactLogo";
+import React, { Component } from 'react';
+import { GoogleMap, withGoogleMap, Marker } from "react-google-maps";
+import { Grid,Dropdown,Item,Comment, Popup,Card, Header, Image, Button, Label, Segment,Container,Menu,Icon } from 'semantic-ui-react';
+import styled from 'styled-components';
+import ProfileModal from '../components/profile/Profile';
 
-/**
- * Using styled-components you can visual HTML primitives and use props with it!
- * The idea behind this external package, it's to have a better structure and overview for your HTML and CSS
- * Using styled-components, you can have styling conditions using the following syntax: ${props => ...}
- * https://www.styled-components.com/
- */
-const Container = styled.div`
-  height: ${props => props.height}px;
-  background: ${props => props.background};
+
+const ProfileIcon = (()=>(
+
+    <Header as='h3'>
+        <Icon name='user' />
+        <Header.Content>
+        <p onClick={()=>{console.log("Patrick")}}>Patrick</p>
+        <Header.Subheader as='h6'>HighScore: 110 | 60 | 20</Header.Subheader>
+        </Header.Content>
+    </Header>  
+    
+))
+
+const BigContainer = styled.div`
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
-const Title = styled.h1`
-  font-weight: bold;
-  color: white;
+const TopRightPopup = styled.div`
+margin-top: 10px;
+margin-right:10px;
+position:absolute;
+top:10px;
+right:10px;
+display: block;
+`;
+export const TopRightButton = styled.div`
+  margin-top: 50px;
+  margin-right: 50px;
+  position:absolute;
+  top:20px;
+  right:20px;
+`;
+const topnav = styled.div`
+  float: left;
+  color: #f2f2f2;
   text-align: center;
-  cursor: pointer;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
 `;
 
-const LogOutButton = styled(Button)`
-  position: absolute;
-  right: 10px;
-  top: 5px;
+const topnav_right = styled.div`
+  float: right;
 `;
-/**
- * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
- * Conceptually, components are like JavaScript functions. They accept arbitrary inputs (called “props”) and return React elements describing what should appear on the screen.
- * They are reusable pieces, and think about each piece in isolation.
- * Functional components have to return always something. However, they don't need a "render()" method.
- * https://reactjs.org/docs/components-and-props.html
- * @FunctionalComponent
- */
 
- function isUserLoggedIn(){
-  let token = localStorage.getItem('token')
-  let userId = localStorage.getItem('currentUserId')
-  console.log(token != null && userId != null)
-  return token != null && userId != null
-}
 
-function logout() {
-  localStorage.removeItem('token');
-  localStorage.removeItem('currentUserId');
-}
+const topnav_centered = styled.a`
+float: none;
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+`;
 
-const Header = props => {
+const rbutton = styled.button`
+  position:absolute;
+  right:0;
+  top:0;
+`;
+
+
+const HomeHeader = props => {
+  console.log("in home header", props)
   return (
     
-    <Container height={props.height}>
-      <Title ><a onClick={()=>{
-        props.history.push('/')
-      }}>MAPGUESSЯ</a></Title>
+   
+    <BigContainer  height={props.height}>
       
-      
-        { isUserLoggedIn() ?  
-          
-         <LogOutButton onClick={()=>{
-          logout()
-          props.history.push('/login')
-          }}
-          >Logout</LogOutButton> : null
-        }
+    <Menu  secondary fixed='top' >
+    <Container>
+      <Menu.Item header>
+        {/* <Image size='mini' src='/logo.png' style={{ marginRight: '1.5em' }} /> */}
+        <Header as="h2">MAPGUESSЯ</Header>
+      </Menu.Item>
+      <Menu.Item position='right'>
+        HighScore: 100 | 50 | 70
+      </Menu.Item>
+      <Menu.Item as='a' >
 
+      
+
+      <Dropdown  button floating   className='icon'  text={props.user.username}
+  icon='user' position='right'>
+      {/* <Input icon='search' iconPosition='left' className='search' /> */}
+        <Dropdown.Menu>
+          <ProfileModal user={props.user} updateUser={props.updateUser}/>
+          <Dropdown.Item onClick={props.logout}>Logout</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+      </Menu.Item>
     </Container>
+  </Menu>
+   </BigContainer>
   );
 };
 
-/**
- * Don't forget to export your component!
- */
-// export default Header;
-const NewHeader = withRouter(Header)
-export default NewHeader;
+export default HomeHeader;
