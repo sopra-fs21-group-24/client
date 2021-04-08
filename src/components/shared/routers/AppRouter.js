@@ -7,12 +7,9 @@ import Login from "../../login/Login";
 import Register from "../../register/Register";
 import Profile from "../../profile/Profile";
 import Launch from "../../launch/Launch";
-<<<<<<< Updated upstream
-=======
 
 import Game from "../../game/Game"
 import GameController from "../../game/GameController";
->>>>>>> Stashed changes
 import Header from "../../../views/Header"
 // import {GamepageGuard} from "../routeProtectors/GamepageGuard";
 // import GamepageRouter from "./GamepageRouter";
@@ -49,8 +46,6 @@ class AppRouter extends React.Component {
                   <GamepageRouter base = {"/gamepage"}/>
                 </GamepageGuard>
               )}
-<<<<<<< Updated upstream
-=======
             /> */}
 <Route
               path="/game"
@@ -59,7 +54,6 @@ class AppRouter extends React.Component {
                 
                   <GameController gameId="5"/>
               )}
->>>>>>> Stashed changes
             />
             <Route
               path="/login"
@@ -76,21 +70,7 @@ class AppRouter extends React.Component {
               render={() => (
                 <LoginGuard>
                   <Register />
-<<<<<<< Updated upstream
-                </div>
-              )}
-            />
-            <Route
-              path="/profile"
-              exact
-              render={() => (
-                <HomeGuard>
-                  <NewHeader height={"50"} />
-                  <Profile />
-                </HomeGuard>
-=======
                   </LoginGuard>
->>>>>>> Stashed changes
               )}
             />
      
