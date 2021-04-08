@@ -13,6 +13,7 @@ class Gamepage extends React.Component {
     };
   }
 
+  //Fetching the scores from the backend
   async componentDidMount() {
     try{
         const response = await api.get('/score');
