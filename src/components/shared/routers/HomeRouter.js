@@ -1,4 +1,4 @@
-import React from "react";
+/* import React from "react";
 import styled from "styled-components";
 import {
   Redirect,
@@ -9,7 +9,7 @@ import Home from "../../home/Home";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-`;
+`; */
 
 class HomeRouter extends React.Component {
   render() {
