@@ -9,7 +9,7 @@ class Header extends React.Component{
 	}
 
 	componentDidMount(){
-
+		//start clock
 	}
 
 
@@ -24,10 +24,12 @@ class Header extends React.Component{
 
 
 	displayRound = () =>{
+		//this.state.game.round
 		return '1/5';
 	}
 
 	exitGame = () =>(
+		//send exit to backend
 		alert("are you sure you want to leave the game?")
 	)
 
