@@ -242,7 +242,7 @@ class GameController extends React.Component {
                 
     
                 
-                </MiniMapContainer>                                }
+                </MiniMapContainer>                                
             </div>}
             
             </p>
