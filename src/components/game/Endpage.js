@@ -2,9 +2,9 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Menu } from 'semantic-ui-react'
 import { api } from '../../helpers/api';
-import ScoreBox from './ScoreBox';
+import ScoreBox from './ScoreBox'
 
-class Scorepage extends React.Component {
+class Endpage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,8 +28,8 @@ class Scorepage extends React.Component {
       }
   }
 
-  nextRound = ()=>{
-    // this.props.history.push("/gamepage");
+  endGame = ()=>{
+    // this.props.history.push("/home");
   }
 
   exit = ()=>{
@@ -41,13 +41,7 @@ class Scorepage extends React.Component {
     return (
         
       <div>
-        <Menu borderless secondary>
-        <Menu.Item position ='right'>
-		<Button color='red' onClick = {()=>{this.exit()}}>EXIT</Button>
-	    </Menu.Item>
-        </Menu>
         <ScoreBox players = {this.state} nextRound={this.nextRound}/>
-
       </div>
     );
   }
@@ -58,5 +52,4 @@ class Scorepage extends React.Component {
 
 
 
-
-export default withRouter(Scorepage);
+export default withRouter(Endpage);
