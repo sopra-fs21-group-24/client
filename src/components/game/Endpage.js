@@ -1,6 +1,5 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Button, Menu } from 'semantic-ui-react'
 import { api } from '../../helpers/api';
 import ScoreBox from './ScoreBox'
 
@@ -14,42 +13,25 @@ class Endpage extends React.Component {
     };
   }
 
-
-
   async componentDidMount() {
       try{
+
           const response = await api.get('/score');
-
           this.setState(response.data);
-
         
       }catch(error){
           alert('Something went wrong while fetching the scores');
       }
   }
 
-  endGame = ()=>{
-    // this.props.history.push("/home");
-  }
-
-  exit = ()=>{
-      this.props.history.push("/home");
-  }
-
   render() {
-
-    return (
-        
+    return (    
       <div>
         <ScoreBox players = {this.state} nextRound={this.nextRound}/>
       </div>
     );
-  }
-  
+  } 
 }
-
-
-
 
 
 export default withRouter(Endpage);

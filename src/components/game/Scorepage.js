@@ -15,7 +15,6 @@ class Scorepage extends React.Component {
   }
 
 
-
   async componentDidMount() {
       try{
           const response = await api.get('/score');
@@ -28,9 +27,6 @@ class Scorepage extends React.Component {
       }
   }
 
-  nextRound = ()=>{
-    // this.props.history.push("/gamepage");
-  }
 
   exit = ()=>{
       this.props.history.push("/home");
@@ -42,11 +38,11 @@ class Scorepage extends React.Component {
         
       <div>
         <Menu borderless secondary>
-        <Menu.Item position ='right'>
-		<Button color='red' onClick = {()=>{this.exit()}}>EXIT</Button>
-	    </Menu.Item>
+          <Menu.Item position ='right'>
+            <Button color='red' onClick = {()=>{this.exit()}}>EXIT</Button>
+          </Menu.Item>
         </Menu>
-        <ScoreBox players = {this.state} nextRound={this.nextRound}/>
+        <ScoreBox players = {this.state} nextRound={this.props.nextQuestion}/>
 
       </div>
     );

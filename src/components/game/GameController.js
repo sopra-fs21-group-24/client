@@ -59,6 +59,7 @@ class GameController extends React.Component {
        
         this.handleGuessSubmit = this.handleGuessSubmit.bind(this);
         this.handlePinPlacedOnMap = this.handlePinPlacedOnMap.bind(this);
+        this.nextQuestion = this.nextQuestion.bind(this);
 
         this.init()
 
@@ -181,6 +182,13 @@ class GameController extends React.Component {
         }
 
     }
+
+    nextQuestion(){
+        if(this.state.currentQuestionId === 5){
+            //end the game
+        }
+        this.setState({showScoreModal:false})
+    }
     //#endregion API Calls
 
 
@@ -202,6 +210,7 @@ class GameController extends React.Component {
         console.log(lat, lng)
 
         await this.sendAnswer({lat:lat,lng:lng}, this.state.currentQuestionId)
+        this.setState({showScoreModal:true})
     }
 
     //#endregion MiniMap
@@ -212,7 +221,7 @@ class GameController extends React.Component {
             <BaseContainer style={{ 
                 backgroundImage: `url(${this.state.mapImageSrc})` 
               }} >
-                <GameHeader players = {this.state.players}/>
+                <GameHeader players = {this.state.players} round = '1/5'/>
                 <DebugView  info={this.state}></DebugView>
 
     
@@ -224,7 +233,7 @@ class GameController extends React.Component {
                                             size='small'
                                             trigger={<Button>Basic Modal</Button>}
                                             >
-        <Scorepage />
+        <Scorepage nextQuestion = {this.nextQuestion}/>
         </Modal>:
             <div>
 
