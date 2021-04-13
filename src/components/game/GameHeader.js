@@ -6,26 +6,36 @@ class GameHeader extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {};
+		// var t=setInterval(this.clock,1000);
 	}
 
 	componentDidMount(){
-		//start clock
+	
 	}
 
 
 	displayScore = () =>{
-		return this.props.players.player1.totalScore;
+		if (this.props.playerScore){
+			return this.props.playerScore.totalScore;
+		} else {
+			return 0
+		}
 	}
 
 	clock = () =>{
-		return '00:00';
+		if (this.props.timer){
+
+			return this.props.timer
+		} else {
+			return '00:00';
+		}
 	}
 
 
 
 	displayRound = () =>{
 		//this.state.game.round
-		return '1/5';
+		return `${this.props.currentRound}/5`;
 	}
 
 	exitGame = () =>(

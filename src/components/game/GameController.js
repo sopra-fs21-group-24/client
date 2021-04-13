@@ -13,10 +13,10 @@ import {key} from "./key"
 // This Check will happen in BE
 const solution = {}
 const playTimeS=1000
+const waitTimeS=5
 const staticPlayer ={   player1:{name:"player1", score:0, totalScore:0},
       player2:{name:"player2", score:0, totalScore:0},
       player3:{name:"player3", score:0, totalScore:0}}
-const waitTimeS=5
 
 const MiniMapContainer = styled.div`
   position: absolute;
@@ -45,64 +45,52 @@ class GameController extends React.Component {
         super(props)
         this.state = {
             gameId: props.gameId,
-            game:null,
-            pin:null,
-            question:null,
-            showScoreModal:false,
-            mapImageSrc:"",
+            currentRound: null,
+            questions:null,
             currentQuestionId:null,
+            currentQuestionImage:null,
+            questionTime:null,
+            
+            scores:null,
+            playerScore:null,
+            answer:null,
+            
+            pin:null,
+
+            showScoreModal:false, // Show the scorepage flag
             players:staticPlayer
+            
         }
-        console.log("KKKKKEEEY",key)
+        
         console.log(props.gameId)
 
+        this.init()
        
+        // Mini Map Method Binding
         this.handleGuessSubmit = this.handleGuessSubmit.bind(this);
         this.handlePinPlacedOnMap = this.handlePinPlacedOnMap.bind(this);
         this.nextQuestion = this.nextQuestion.bind(this);
 
-        this.init()
 
     }
 
     async init(){
         await this.getGame(this.state.gameId)
-        await this.startGame()
+        await this.startRound(this.state.currentRound)
     }
 
-    async startGame(){
+    async startRound(currentRound){
         console.log("Starting game")
-        let questionStaple = this.state.game.questions.reverse()
-        
-        while (questionStaple.length){
-            // Start timer
-            //  show screen
-            // continue with next question
 
-            
-            let currentQuestionId = questionStaple.pop()
-            let oldState = this.state
-            oldState.currentQuestionId = currentQuestionId
-            this.setState(oldState)
+        // Setting our current Question Id
+        let questionIndex = currentRound - 1 // cuz rounds start at 1 and question at 0
+        let currentQuestionId = this.state.questions[questionIndex];
+        this.setState({currentQuestionId: currentQuestionId})
         
-            await this.getQuestion(currentQuestionId)
-            console.log("Playing on question: ", this.state.question)
-            await this.fetchSatelliteImage(this.state.question)
-            // wait 30 s
-            let guessTime = 1000 * playTimeS;
-            this.setState({questionId: currentQuestionId})
-            await new Promise(resolve => setTimeout(resolve, guessTime));
-            console.log("score screen on question: ", this.state.question)
-            this.setState({showScoreModal:true})
-        
-            
-            let waitTime = 1000 * waitTimeS;
-            await new Promise(resolve => setTimeout(resolve, waitTime));
-          
-            this.setState({showScoreModal:false})
-            // continue to next question
-        }
-
+        //TODO: Start Timer
+        this.startTimer()
+        // Fetch Question Image
+        await this.getQuestion(currentQuestionId)
 
     }
 
@@ -111,33 +99,37 @@ class GameController extends React.Component {
         try{
             const response = await api.get('/games/' + gameId)
             console.log(response.data)
-            this.setState({game:response.data})
+            this.setState({
+                currentRound:response.data.currentRound,
+                questions: response.data.questions
+            })
             console.log(this.state)
         } catch (error){
             alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
         }
     }
     async getQuestion(questionId){
+        // TODO: once BE returns an image
+        let question = null;
         try{
             const response = await api.get('/questions/' + questionId)
             console.log(response.data)
-            this.setState({question:response.data})
+            question = response.data
+            // this.setState({question:response.data})
         } catch (error){
             alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
         }
-   
+        
+
+        await this.fetchcurrentQuestionImage(question);
     }
 
-    async fetchSatelliteImage(question){
+    async fetchcurrentQuestionImage(question){
         try{
-
-
             const height =1280
             const width = 1280
-            // const response = await api.get(`https://maps.googleapis.com/maps/api/staticmap?zoom=${question.zoom}&size=600x300&maptype=satellite&key=AIzaSyAimOiAOXNImxCmJeFaaPMsmSSmZWoMaAk&center=${question.lat},${question.lng}`)
-            // console.log(response.data)
-            // this.setState({question:response.data})
-                    await api.get(
+
+            await api.get(
                         `https://maps.googleapis.com/maps/api/staticmap?zoom=${question.zoom}&size=${height}x${width}&scale=2&maptype=satellite&key=${key}&center=${question.lat},${question.lng}`,
                 { responseType: 'arraybuffer' },
             )
@@ -148,7 +140,7 @@ class GameController extends React.Component {
                     '',
                 ),
                 );
-                this.setState({ mapImageSrc: "data:;base64," + base64 });
+                this.setState({ currentQuestionImage: "data:;base64," + base64 });
             });
         } catch (error){
             alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
@@ -161,21 +153,19 @@ class GameController extends React.Component {
         }
 
         try {
-            // let token = localStorage.getItem('token')
+            let token = localStorage.getItem('token')
           
-            // let config = {
-            //     headers: {
-            //     'Authorization': `Basic ${token}` 
-            //     }
-            // }
+            let config = {
+                headers: {
+                'Authorization': `Basic ${token}` 
+                }
+            }
 
-            // const response = await api.put('/users/', data, config);
-            
-            // console.log(response)
-            let c = calculateDistance(answer.lat,answer.lng,this.state.question.lat, this.state.question.lng)
-            console.log(answer.lat,answer.lng,this.state.question.lat, this.state.question.lng)
-            console.log(c)
-            alert("Distance from solution: "+ c.toString()+" km!")
+            // const response = await api.post(`/game/${gameId}/submit`, data, config);
+            const response = await api.get('/playerScore/', config);
+            this.setState({playerScore: response.data.score,
+            answer:response.data.answer})
+            console.log("PLAYERSCORE", this.state)
 
         } catch (error){
             alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
@@ -183,12 +173,7 @@ class GameController extends React.Component {
 
     }
 
-    nextQuestion(){
-        if(this.state.currentQuestionId === 5){
-            //end the game
-        }
-        this.setState({showScoreModal:false})
-    }
+   
     //#endregion API Calls
 
 
@@ -205,23 +190,91 @@ class GameController extends React.Component {
         if (this.state.pin == null){
             throw Error("No pin detected")
         }
+        console.log(this.state.pin)
         const lat = this.state.pin.lat
         const lng = this.state.pin.lng
         console.log(lat, lng)
+        //TODO: Stop Timer and send time
+        this.stopTimer()
 
         await this.sendAnswer({lat:lat,lng:lng}, this.state.currentQuestionId)
+
+        // Wait 5 s and show result on map
+        await new Promise(resolve => setTimeout(resolve, 5000));
+
+
+        // continously fetch the score
+        this.setState({pin:null, answer:null})
         this.setState({showScoreModal:true})
+        while(this.state.showScoreModal){
+            await this.fetchScore()
+            // wait for 5 s and fetch scores again
+            await new Promise(resolve => setTimeout(resolve, 5000));
+        }
+
     }
 
+
+    //#region Timer
+    async startTimer(){
+        this.setState({questionTime:new Date().getTime()})
+        this.setState({timerRunning:true})
+        while(this.state.timerRunning){
+            this.updateSeconds()
+            await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+    }
+    updateSeconds(){
+        if (this.state.questionTime)
+            var now = new Date().getTime();
+            var difference = (now - this.state.questionTime) / 1000;
+            // console.log(difference)
+            this.setState({timer:difference})
+       
+    }
+    stopTimer(){
+        this.setState({timerRunning:false})
+        this.setState({questionTime:null})
+    }
+   
+    //#endregion Timer
+    async nextQuestion(){
+        //end of game?
+        if(this.state.currentRound == 5){
+            //TODO: set lastround flag on scorebox for final score page
+            alert("Finished the game - show the final score page")
+        } else {
+            this.setState({showScoreModal:false})
+            await this.getGame(this.state.gameId)
+            await this.startRound(this.state.currentRound)
+
+        }
+    }
+    getCurrentRound(){
+        return this.state.currentRound
+    }
     //#endregion MiniMap
 
+    async fetchScore(){
+        try{
+            // const response = await api.get('/games/' + this.state.gameId + '/score')
+            const response = await api.get('/scores')
+            console.log(response.data)
+            this.setState({
+                scores:response.data
+            })
+            console.log("SCOOOOOOREE", response.data)
+        } catch (error){
+            alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
+        }
+    }
 
     render(){
         return (
             <BaseContainer style={{ 
-                backgroundImage: `url(${this.state.mapImageSrc})` 
+                backgroundImage: `url(${this.state.currentQuestionImage})` 
               }} >
-                <GameHeader players = {this.state.players} round = '1/5'/>
+                <GameHeader timer = {this.state.timer} playerScore = {this.state.playerScore} currentRound={this.state.currentRound}/>
                 <DebugView  info={this.state}></DebugView>
 
     
@@ -231,9 +284,9 @@ class GameController extends React.Component {
                                             basic
                                             open={true}
                                             size='small'
-                                            trigger={<Button>Basic Modal</Button>}
+                                            trigger={null}
                                             >
-        <Scorepage nextQuestion = {this.nextQuestion}/>
+        <Scorepage scores = {this.state.scores} nextQuestion = {this.nextQuestion}/>
         </Modal>:
             <div>
 
@@ -243,7 +296,7 @@ class GameController extends React.Component {
                             lat: 20.907646,
                             lng: -0.848103
                         },
-
+                        answer:this.state.answer,
                         zoom:2,
                         pin:this.state.pin
 
@@ -267,19 +320,9 @@ const DebugView = (props)=> {
    return ( <div>
        <Header as="h1" inverted>Debug Specs</Header>
             <Label>
-              Current question Id: {props.info.questionId}
+              Current question Id: {props.info.currentQuestionId}
             </Label>
-          
-            <Label>
- 
-            LNG {props.info.question ? <p>{props.info.question.lng }</p>:"no question"}
-            </Label> 
-            <Label>
-            LAT {props.info.question ? <p>{props.info.question.lat }</p>:"no question"}
-            </Label> 
-            <Label>
-            ZOOM {props.info.question ? <p>{props.info.question.zoom }</p>:"no question"}
-            </Label> 
+         
         
 
        </div>)

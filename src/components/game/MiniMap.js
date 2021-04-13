@@ -36,32 +36,34 @@ const MapElem = withGoogleMap(props => (
       }}
     >
 
-          <Polyline 
-      path= {[ 
-  {lat:-8, lng:-40},
-  {lat:40, lng:8},
-]} 
-      options={{ 
-      strokeColor: 'red',
-      strokeOpacity: 1,
-      strokeWeight: 5,
-      icons: [{ 
-        icon: "hello",
-        offset: '0',
-        repeat: '10px'
-      }],
-    }}
-    />
+       {props.result != null && props.marker != null? 
+       <Polyline 
+       path= {[ 
+   {lat:props.result.lat, lng:props.result.lng},
+   {lat:props.marker.lat, lng:props.marker.lng},
+ ]} 
+       options={{ 
+       strokeColor: 'red',
+       strokeOpacity: 1,
+       strokeWeight: 5,
+       icons: [{ 
+         icon: "hello",
+         offset: '0',
+         repeat: '10px'
+       }],
+     }}
+     />:null
+    
+    }
+         
       {
-        props.markers.map((marker, idx) => {
-          console.log(marker)
-          return <Marker
-            key={idx}
-            position={marker}
+        props.marker ? <Marker
+            key={1}
+            position={props.marker}
             // icon="https://campus-map.stanford.edu/images/new/cm-target.png"
             // title={`[${marker.lat.toFixed(2)}-ish, ${marker.lng.toFixed(2)}-ish]`}
-          />
-        })
+          />:null
+       
       }
      
     </GoogleMap>
@@ -105,13 +107,13 @@ class MiniMap extends Component {
 
   render() {
     let { center, zoom, pin } = this.props.state;
-    console.log(pin)
 
     let pins = []
     if (pin != null){
       center = pin
       pins.push(pin)
     }
+    
 
     return (
       <Segment floated style={{width:"450px"}}>
@@ -127,8 +129,9 @@ class MiniMap extends Component {
           onMapMounted={this.handleMapMounted}
           onMapClick={this.handleMapClick}
           center={center}
-          markers={pins}
+          marker={pin}
           zoom={zoom}
+          result={this.props.state.answer}
           />
 
           <Button style={{'margin-top':"15px"}} fluid onClick={()=>{ this.props.handleGuessSubmit()}}>Submit Guess!</Button>

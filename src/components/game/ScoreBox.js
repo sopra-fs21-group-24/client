@@ -43,6 +43,7 @@ const ScoreBox = (props) => {
         )}
     
     const NextRound= () =>{
+      //TODO: get the lastRound flag from the gamecontroller
         let lastRound = false;
         let button = 'Next round starts in : 00:00'
         if(lastRound){
