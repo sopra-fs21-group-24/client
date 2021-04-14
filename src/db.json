@@ -1,17 +1,116 @@
 {
-  "games": [{
-    "id": 5,
-    "currentRound": "2",
-    "questions": [
-      "1",
-      "11",
-      "12",
-      "80",
-      "53"
-    ]
-  }],
-
-  "questions": [{
+  "games": [
+    {
+      "id": 5,
+      "currentRound": "2",
+      "questions": [
+        "1",
+        "11",
+        "12",
+        "80",
+        "53"
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "lou chaier1",
+      "id": 10
+    }
+  ],
+  "login": [
+    {
+      "username": "a",
+      "password": "a",
+      "id": 21
+    },
+    {
+      "username": "a",
+      "password": "a",
+      "id": 22
+    },
+    {
+      "username": "a",
+      "password": "a",
+      "id": 23
+    },
+    {
+      "username": "a",
+      "password": "a",
+      "id": 24
+    }
+  ],
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "register": {
+    "username": "admin",
+    "name": "admin",
+    "password": "admin"
+  },
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": [
+    {
+      "name": "typicode"
+    }
+  ],
+  "playerScore": {
+    "answer": {
+      "lat": 1,
+      "lng": 4
+    },
+    "score": {
+      "name": "Player1",
+      "score": 3000,
+      "totalScore": 5000
+    }
+  },
+  "scores": [
+    {
+      "name": "Player1",
+      "score": 3000,
+      "totalScore": 5000
+    },
+    {
+      "name": "Player2",
+      "score": 2000,
+      "totalScore": 6000
+    },
+    {
+      "name": "Player3",
+      "score": 1000,
+      "totalScore": 2000
+    }
+  ],
+  "score": [
+    {
+      "name": "Player1",
+      "score": 3000,
+      "totalScore": 5000
+    },
+    {
+      "name": "Player2",
+      "score": 2000,
+      "totalScore": 6000
+    },
+    {
+      "name": "Player3",
+      "score": 1000,
+      "totalScore": 2000
+    }
+  ],
+  "questions": [
+    {
       "city": "Tokyo",
       "zoom": 15,
       "lat": 35.6897,
@@ -711,88 +810,5 @@
       "lng": 121.4221,
       "id": 100
     }
-  ],
-  "users": [{
-    "username": "lou chaier2",
-    "password": "aaaaaa",
-    "id": 10
-  }],
-  "login": [{
-      "username": "a",
-      "password": "a",
-      "id": 21
-    },
-    {
-      "username": "a",
-      "password": "a",
-      "id": 22
-    },
-    {
-      "username": "a",
-      "password": "a",
-      "id": 23
-    },
-    {
-      "username": "a",
-      "password": "a",
-      "id": 24
-    }
-  ],
-  "posts": [{
-    "id": 1,
-    "title": "json-server",
-    "author": "typicode"
-  }],
-  "register": {
-    "username": "admin",
-    "name": "admin",
-    "password": "admin"
-  },
-  "comments": [{
-    "id": 1,
-    "body": "some comment",
-    "postId": 1
-  }],
-  "profile": [{
-    "name": "typicode"
-  }],
-
-  "playerScore": {
-
-    "answer": {
-      "lat": 1,
-      "lng": 4
-    },
-    "score": {
-      "name": "Player1",
-      "score": 3000,
-      "totalScore": 5000
-    }
-  },
-  "scores": [{
-    "name": "Player1",
-    "score": 3000,
-    "totalScore": 5000
-  }, {
-    "name": "Player2",
-    "score": 2000,
-    "totalScore": 6000
-  }, {
-    "name": "Player3",
-    "score": 1000,
-    "totalScore": 2000
-  }],
-  "score": [{
-    "name": "Player1",
-    "score": 3000,
-    "totalScore": 5000
-  }, {
-    "name": "Player2",
-    "score": 2000,
-    "totalScore": 6000
-  }, {
-    "name": "Player3",
-    "score": 1000,
-    "totalScore": 2000
-  }]
+  ]
 }
