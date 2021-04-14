@@ -1,20 +1,16 @@
 import React from "react";
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
-import { HomeGuard } from "../routeProtectors/HomeGuard";
-import HomeRouter from "./HomeRouter";
-// import LobbyRoFuter from "./LobbyRouter";
-import { LoginGuard } from "../routeProtectors/LoginGuard";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+// import Lobby from "../../lobby/Lobby";
+// import Game from "../../game/Game"
+import GameController from "../../game/GameController";
+import Launch from "../../launch/Launch";
 // import { LobbyGuard } from "../routeProtectors/LobbyGuard";
 import Login from "../../login/Login";
 import Register from "../../register/Register";
-import Profile from "../../profile/Profile";
-import Launch from "../../launch/Launch";
-import NewHeader from "../../../views/Header";
-// import Lobby from "../../lobby/Lobby";
-
-
-// import Game from "../../game/Game"
-import GameController from "../../game/GameController";
+import { HomeGuard } from "../routeProtectors/HomeGuard";
+// import LobbyRoFuter from "./LobbyRouter";
+import { LoginGuard } from "../routeProtectors/LoginGuard";
+import HomeRouter from "./HomeRouter";
 
 // import {GamepageGuard} from "../routeProtectors/GamepageGuard";
 // import GamepageRouter from "./GamepageRouter";
@@ -33,32 +29,20 @@ class AppRouter extends React.Component {
       <BrowserRouter>
         <Switch>
           <div>
-            
             <Route
               path="/home"
               render={() => (
                 <HomeGuard>
-               
                   <HomeRouter base={"/home"} />
                 </HomeGuard>
               )}
             />
-            {/* <Route
-              path="/gamepage"
-              render={()=>(
-                <GamepageGuard>
-                  <GamepageRouter base = {"/gamepage"}/>
-                </GamepageGuard>
-              )}
-
-
-            /> */}
-<Route
+            <Route
               path="/game"
               render={() => (
                 //TODO: add guard at some point
-                
-                  <GameController gameId="5"/>
+
+                <GameController gameId="5" />
               )}
             />
             <Route
@@ -76,7 +60,7 @@ class AppRouter extends React.Component {
               render={() => (
                 <LoginGuard>
                   <Register />
-                  </LoginGuard>
+                </LoginGuard>
               )}
             />
             {/* <Route
@@ -88,7 +72,7 @@ class AppRouter extends React.Component {
                 </LobbyGuard>
               )}
             /> */}
-     
+
             <Route path="/" exact render={() => <Launch />} />
           </div>
         </Switch>
@@ -96,7 +80,4 @@ class AppRouter extends React.Component {
     );
   }
 }
-/*
- * Don't forget to export your component!
- */
 export default AppRouter;

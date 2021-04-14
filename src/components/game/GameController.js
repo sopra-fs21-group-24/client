@@ -1,13 +1,12 @@
 import React from "react";
 import { withRouter } from "react-router";
-import { api, handleError } from "../../helpers/api";
+import { Header, Label, Modal } from 'semantic-ui-react';
 import styled from 'styled-components';
-import MiniMap from './MiniMap'
-import {Button, Grid,Modal, Header, Label} from 'semantic-ui-react'
-import { calculateDistance } from "../shared/models/GeoMath";
-import GameHeader from "./GameHeader"
+import { api, handleError } from "../../helpers/api";
+import GameHeader from "./GameHeader";
+import { key } from "./key";
+import MiniMap from './MiniMap';
 import Scorepage from "./Scorepage";
-import {key} from "./key"
 // import {useWindowDimensions} from '../shared/models/GeoMath';
 
 // This Check will happen in BE
@@ -64,7 +63,6 @@ class GameController extends React.Component {
         
         console.log(props.gameId)
 
-        this.init()
        
         // Mini Map Method Binding
         this.handleGuessSubmit = this.handleGuessSubmit.bind(this);
@@ -72,6 +70,9 @@ class GameController extends React.Component {
         this.nextQuestion = this.nextQuestion.bind(this);
 
 
+    }
+    componentDidMount(){
+        this.init()
     }
 
     async init(){

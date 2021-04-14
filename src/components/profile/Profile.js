@@ -1,23 +1,18 @@
-import React from 'react'
-import { Button, Input, Dropdown, Form, Modal } from 'semantic-ui-react'
-
+import React from "react";
+import { Button, Input, Dropdown, Form, Modal } from "semantic-ui-react";
 
 const ProfileModal = (props) => {
-  const [open, setOpen] = React.useState(false)
-  const [password, setPassword] = React.useState(props.user.password)
-  const [username, setUsername] = React.useState(props.user.username)
-  
-  
-//   setPassword(props.user.password)
-//   setUsername(props.user.username)
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [password, setPassword] = React.useState(props.user.password);
+  const [username, setUsername] = React.useState(props.user.username);
 
-  console.log("in header", props)
+
   return (
     <Modal
       centered={false}
-      open={open}
-      onClose={() => setOpen(false)}
-      onOpen={() => setOpen(true)}
+      open={isOpen}
+      onClose={() => setIsOpen(false)}
+      onOpen={() => setIsOpen(true)}
       trigger={<Dropdown.Item>Edit Profile</Dropdown.Item>}
     >
       <Modal.Header>Update your Profile</Modal.Header>
@@ -25,45 +20,43 @@ const ProfileModal = (props) => {
         <Modal.Description>
           Enter a new username or change your password.
         </Modal.Description>
-         <Form>
-            <Form.Field>
-
-              <Input
-     
-                defaultValue={props.user.username}
-                placeholder="Username"
-                onChange={e => {
-                  setUsername( e.target.value)
-                }}
-                />
-              </Form.Field>
-       
-            <Form.Field>
-
+        <Form>
+          <Form.Field>
             <Input
- 
-            defaultValue={props.user.password}
+              defaultValue={props.user.username}
+              placeholder="Username"
+              onChange={(e) => {
+                setUsername(e.target.value);
+              }}
+            />
+          </Form.Field>
+
+          <Form.Field>
+            <Input
+              defaultValue={password}
               type="password"
               placeholder="Password"
-              onChange={e => {
-                setPassword(e.target.value)
+              onChange={(e) => {
+                setPassword(e.target.value);
               }}
-              />
-              </Form.Field>
-         
-         
-          </Form>
+            />
+          </Form.Field>
+        </Form>
       </Modal.Content>
       <Modal.Actions>
-        <Button  primary onClick={() => {
-            props.updateUser(username, password)
-            setOpen(false);
-        
-        }}>Update Changes</Button>
-        <Button onClick={() => setOpen(false)}>Cancel</Button>
+        <Button
+          primary
+          onClick={() => {
+            props.updateUser(username, password);
+            setIsOpen(false);
+          }}
+        >
+          Update Changes
+        </Button>
+        <Button onClick={() => setIsOpen(false)}>Cancel</Button>
       </Modal.Actions>
     </Modal>
-  )
-}
+  );
+};
 
-export default ProfileModal
+export default ProfileModal;

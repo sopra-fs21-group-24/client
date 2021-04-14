@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { GoogleMap,Polyline, withGoogleMap, Marker } from "react-google-maps";
-import { Button, Container, Header, Segment } from 'semantic-ui-react';
+import { GoogleMap, Marker, Polyline, withGoogleMap } from "react-google-maps";
+import { Button, Header, Segment } from 'semantic-ui-react';
 
 const style = {
   maxWidth: "450px",
