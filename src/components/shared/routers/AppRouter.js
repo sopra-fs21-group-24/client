@@ -1,16 +1,19 @@
 import React from "react";
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
-import { HomeGuard } from "../routeProtectors/HomeGuard";
-import HomeRouter from "./HomeRouter";
-import { LoginGuard } from "../routeProtectors/LoginGuard";
-import Login from "../../login/Login";
-import Register from "../../register/Register"
-import Profile from "../../profile/Profile"
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+// import Lobby from "../../lobby/Lobby";
+// import Game from "../../game/Game"
+import GameController from "../../game/GameController";
 import Launch from "../../launch/Launch";
-import Header from "../../../views/Header"
-import {GamepageGuard} from "../routeProtectors/GamepageGuard";
-import GamepageRouter from "./GamepageRouter";
-import NewHeader from "../../../views/Header"
+// import { LobbyGuard } from "../routeProtectors/LobbyGuard";
+import Login from "../../login/Login";
+import Register from "../../register/Register";
+import { HomeGuard } from "../routeProtectors/HomeGuard";
+// import LobbyRoFuter from "./LobbyRouter";
+import { LoginGuard } from "../routeProtectors/LoginGuard";
+import HomeRouter from "./HomeRouter";
+
+// import {GamepageGuard} from "../routeProtectors/GamepageGuard";
+// import GamepageRouter from "./GamepageRouter";
 /**
  * Main router of your application.
  * In the following class, different routes are rendered. In our case, there is a Login Route with matches the path "/login"
@@ -21,29 +24,25 @@ import NewHeader from "../../../views/Header"
  * Documentation about routing in React: https://reacttraining.com/react-router/web/guides/quick-start
  */
 class AppRouter extends React.Component {
-
-
   render() {
     return (
       <BrowserRouter>
         <Switch>
           <div>
-            
-            {/* <Route
+            <Route
               path="/home"
               render={() => (
                 <HomeGuard>
-                  <NewHeader height = {"50"}/> 
                   <HomeRouter base={"/home"} />
                 </HomeGuard>
               )}
-            /> */}
+            />
             <Route
-              path="/gamepage"
-              render={()=>(
-                <GamepageGuard>
-                  <GamepageRouter base = {"/gamepage"}/>
-                </GamepageGuard>
+              path="/game"
+              render={() => (
+                //TODO: add guard at some point
+
+                <GameController gameId="5" />
               )}
             />
             <Route
@@ -51,7 +50,6 @@ class AppRouter extends React.Component {
               exact
               render={() => (
                 <LoginGuard>
-                  <NewHeader height = {"50"}/> 
                   <Login />
                 </LoginGuard>
               )}
@@ -60,23 +58,21 @@ class AppRouter extends React.Component {
               path="/register"
               exact
               render={() => (
-                <div>
-                  <NewHeader height = {"50"}/> 
+                <LoginGuard>
                   <Register />
-               </div>
+                </LoginGuard>
               )}
             />
-             <Route
-              path="/profile"
-              exact
+            {/* <Route
+              path="/lobby"
               render={() => (
-<HomeGuard>
-<NewHeader height = {"50"}/> 
-  <Profile />
-</HomeGuard>
-               
+                <LobbyGuard>
+                <NewHeader height={"50"} />
+                <LobbyRouter base={"/lobby"}/>
+                </LobbyGuard>
               )}
-            />
+            /> */}
+
             <Route path="/" exact render={() => <Launch />} />
           </div>
         </Switch>
@@ -84,7 +80,4 @@ class AppRouter extends React.Component {
     );
   }
 }
-/*
-* Don't forget to export your component!
- */
 export default AppRouter;

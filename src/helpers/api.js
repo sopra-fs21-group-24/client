@@ -2,10 +2,18 @@ import axios from 'axios';
 import { getDomain } from './getDomain';
 
 export const api = axios.create({
+  //TODO: make it easier to pass token with every request
   baseURL: getDomain(),
-  headers: { 'Content-Type': 'application/json' }
+  headers: { 'Content-Type': 'application/json'}
 });
-
+export const getAuthConfig = () => {
+    let token = localStorage.getItem("token");
+    return  {
+      headers: {
+        Authorization: token,
+      },
+    };
+}
 export const handleError = error => {
   const response = error.response;
 
