@@ -92,23 +92,6 @@
       "totalScore": 2000
     }
   ],
-  "score": [
-    {
-      "name": "Player1",
-      "score": 3000,
-      "totalScore": 5000
-    },
-    {
-      "name": "Player2",
-      "score": 2000,
-      "totalScore": 6000
-    },
-    {
-      "name": "Player3",
-      "score": 1000,
-      "totalScore": 2000
-    }
-  ],
   "questions": [
     {
       "city": "Tokyo",
