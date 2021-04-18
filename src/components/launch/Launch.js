@@ -1,11 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import { BaseContainer } from '../../helpers/layout';
-import { api, handleError } from '../../helpers/api';
-import User from '../shared/models/User';
-import { withRouter } from 'react-router-dom';
-import { Button, Form } from 'semantic-ui-react'
-
+import React from "react";
+import { withRouter } from "react-router-dom";
+import { Button } from "semantic-ui-react";
+import styled from "styled-components";
 
 const Title = styled.h1`
   font-weight: bold;
@@ -20,150 +16,106 @@ const Label = styled.label`
 `;
 
 const Video = styled.video`
-height: 100%;
-width: 100%;
-float: left;
-top: 0;
-padding: none;
-// position: fixed;
+  height: 100%;
+  width: 100%;
+  float: left;
+  top: 0;
+  padding: none;
+  // position: fixed;
 `;
 
-
-const VideoBox =  styled.div`
-float:left;
+const VideoBox = styled.div`
+  float: left;
 `;
 
 const VideoOverlays = styled.div`
-position:absolute;
-float:left;
-width:100%;
-min-height:370px;
-background-color:transparent;
-z-index:300000;
+  position: absolute;
+  float: left;
+  width: 100%;
+  min-height: 370px;
+  background-color: transparent;
+  z-index: 300000;
 `;
 export const TopRightButton = styled(Button)`
-  margin-top: 50pPx;
+  margin-top: 50ppx;
   margin-right: 50px;
-  position:absolute;
-  top:20px;
-  right:20px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
 `;
 
-/**
- * Classes in React allow you to have an internal state within the class and to have the React life-cycle for your component.
- * You should have a class (instead of a functional component) when:
- * - You need an internal state that cannot be achieved via props from other parent components
- * - You fetch data from the server (e.g., in componentDidMount())
- * - You want to access the DOM via Refs
- * https://reactjs.org/docs/react-component.html
- * @Class
- */
 class Launch extends React.Component {
-  /**
-   * If you don’t initialize the state and you don’t bind methods, you don’t need to implement a constructor for your React component.
-   * The constructor for a React component is called before it is mounted (rendered).
-   * In this case the initial state is defined in the constructor. The state is a JS object containing two fields: name and username
-   * These fields are then handled in the onChange() methods in the resp. InputFields
-   */
   constructor() {
     super();
-    this.state = {
-   
-    };
+    this.state = {};
   }
-  /**
-   * HTTP POST request is sent to the backend.
-   * If the request is successful, a new user is returned to the front-end
-   * and its token is stored in the localStorage.
-   */
- 
-  async goToRegister() {
-    this.props.history.push('/register');
+  goToRegister() {
+    this.props.history.push("/register");
   }
-  async goToLogin() {
-    this.props.history.push('/login');
+  goToLogin() {
+    this.props.history.push("/login");
   }
-  async goToGame() {
-    this.props.history.push('/home');
+  goToGame() {
+    this.props.history.push("/home");
   }
 
-  /**
-   *  Every time the user enters something in the input field, the state gets updated.
-   * @param key (the key of the state for identifying the field that needs to be updated)
-   * @param value (the value that gets assigned to the identified state key)
-   */
-  handleInputChange(key, value) {
-    // Example: if the key is username, this statement is the equivalent to the following one:
-    // this.setState({'username': value});
-    this.setState({ [key]: value });
-  }
-
-  /**
-   * componentDidMount() is invoked immediately after a component is mounted (inserted into the tree).
-   * Initialization that requires DOM nodes should go here.
-   * If you need to load data from a remote endpoint, this is a good place to instantiate the network request.
-   * You may call setState() immediately in componentDidMount().
-   * It will trigger an extra rendering, but it will happen before the browser updates the screen.
-   */
   componentDidMount() {}
 
   render() {
     return (
-      
-       <VideoBox>
-        <VideoOverlays>
-        <TopRightButton inverted='top'
-                // width="50%"
+      <div style={{backgroundColor:"black"}}>
+        <center>
+          <VideoBox>
+            <VideoOverlays>
+              <TopRightButton
+                inverted="top"
                 onClick={() => {
                   this.goToLogin();
                 }}
-              > Login </TopRightButton>
-       
-        <center>
-        <br/>
-        <br/>
-        <img width="50" height="50" src="logo.png" />
-        <br/>
-        <br/>
-        <br/>
-        <Title>MAPGUESSЯ</Title>
+              >
+                Login{" "}
+              </TopRightButton>
 
-            <Label>Group 24</Label>
-            <br/>
-            <Label>David Diener</Label>
-            <br/>
-            <Label>Hoàng Ben Lê Giang</Label>
-            <br/>
-            <Label>Claudio Gebbia</Label>
-            <br/>
-            <Label>Jerome Hadorn</Label>
-            <br/>
-            <Label>Philip Giryes</Label>
-            <br/>
-            <br/>
-        <Button onClick={() => {
-                  this.goToGame();
-                }}>Start Playing</Button>
-
-<br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <Title>The worlds #2 Map Game*</Title>
-       
-            <Label>*Unverified Statisic</Label>
+              <center>
+                <br />
+                <br />
+                <img width="50" height="50" src="logo.png" />
+                <br />
+                <br />
+                <br />
+                <Title> MAPGUESSЯ </Title>
+                <Label> Group 24 </Label> <br />
+                <Label> David Diener </Label> <br />
+                <Label> Hoàng Ben Lê Giang </Label> <br />
+                <Label> Claudio Gebbia </Label> <br />
+                <Label> Jerome Hadorn </Label> <br />
+                <Label> Philip Giryes </Label> <br />
+                <br />
+                <Button
+                  onClick={() => {
+                    this.goToGame();
+                  }}
+                >
+                  Start Playing
+                </Button>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <Title> The worlds #2 Map Game*</Title>
+                <Label>*Unverified Statisic</Label>
+              </center>
+            </VideoOverlays>
+            <Video className="videoTag" autoPlay loop muted>
+              <source src={window.location + "/video.mp4"} type="video/mp4" />
+            </Video>{" "}
+          </VideoBox>
         </center>
-        </VideoOverlays>
-
-        <Video className='videoTag' autoPlay loop muted>
-            <source src={window.location + '/video.mp4'} type='video/mp4' />
-        </Video>
-        </VideoBox>
-
+      </div>
     );
   }
 }

@@ -1,6 +1,18 @@
 import React from 'react';
 import { Button, Menu, Modal,Icon } from 'semantic-ui-react'
 
+function toHHMMSS(secondsInt) {
+	var sec_num = parseInt(secondsInt, 10); // don't forget the second param
+	var hours   = Math.floor(sec_num / 3600);
+	var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+	var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+	// if (hours   < 10) {hours   = "0"+hours;}
+	if (minutes < 10) {minutes = "0"+minutes;}
+	if (seconds < 10) {seconds = "0"+seconds;}
+	return minutes+':'+seconds;
+}
+
 class GameHeader extends React.Component{
 
 	constructor(props){
@@ -9,23 +21,32 @@ class GameHeader extends React.Component{
 	}
 
 	componentDidMount(){
-		//start clock
+	
 	}
 
 
 	displayScore = () =>{
-		return this.props.players.player1.totalScore;
+		if (this.props.playerScore){
+			return this.props.playerScore.totalScore;
+		} else {
+			return 0
+		}
 	}
 
 	clock = () =>{
-		return '00:00';
+		if (this.props.timer){
+			return toHHMMSS(this.props.timer)
+		} else {
+			return '00:00';
+		}
 	}
+	
 
 
 
 	displayRound = () =>{
 		//this.state.game.round
-		return '1/5';
+		return `${this.props.currentRound}/5`;
 	}
 
 	exitGame = () =>(
