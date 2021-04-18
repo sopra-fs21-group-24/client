@@ -41,8 +41,10 @@ class GameController extends React.Component {
       scores: null,
       playerScore: null,
       answer: null,
+      answers:[],
 
       pin: null,
+      pins:[],
 
       showScoreModal: false, // Show the scorepage flag
       players: null,
@@ -181,9 +183,12 @@ class GameController extends React.Component {
 
       // const response = await api.post(`/game/${gameId}/submit`, data, config);
       const response = await api.get("/playerScore/", config);
+      let oldAnswers = this.state.answers
+      oldAnswers.push(response.data.answer)
       this.setState({
         playerScore: response.data.score,
         answer: response.data.answer,
+        answers:oldAnswers
       });
       console.log("PLAYERSCORE", this.state);
     } catch (error) {
@@ -216,11 +221,16 @@ class GameController extends React.Component {
     this.setState({ pin: mapState });
   }
   async handleGuessSubmit() {
+
     if (this.state.pin == null) {
       throw Error("Please drop a pin on the map before you submit!");
     }
     const lat = this.state.pin.lat;
     const lng = this.state.pin.lng;
+
+    let oldGuesses = this.state.pins
+    oldGuesses.push(this.state.pin)
+    this.setState({pins:oldGuesses})
 
     // Stop Timer
     this.stopTimer();
@@ -238,7 +248,7 @@ class GameController extends React.Component {
     while (this.state.showScoreModal) {
       await this.fetchScore();
       // wait for 1 s and fetch scores again
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 10000));
     }
   }
   //#endregion MiniMap
@@ -281,6 +291,13 @@ class GameController extends React.Component {
               scores={this.state.scores}
               nextRound={this.nextRound}
               lastRound={this.state.isLastRound}
+              state={{
+   
+                answer: this.state.answer,
+                pin: this.state.pin,
+                answers:this.state.answers,
+                pins:this.state.pins,
+              }}
             />
           </Modal>
         ) : null}
@@ -292,8 +309,10 @@ class GameController extends React.Component {
                 lng: -0.848103,
               },
               answer: this.state.answer,
-              zoom: 2,
               pin: this.state.pin,
+              answers:this.state.answers,
+              pins:this.state.pins,
+              zoom: 2,
             }}
             handleGuessSubmit={this.handleGuessSubmit}
             pinMarkerOnClick={this.handlePinPlacedOnMap}
