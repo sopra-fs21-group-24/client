@@ -6,13 +6,10 @@ import { api, getAuthConfig, handleError } from "../../helpers/api";
 import { BaseContainer } from "../../helpers/layout";
 import HomeHeader from "../../views/Header";
 import GameModeSelection from "./GameModeSelection";
-import RoomSelection from "./RoomSelection";
 import UserModeSelection from "./UserModeSelection";
+import LobbySelection from "./LobbySelection";
 
-const Container = styled(BaseContainer)`
-  color: white;
-  text-align: center;
-`;
+
 const adsEnabled = false;
 class Home extends React.Component {
   constructor() {
@@ -176,7 +173,7 @@ class Home extends React.Component {
               />
             ) : null}
             {this.state.isCreateJoinLobbyDisplayed == true ? (
-              <RoomSelection
+              <LobbySelection
                 toggleUsermodeDisplay={this.toggleUsermodeDisplay}
                 toggleCreateJoinLobbyDisplay={this.toggleCreateJoinLobbyDisplay}
                 toggleGamemodeDisplay={this.toggleGamemodeDisplay}
