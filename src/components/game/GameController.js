@@ -270,7 +270,7 @@ class GameController extends React.Component {
         <GameHeader
           fixed="top"
           timer={this.state.timer}
-          playerScore={this.state.scores}
+          playerScore={this.state.playerScore}
           currentRound={this.state.currentRound}
         />
         <Component url={this.state.currentQuestionImage} />
