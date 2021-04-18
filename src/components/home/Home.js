@@ -23,12 +23,9 @@ class Home extends React.Component {
       isCreateJoinLobbyDisplayed: false,
       selectedUsermode: null,
       selectedGamemode: null,
-      user: {
-        username: "",
-      },
+      userScore:null,
+      user: null
     };
-
-    this.getUser();
 
     this.updateUser = this.updateUser.bind(this);
     this.logout = this.logout.bind(this);
@@ -57,12 +54,8 @@ class Home extends React.Component {
   };
 
   async componentDidMount() {
-    try {
-    } catch (error) {
-      alert(
-        `Something went wrong while fetching the users: \n${handleError(error)}`
-      );
-    }
+    this.fetchUserHighScore();
+    this.getUser();
   }
 
   render() {
@@ -71,11 +64,12 @@ class Home extends React.Component {
         <HomeHeader
           logout={this.logout}
           updateUser={this.updateUser}
+          userScore={this.state.userScore}
           user={this.state.user}
           height={"50"}
         />
 
-        <Grid columns={3} divided centered>
+        <Grid columns={2} divided centered>
           <Grid.Row></Grid.Row>
           {adsEnabled ? (
             <Grid.Column>
@@ -138,6 +132,31 @@ class Home extends React.Component {
         `Something went wrong while fetching the users: \n${handleError(error)}`
       );
     }
+  }
+
+  async fetchUserHighScore(){
+    //TODO: switch to real API - uncomment this
+    // let userId = localStorage.getItem("currentUserId");
+
+    // try {
+    //   const response = await api.get("/users/" + userId + '/scores', getAuthConfig());
+
+    //   this.setState({ userScore: response.data });
+    // } catch (error) {
+    //   alert(
+    //     `Something went wrong while fetching the your user: \n${handleError(
+    //       error
+    //     )}`
+    //   );
+    // }
+
+    let temporary = {
+      "clouds":1000,
+      "pixelation":500,
+      "time": 300
+    }
+    this.setState({ userScore: temporary});
+    console.log("USER score", this.state)
   }
 
   async updateUser(username, password) {
