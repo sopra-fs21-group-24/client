@@ -4,10 +4,11 @@ import { Button, Icon, Grid } from "semantic-ui-react";
 const GameModeSelection = ({
   toggleGamemodeDisplay,
   toggleUsermodeDisplay,
-  toggleCreateJoinRoomDisplay,
+  toggleCreateJoinLobbyDisplay,
   setGamemode,
   usermode,
 }) => {
+
   return (
     <Grid centered>
       <Grid.Row>
@@ -68,7 +69,7 @@ const GameModeSelection = ({
             onClick={() => {
               if (usermode == "multiplayer") {
                 toggleGamemodeDisplay();
-                toggleCreateJoinRoomDisplay();
+                toggleCreateJoinLobbyDisplay();
               } else {
                 toggleGamemodeDisplay();
                 toggleUsermodeDisplay();

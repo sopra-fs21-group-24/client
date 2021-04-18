@@ -17,7 +17,6 @@ class LobbyRouter extends React.Component {
       <Container>
         <Route exact path={`${this.props.base}`} render={() => <Lobby />} />
         <Route exact path={`/lobby/create`} render={() => <CreateLobby />} />
-        <Route exact path={`/lobby/join`} render={() => <JoinLobby />} />
       </Container>
     );
   }

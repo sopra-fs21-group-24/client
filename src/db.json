@@ -715,7 +715,8 @@
   ],
   "users": [
     {
-      "username": "lou chaier",
+      "username": "",
+      "password": "",
       "id": 10
     }
   ],
@@ -734,6 +735,23 @@
       "username": "a",
       "password": "a",
       "id": 23
+    },
+    {
+      "username": "1",
+      "password": "1",
+      "id": 24
+    },
+    {
+      "username": "123",
+      "name": "123",
+      "password": "123",
+      "id": 25
+    },
+    {
+      "username": "111",
+      "name": "111",
+      "password": "111",
+      "id": 26
     }
   ],
   "posts": [
@@ -744,9 +762,9 @@
     }
   ],
   "register": {
-    "username": "admin",
-    "name": "admin",
-    "password": "admin"
+    "username": "111",
+    "name": "111",
+    "password": "111"
   },
   "comments": [
     {

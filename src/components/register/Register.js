@@ -71,7 +71,7 @@ class Register extends React.Component {
 
         // Store the token into the local storage.
         localStorage.setItem('token', user.token);
-        localStorage.setItem('currentUserId', user.id);
+        localStorage.setItem('currentUserId', /*user.id*/"10");
 
         // Register successfully worked --> navigate to the route /home in the HomeRouter
         this.props.history.push(`/home`);

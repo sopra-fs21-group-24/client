@@ -2,15 +2,15 @@ import React from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { HomeGuard } from "../routeProtectors/HomeGuard";
 import HomeRouter from "./HomeRouter";
-// import LobbyRoFuter from "./LobbyRouter";
+import LobbyRouter from "./LobbyRouter";
 import { LoginGuard } from "../routeProtectors/LoginGuard";
-// import { LobbyGuard } from "../routeProtectors/LobbyGuard";
+import { LobbyGuard } from "../routeProtectors/LobbyGuard";
 import Login from "../../login/Login";
 import Register from "../../register/Register";
 import Profile from "../../profile/Profile";
 import Launch from "../../launch/Launch";
 import NewHeader from "../../../views/Header";
-// import Lobby from "../../lobby/Lobby";
+import Lobby from "../../lobby/Lobby";
 
 
 // import Game from "../../game/Game"
@@ -79,15 +79,14 @@ class AppRouter extends React.Component {
                   </LoginGuard>
               )}
             />
-            {/* <Route
+            <Route
               path="/lobby"
               render={() => (
                 <LobbyGuard>
-                <NewHeader height={"50"} />
                 <LobbyRouter base={"/lobby"}/>
                 </LobbyGuard>
               )}
-            /> */}
+            />
      
             <Route path="/" exact render={() => <Launch />} />
           </div>
