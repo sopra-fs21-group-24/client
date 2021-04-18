@@ -2,7 +2,7 @@
   "games": [
     {
       "id": 5,
-      "currentRound": "2",
+      "currentRound": 1,
       "questions": [
         "1",
         "11",
@@ -38,6 +38,11 @@
       "username": "a",
       "password": "a",
       "id": 24
+    },
+    {
+      "username": "a",
+      "password": "a",
+      "id": 25
     }
   ],
   "posts": [

@@ -32,7 +32,7 @@ class GameController extends React.Component {
     super(props);
     this.state = {
       gameId: props.gameId,
-      currentRound: null,
+      currentRound: 1,
       questions: null,
       currentQuestionId: null,
       currentQuestionImage: null,
@@ -46,6 +46,8 @@ class GameController extends React.Component {
 
       showScoreModal: false, // Show the scorepage flag
       players: null,
+
+      isLastRound: false
     };
 
     console.log("Starting up Game with GameId", props.gameId);
@@ -90,9 +92,15 @@ class GameController extends React.Component {
 
       // Fetch changes to the game
       await this.getGame(this.state.gameId);
-
+      //TODO: Just an override to increase the round Counter
+      this.setState({currentRound: this.state.currentRound +1})
+      console.log(this.state.currentRound)
       // Start playing the next Round
       await this.startRound(this.state.currentRound);
+    }
+
+    if (this.state.currentRound  == 5){
+      this.setState({isLastRound:true})
     }
   }
 
@@ -101,7 +109,7 @@ class GameController extends React.Component {
     try {
       const response = await api.get("/games/" + gameId);
       this.setState({
-        currentRound: response.data.currentRound,
+        // currentRound: response.data.currentRound,
         questions: response.data.questions,
       });
     } catch (error) {
@@ -271,8 +279,8 @@ class GameController extends React.Component {
           <Modal basic open={true} size="small" trigger={null}>
             <ScoreBox
               scores={this.state.scores}
-              nextQuestion={this.nextQuestion}
-              lastRound={true}
+              nextRound={this.nextRound}
+              lastRound={this.state.isLastRound}
             />
           </Modal>
         ) : null}

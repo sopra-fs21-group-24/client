@@ -31,11 +31,11 @@ const ScoreBox = (props) => {
         </Progress>
         )}
     
-    const NextRound= () =>{
+    const NextRound= (props) =>{
       //TODO: get the lastRound flag from the gamecontroller
         let button = 'Next round: 00:00'
         return(
-            <Button animated='fade' color='teal' fluid size='large' onClick={()=>{props.nextQuestion()}}>
+            <Button animated='fade' color='teal' fluid size='large' onClick={()=>{props.nextRound()}}>
               <Button.Content visible>{button}</Button.Content>
               <Button.Content hidden>Go</Button.Content>
             </Button>
@@ -79,7 +79,7 @@ const ScoreBox = (props) => {
       )
     }
     else{
-      return(<NextRound/>)
+      return(<NextRound nextRound={props.nextRound}/>)
     }
   }
  //SCORE = NULL
