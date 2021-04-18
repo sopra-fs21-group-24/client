@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, List, Grid, Progress, Form, Segment, Header, Divider,Image } from 'semantic-ui-react';
+import { Button, List, Grid, Progress, Form, Segment, Header, Divider,Image,Icon } from 'semantic-ui-react';
 
 
 
@@ -33,11 +33,7 @@ const ScoreBox = (props) => {
     
     const NextRound= () =>{
       //TODO: get the lastRound flag from the gamecontroller
-        let lastRound = false;
         let button = 'Next round: 00:00'
-        if(lastRound){
-            button = 'EXIT';
-        }
         return(
             <Button animated='fade' color='teal' fluid size='large' onClick={()=>{props.nextQuestion()}}>
               <Button.Content visible>{button}</Button.Content>
@@ -46,8 +42,48 @@ const ScoreBox = (props) => {
         )
     }
 
-    return ( 
+    const ExitGame= () =>{
+      let button = 'END GAME'
+      return(
+          <Button animated='fade' color='red' fluid size='large' onClick={()=>{/*GO TO HOMEPAGE*/}}>
+            <Button.Content visible>{button}</Button.Content>
+            <Button.Content hidden><Icon name='sign-out'/></Button.Content>
+          </Button>
+      )
+  }
 
+  const PlayAgain = () =>{
+    let button = 'Play Again'
+    return(
+      <Button animated='fade' color='green' fluid size='large' onClick={()=>{props.nextQuestion()}}>
+        <Button.Content visible>{button}</Button.Content>
+        <Button.Content hidden><Icon name='redo'/></Button.Content>
+      </Button>
+    )
+  }
+
+  const LowerPart = () =>{
+    if(props.lastRound){
+      return(
+        <Grid columns={2} stackable textAlign='center'>
+
+          <Grid.Column style={{ maxWidth: 450 }}>
+            <ExitGame/>
+          </Grid.Column>
+    
+          <Grid.Column style={{ maxWidth: 450 }}>
+            <PlayAgain/>
+          </Grid.Column>
+  
+        </Grid>
+      )
+    }
+    else{
+      return(<NextRound/>)
+    }
+  }
+
+    return (
   <Segment placeholder raised>
 
     <Header as='h2' color='teal' textAlign='center'>
@@ -74,7 +110,7 @@ const ScoreBox = (props) => {
       
     </Grid>
     <Divider horizontal> </Divider>
-    <NextRound/>
+    <LowerPart/>
   </Segment>
 )
 }

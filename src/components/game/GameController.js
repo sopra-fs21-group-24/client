@@ -6,7 +6,7 @@ import { api, handleError } from "../../helpers/api";
 import GameHeader from "./GameHeader";
 import { key } from "./key";
 import MiniMap from './MiniMap';
-import ScoreBox from './ScoreBox';
+import ScoreBox from "./ScoreBox";
 // import {useWindowDimensions} from '../shared/models/GeoMath';
 
 // This Check will happen in BE
@@ -267,7 +267,7 @@ class GameController extends React.Component {
             alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
         }
     }
-
+    
     render(){
         return (
             <BaseContainer style={{ 
@@ -285,7 +285,7 @@ class GameController extends React.Component {
                                             size='small'
                                             trigger={null}
                                             >
-        <ScoreBox scores = {this.state.scores} nextQuestion = {this.nextQuestion}/>
+        <ScoreBox scores = {this.state.scores} nextQuestion = {this.nextQuestion} lastRound = {true}/>
         </Modal>:
             <div>
 
