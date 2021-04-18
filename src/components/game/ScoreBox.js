@@ -55,7 +55,7 @@ const ScoreBox = (props) => {
   const PlayAgain = () =>{
     let button = 'Play Again'
     return(
-      <Button animated='fade' color='green' fluid size='large' onClick={()=>{props.nextQuestion()}}>
+      <Button animated='fade' color='green' fluid size='large' onClick={()=>{/*PlayAgain*/}}>
         <Button.Content visible>{button}</Button.Content>
         <Button.Content hidden><Icon name='redo'/></Button.Content>
       </Button>
@@ -82,7 +82,7 @@ const ScoreBox = (props) => {
       return(<NextRound/>)
     }
   }
-
+ //SCORE = NULL
     return (
   <Segment placeholder raised>
 

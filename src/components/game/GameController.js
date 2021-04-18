@@ -48,7 +48,7 @@ class GameController extends React.Component {
       pin: null,
 
       showScoreModal: false, // Show the scorepage flag
-      players: staticPlayer,
+      players: null
     };
 
     console.log("Starting up Game with GameId", props.gameId);
@@ -122,6 +122,7 @@ class GameController extends React.Component {
       const response = await api.get("/questions/" + questionId);
       console.log(response.data);
       question = response.data;
+      this.fetchScore();
       // this.setState({question:response.data})
     } catch (error) {
       alert(
@@ -266,7 +267,7 @@ class GameController extends React.Component {
                 <GameHeader
                 fixed='top'
                 timer={this.state.timer}
-                playerScore={this.state.playerScore}
+                playerScore={this.state.scores}
                 currentRound={this.state.currentRound}
                 />
                 <Component url={this.state.currentQuestionImage}  />
@@ -293,7 +294,7 @@ class GameController extends React.Component {
                 </MiniMapContainer>
         </div>
     );
-  }
+  }}
 
 const Component = (props) => {
     const { height, width } = useWindowDimensions();
