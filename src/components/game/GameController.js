@@ -7,14 +7,14 @@ import { GameDebugView } from "../../views/GameDebugView";
 import useWindowDimensions from "../shared/models/WindowSize";
 import GameHeader from "./GameHeader";
 import { key } from "./key";
-import MiniMap from './MiniMap';
+import MiniMap from "./MiniMap";
 import ScoreBox from "./ScoreBox";
 // import {useWindowDimensions} from '../shared/models/GeoMath';
 
 // This Check will happen in BE
-const solution = {}
-const playTimeS=1000
-const waitTimeS=5
+const solution = {};
+const playTimeS = 1000;
+const waitTimeS = 5;
 
 const MiniMapContainer = styled.div`
   position: absolute;
@@ -23,11 +23,8 @@ const MiniMapContainer = styled.div`
   width: 450px;
 `;
 const BaseContainer = styled.div`
-
-height: 100%;
+  height: 100%;
   min-height: 800px;
-
-
 `;
 
 class GameController extends React.Component {
@@ -48,7 +45,7 @@ class GameController extends React.Component {
       pin: null,
 
       showScoreModal: false, // Show the scorepage flag
-      players: null
+      players: null,
     };
 
     console.log("Starting up Game with GameId", props.gameId);
@@ -88,9 +85,9 @@ class GameController extends React.Component {
       //TODO: set lastround flag on scorebox for final score page
       alert("Finished the game - show the final score page");
     } else {
-      // Hide inbetween rounds scoreboard  
+      // Hide inbetween rounds scoreboard
       this.setState({ showScoreModal: false });
-      
+
       // Fetch changes to the game
       await this.getGame(this.state.gameId);
 
@@ -203,13 +200,12 @@ class GameController extends React.Component {
       );
     }
   }
-
   //#endregion API Calls
 
   //#region MiniMap
   handlePinPlacedOnMap(mapState) {
     console.log("Received this pin from the MiniMap", mapState);
-    this.setState({pin:mapState});
+    this.setState({ pin: mapState });
   }
   async handleGuessSubmit() {
     if (this.state.pin == null) {
@@ -246,68 +242,74 @@ class GameController extends React.Component {
     while (this.state.timerRunning) {
       this.updateSeconds();
       await new Promise((resolve) => setTimeout(resolve, 1000));
-    }}
+    }
+  }
 
-    updateSeconds() {
-        if (this.state.questionTime) var now = new Date().getTime();
-        var difference = (now - this.state.questionTime) / 1000;
-        // console.log(difference)
-        this.setState({ timer: difference });
-      }
-      stopTimer() {
-        this.setState({ timerRunning: false });
-        this.setState({ questionTime: null });
-      }
+  updateSeconds() {
+    if (this.state.questionTime) var now = new Date().getTime();
+    var difference = (now - this.state.questionTime) / 1000;
+    // console.log(difference)
+    this.setState({ timer: difference });
+  }
+  stopTimer() {
+    this.setState({ timerRunning: false });
+    this.setState({ questionTime: null });
+  }
 
-
-    render(){
-        return (
-        <div>
-            
-                <GameHeader
-                fixed='top'
-                timer={this.state.timer}
-                playerScore={this.state.scores}
-                currentRound={this.state.currentRound}
-                />
-                <Component url={this.state.currentQuestionImage}  />
-
-            {this.state.showScoreModal ?   <Modal
-                                            basic
-                                            open={true}
-                                            size='small'
-                                            trigger={null}
-                                            >
-        <ScoreBox scores = {this.state.scores} nextQuestion = {this.nextQuestion} lastRound = {true}/>
-        </Modal>:(null)}
-                <MiniMapContainer>
-                <MiniMap state={{
-                        center: {
-                            lat: 20.907646,
-                            lng: -0.848103
-                        },
-                        answer:this.state.answer,
-                        zoom:2,
-                        pin:this.state.pin
-
-                    }} handleGuessSubmit={this.handleGuessSubmit} pinMarkerOnClick={this.handlePinPlacedOnMap}/>
-                </MiniMapContainer>
-        </div>
-    );
-  }}
-
-const Component = (props) => {
-    const { height, width } = useWindowDimensions();
-  
+  render() {
     return (
-      <div style={{
-        minWidth:width,
-        minHeight:height,
-        backgroundImage: `url(${props.url})`,
-        backgroundPosition: 'center',
-        backgroundSize: 'cover'}}>
+      <div>
+        <GameHeader
+          fixed="top"
+          timer={this.state.timer}
+          playerScore={this.state.scores}
+          currentRound={this.state.currentRound}
+        />
+        <Component url={this.state.currentQuestionImage} />
+
+        {this.state.showScoreModal ? (
+          <Modal basic open={true} size="small" trigger={null}>
+            <ScoreBox
+              scores={this.state.scores}
+              nextQuestion={this.nextQuestion}
+              lastRound={true}
+            />
+          </Modal>
+        ) : null}
+        <MiniMapContainer>
+          <MiniMap
+            state={{
+              center: {
+                lat: 20.907646,
+                lng: -0.848103,
+              },
+              answer: this.state.answer,
+              zoom: 2,
+              pin: this.state.pin,
+            }}
+            handleGuessSubmit={this.handleGuessSubmit}
+            pinMarkerOnClick={this.handlePinPlacedOnMap}
+          />
+        </MiniMapContainer>
       </div>
     );
   }
+}
+
+const Component = (props) => {
+  const { height, width } = useWindowDimensions();
+
+  return (
+    <div
+      style={{
+        minWidth: width,
+        minHeight: height,
+        backgroundImage: `url(${props.url})`,
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+      }}
+    ></div>
+  );
+};
 
 export default withRouter(GameController);

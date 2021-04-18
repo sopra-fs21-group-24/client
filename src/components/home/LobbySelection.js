@@ -1,15 +1,18 @@
 import React from "react";
 import { Button, Grid, Segment } from "semantic-ui-react";
+import { useHistory } from "react-router";
 
-const RoomSelection = ({
+const LobbySelection = ({
   toggleUsermodeDisplay,
-  toggleCreateJoinRoomDisplay,
+  toggleCreateJoinLobbyDisplay,
   toggleGamemodeDisplay,
 }) => {
+  const history = useHistory();
+
   return (
     <Grid centered>
       <Grid.Row>
-        <p>Create a new room or join an existing room!</p>
+        <p>Create a new lobby or join an existing lobby!</p>
       </Grid.Row>
       <Grid.Row>
         <Grid.Column width="4">
@@ -18,18 +21,30 @@ const RoomSelection = ({
             fluid
             color="blue"
             onClick={() => {
-              toggleCreateJoinRoomDisplay();
+              toggleCreateJoinLobbyDisplay();
               toggleGamemodeDisplay();
+              history.push({
+                pathname: "/lobby",
+              });
             }}
           >
-            Create Room
+            Create Lobby
           </Button>
         </Grid.Column>
       </Grid.Row>
       <Grid.Row>
         <Grid.Column width="4">
-          <Button size="big" fluid color="blue" onClick={() => {}}>
-            Join Room
+          <Button
+            size="big"
+            fluid
+            color="blue"
+            onClick={() => {
+              history.push({
+                pathname: "/lobby/join",
+              });
+            }}
+          >
+            Join Lobby
           </Button>
         </Grid.Column>
       </Grid.Row>
@@ -40,7 +55,7 @@ const RoomSelection = ({
             fluid
             color="black"
             onClick={() => {
-              toggleCreateJoinRoomDisplay();
+              toggleCreateJoinLobbyDisplay();
               toggleUsermodeDisplay();
             }}
           >
@@ -52,4 +67,4 @@ const RoomSelection = ({
   );
 };
 
-export default RoomSelection;
+export default LobbySelection;

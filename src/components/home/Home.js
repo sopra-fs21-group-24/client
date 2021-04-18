@@ -2,14 +2,17 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import { Advertisement, Grid } from "semantic-ui-react";
 import styled from "styled-components";
-import { api, getAuthConfig, handleError } from "../../helpers/api";
+import { api, handleError } from "../../helpers/api";
 import { BaseContainer } from "../../helpers/layout";
 import HomeHeader from "../../views/Header";
 import GameModeSelection from "./GameModeSelection";
-import UserModeSelection from "./UserModeSelection";
 import LobbySelection from "./LobbySelection";
+import UserModeSelection from "./UserModeSelection";
 
-
+const Container = styled(BaseContainer)`
+  color: white;
+  text-align: center;
+`;
 const adsEnabled = false;
 class Home extends React.Component {
   constructor() {
@@ -20,11 +23,13 @@ class Home extends React.Component {
       isCreateJoinLobbyDisplayed: false,
       selectedUsermode: null,
       selectedGamemode: null,
-      userScore:null,
-      user: null
+      user: {
+        username: "",
+      },
     };
 
-   
+    this.getUser();
+
     this.updateUser = this.updateUser.bind(this);
     this.logout = this.logout.bind(this);
   }
@@ -52,87 +57,14 @@ class Home extends React.Component {
   };
 
   async componentDidMount() {
-    this.fetchUserHighScore();
-    this.getUser();
-
-  }
-
-  //#region User
-  async getUser() {
     try {
-      let userId = localStorage.getItem("currentUserId");
-      const response = await api.get("/users/" + userId);
-
-      this.setState({ user: response.data });
-    } catch (error) {
-      alert(
-        `Something went wrong while fetching the your user: \n${handleError(
-          error
-        )}`
-      );
-    }
-  }
-
-  async updateUser(username, password) {
-    let userId = localStorage.getItem("currentUserId");
-    
-    let data = {}
-   
-    // Only add what changed
-    if (username)
-      data.username = username
-    if(password)
-      data.password = password
-
-  
-
-    try {
-      await api.put("/users/" + userId, data, getAuthConfig());
-
-      // Then fetch the newly updated user
-      await this.getUser();
-
     } catch (error) {
       alert(
         `Something went wrong while fetching the users: \n${handleError(error)}`
       );
     }
   }
-  //#endregion User
 
-  // #region Scoring
-  async fetchUserHighScore(){
-    //TODO: switch to real API - uncomment this
-    // let userId = localStorage.getItem("currentUserId");
-
-    // try {
-    //   const response = await api.get("/users/" + userId + '/scores', getAuthConfig());
-
-    //   this.setState({ userScore: response.data });
-    // } catch (error) {
-    //   alert(
-    //     `Something went wrong while fetching the your user: \n${handleError(
-    //       error
-    //     )}`
-    //   );
-    // }
-
-    let temporary = {
-      "clouds":1000,
-      "pixelation":500,
-      "time": 300
-    }
-    this.setState({ userScore: temporary});
-    console.log("USER score", this.state)
-  }
-
-  //#endregion Scoring
-
-  logout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("currentUserId");
-    this.props.history.push("/login");
-  }
   render() {
     return (
       <div>
@@ -140,14 +72,11 @@ class Home extends React.Component {
           logout={this.logout}
           updateUser={this.updateUser}
           user={this.state.user}
-          userScore={this.state.userScore}
           height={"50"}
         />
 
-        <Grid columns={2} divided centered>
-          
+        <Grid columns={3} divided centered>
           <Grid.Row></Grid.Row>
-          
           {adsEnabled ? (
             <Grid.Column>
               <Advertisement centered unit="half page" test="Half Page" />
@@ -187,6 +116,79 @@ class Home extends React.Component {
       </div>
     );
   }
+
+  async getUser() {
+    try {
+      let userId = localStorage.getItem("currentUserId");
+      const response = await api.get("/users/" + userId);
+      // delays continuous execution of an async operation for 1 second.
+      // This is just a fake async call, so that the spinner can be displayed
+      // feel free to remove it :slight_smile:
+      // await new Promise(resolve => setTimeout(resolve, 500));
+
+      // Get the returned users and update the state.
+      let st = this.state;
+      st.user = response.data;
+      this.setState(st);
+
+      // See here to get more data.
+      console.log(this.state);
+    } catch (error) {
+      alert(
+        `Something went wrong while fetching the users: \n${handleError(error)}`
+      );
+    }
+  }
+
+  async updateUser(username, password) {
+    console.log(username, password);
+    try {
+      let userId = localStorage.getItem("currentUserId");
+      let token = localStorage.getItem("token");
+      let data = {
+        username: username,
+        password: password,
+        // id:userId
+      };
+      let config = {
+        headers: {
+          Authorization: `Basic ${token}`,
+        },
+      };
+      const response = await api.put("/users/" + userId, data, config);
+      console.log(response);
+      // this.setState({user:response})
+      // delays continuous execution of an async operation for 1 second.
+      // This is just a fake async call, so that the spinner can be displayed
+      // feel free to remove it :)
+      // await new Promise(resolve => setTimeout(resolve, 500));
+
+      this.getUser();
+    } catch (error) {
+      alert(
+        `Something went wrong while fetching the users: \n${handleError(error)}`
+      );
+    }
+  }
+
+  // async componentDidMount() {
+
+  // }
+
+  logout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("currentUserId");
+    this.props.history.push("/login");
+  }
+
+  // render() {
+  //   return (
+  //     <Container>
+  //      <HomeHeader logout={this.logout} updateUser={this.updateUser} user={this.state.user} height = {"50"}/>
+  //       <Label>Let's guess them coordinates:</Label>
+  //     </Container>
+  //   );
+  // }
 }
 
 export default withRouter(Home);
