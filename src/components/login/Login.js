@@ -1,10 +1,10 @@
 import React from "react";
-import styled from "styled-components";
-import { BaseContainer } from "../../helpers/layout";
-import { api, handleError } from "../../helpers/api";
-import User from "../shared/models/User";
 import { withRouter } from "react-router-dom";
-import { Button, Form, Label, Input } from "semantic-ui-react";
+import { Button, Form, Input } from "semantic-ui-react";
+import styled from "styled-components";
+import { api, handleError } from "../../helpers/api";
+import { BaseContainer } from "../../helpers/layout";
+import User from "../shared/models/User";
 
 const FormContainer = styled.div`
   margin-top: 2em;

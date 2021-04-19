@@ -79,7 +79,7 @@ class Launch extends React.Component {
               <center>
                 <br />
                 <br />
-                <img width="50" height="50" src="logo.png" />
+                <img alt="" width="50" height="50" src="logo.png" />
                 <br />
                 <br />
                 <br />

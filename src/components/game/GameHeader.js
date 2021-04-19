@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Menu, Modal,Icon } from 'semantic-ui-react'
+import { Button, Menu } from 'semantic-ui-react';
 
 function toHHMMSS(secondsInt) {
 	var sec_num = parseInt(secondsInt, 10); // don't forget the second param

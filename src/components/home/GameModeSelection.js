@@ -67,7 +67,7 @@ const GameModeSelection = ({
             fluid
             color="black"
             onClick={() => {
-              if (usermode == "multiplayer") {
+              if (usermode === "multiplayer") {
                 toggleGamemodeDisplay();
                 toggleCreateJoinLobbyDisplay();
               } else {

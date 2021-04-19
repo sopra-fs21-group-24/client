@@ -21,6 +21,8 @@ class JoinLobby extends React.Component {
           lobbyId: this.state.lobbyId,
         },
       });
+      
+      console.log(response)
 
       this.props.history.push('/lobby');
     } catch (error) {

@@ -1,17 +1,17 @@
 import React from "react";
 import {
   Button,
-  List,
-  Grid,
-  Progress,
-  Form,
-  Segment,
-  Header,
   Divider,
-  Image,
+  Form,
+  Grid,
+  Header,
   Icon,
+  Image,
+  List,
+  Progress,
+  Segment,
 } from "semantic-ui-react";
-import MiniMap, { MapElem } from "./MiniMap";
+import { MapElem } from "./MiniMap";
 
 const ScoreBox = (props) => {
   const PlayerList = () => (

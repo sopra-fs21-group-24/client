@@ -3,7 +3,6 @@ import { withRouter } from "react-router";
 import { Modal } from "semantic-ui-react";
 import styled from "styled-components";
 import { api, handleError } from "../../helpers/api";
-import { GameDebugView } from "../../views/GameDebugView";
 import useWindowDimensions from "../shared/models/WindowSize";
 import GameHeader from "./GameHeader";
 import { key } from "./key";
@@ -11,21 +10,13 @@ import MiniMap from "./MiniMap";
 import ScoreBox from "./ScoreBox";
 // import {useWindowDimensions} from '../shared/models/GeoMath';
 
-// This Check will happen in BE
-const solution = {};
-const playTimeS = 1000;
-const waitTimeS = 5;
-
 const MiniMapContainer = styled.div`
   position: absolute;
   bottom: 15px;
   right: 15px;
   width: 450px;
 `;
-const BaseContainer = styled.div`
-  height: 100%;
-  min-height: 800px;
-`;
+
 
 class GameController extends React.Component {
   constructor(props) {
@@ -87,7 +78,7 @@ class GameController extends React.Component {
 
   async nextRound() {
     //end of game?
-    if (this.state.currentRound == 5) {
+    if (this.state.currentRound === 5) {
       //TODO: set lastround flag on scorebox for final score page
       alert("Finished the game - show the final score page");
     } else {
@@ -103,7 +94,7 @@ class GameController extends React.Component {
       await this.startRound(this.state.currentRound);
     }
 
-    if (this.state.currentRound  == 5){
+    if (this.state.currentRound  === 5){
       this.setState({isLastRound:true})
     }
   }
@@ -169,10 +160,10 @@ class GameController extends React.Component {
     }
   }
   async sendGuess(answer, questionId) {
-    let data = {
-      questionId: questionId,
-      location: answer,
-    };
+    // let data = {
+    //   questionId: questionId,
+    //   location: answer,
+    // };
 
     try {
       let token = localStorage.getItem("token");

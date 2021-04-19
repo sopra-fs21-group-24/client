@@ -164,13 +164,11 @@ class MiniMap extends Component {
       center,
       zoom,
       pin,
-      pins,
-      answer,
-      answers,
-      mapEnabled,
+      // pins,
+      // answer,
+      // answers,
+      // mapEnabled,
     } = this.props.state;
-    console.log("Answers: ", answers);
-    console.log("Pins", pins);
 
     if (pin != null) {
       center = pin;

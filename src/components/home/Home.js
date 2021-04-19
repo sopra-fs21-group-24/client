@@ -1,18 +1,13 @@
 import React from "react";
+// import ReactGlobe from "react-globe";
 import { withRouter } from "react-router-dom";
 import { Advertisement, Grid } from "semantic-ui-react";
-import styled from "styled-components";
 import { api, handleError } from "../../helpers/api";
-import { BaseContainer } from "../../helpers/layout";
 import HomeHeader from "../../views/Header";
 import GameModeSelection from "./GameModeSelection";
 import LobbySelection from "./LobbySelection";
 import UserModeSelection from "./UserModeSelection";
 
-const Container = styled(BaseContainer)`
-  color: white;
-  text-align: center;
-`;
 const adsEnabled = false;
 class Home extends React.Component {
   constructor() {
@@ -78,7 +73,7 @@ class Home extends React.Component {
           ) : null}
 
           <Grid.Column>
-            {this.state.isUsermodeDisplayed == true ? (
+            {this.state.isUsermodeDisplayed === true ? (
               <UserModeSelection
                 toggleUsermodeDisplay={this.toggleUsermodeDisplay}
                 toggleGamemodeDisplay={this.toggleGamemodeDisplay}
@@ -86,7 +81,7 @@ class Home extends React.Component {
                 setUsermode={this.setUsermode}
               />
             ) : null}
-            {this.state.isGamemodeDisplayed == true ? (
+            {this.state.isGamemodeDisplayed === true ? (
               <GameModeSelection
                 toggleUsermodeDisplay={this.toggleUsermodeDisplay}
                 toggleGamemodeDisplay={this.toggleGamemodeDisplay}
@@ -95,7 +90,7 @@ class Home extends React.Component {
                 setGamemode={this.setGamemode}
               />
             ) : null}
-            {this.state.isCreateJoinLobbyDisplayed == true ? (
+            {this.state.isCreateJoinLobbyDisplayed === true ? (
               <LobbySelection
                 toggleUsermodeDisplay={this.toggleUsermodeDisplay}
                 toggleCreateJoinLobbyDisplay={this.toggleCreateJoinLobbyDisplay}
@@ -107,6 +102,7 @@ class Home extends React.Component {
             <p>Leaderboard will be displayed in this column!</p>
           </Grid.Column>
         </Grid>
+        {/* <ReactGlobe height="100vh" width="100vw"/> */}
       </div>
     );
   }

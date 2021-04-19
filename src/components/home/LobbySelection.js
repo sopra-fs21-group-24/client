@@ -1,6 +1,6 @@
 import React from "react";
-import { Button, Grid, Segment } from "semantic-ui-react";
 import { useHistory } from "react-router";
+import { Button, Grid } from "semantic-ui-react";
 
 const LobbySelection = ({
   toggleUsermodeDisplay,

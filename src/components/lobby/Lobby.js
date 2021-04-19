@@ -1,17 +1,16 @@
 import React from "react";
-import { api, handleError } from "../../helpers/api";
 import { withRouter } from "react-router-dom";
-import styled from "styled-components";
 import {
-  Table,
-  Image,
-  Header,
-  TableHeader,
-  Grid,
   Button,
   Checkbox,
+  Grid,
+  Header,
+  Image,
+  Table,
+  TableHeader,
 } from "semantic-ui-react";
 import Crown from "../../assets/Crown.png";
+import { handleError } from "../../helpers/api";
 
 class Lobby extends React.Component {
   constructor() {
@@ -71,8 +70,8 @@ class Lobby extends React.Component {
                       <Table.Cell>{user.pb}</Table.Cell>
                       <Table.Cell>
                         {" "}
-                        {user.host == true ? (
-                          <Image src={Crown} rounded size='mini'/>
+                        {user.host === true ? (
+                          <Image src={Crown} rounded size="mini" />
                         ) : null}{" "}
                       </Table.Cell>
                     </Table.Row>
@@ -96,12 +95,13 @@ class Lobby extends React.Component {
         </Grid.Row>
         <Grid.Row>
           <Grid.Column width="1">
-            <Button 
-              size="big" 
+            <Button
+              size="big"
               color="green"
               onClick={() => {
-                this.props.history.push('/game')
-              }}>
+                this.props.history.push("/game");
+              }}
+            >
               Start
             </Button>
           </Grid.Column>
