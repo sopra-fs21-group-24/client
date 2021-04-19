@@ -58,6 +58,8 @@ class GameController extends React.Component {
     this.handleGuessSubmit = this.handleGuessSubmit.bind(this);
     this.handlePinPlacedOnMap = this.handlePinPlacedOnMap.bind(this);
     this.nextRound = this.nextRound.bind(this);
+    this.exitGame = this.exitGame.bind(this);
+    this.endGame = this.endGame.bind(this);
   }
   componentDidMount() {
     this.init();
@@ -274,6 +276,18 @@ class GameController extends React.Component {
     this.setState({ questionTime: null });
   }
 
+  async exitGame(){
+    //TODO: some cool animation?
+    alert("are you sure you want to leave the game?");
+    //TODO: send to BE request and depending if user was creator some logic takes place
+    this.props.history.push('/home')
+  }
+
+  async endGame(){
+    //TODO: some cool animation?
+    this.props.history.push('/home')
+  }
+
   render() {
     return (
       <div>
@@ -282,6 +296,7 @@ class GameController extends React.Component {
           timer={this.state.timer}
           playerScore={this.state.playerScore}
           currentRound={this.state.currentRound}
+          exitGame = {this.exitGame}
         />
         <Component url={this.state.currentQuestionImage} />
 
@@ -291,6 +306,7 @@ class GameController extends React.Component {
               scores={this.state.scores}
               nextRound={this.nextRound}
               lastRound={this.state.isLastRound}
+              endGame={this.endGame}
               state={{
    
                 answer: this.state.answer,

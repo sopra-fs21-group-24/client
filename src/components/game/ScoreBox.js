@@ -72,7 +72,7 @@ const ScoreBox = (props) => {
         fluid
         size="large"
         onClick={() => {
-          /*GO TO HOMEPAGE*/
+          props.endGame();
         }}
       >
         <Button.Content visible>{button}</Button.Content>
@@ -137,14 +137,14 @@ const ScoreBox = (props) => {
             </Form>
           </Grid.Column>
 
-          <Grid.Column style={{ maxWidth:300}}>
+          <Grid.Column style={{ maxWidth: 300 }}>
             <Form size="large">
               {/* <h1 style={{color:'black'}}>MINIMAP WITH DISTANCE</h1> */}
               <MapElem
                 containerElement={
                   <div style={{ height: `150px`, width: `100%` }} />
                 }
-                mapElement={<div style={{ height: `100%` }} />}                
+                mapElement={<div style={{ height: `100%` }} />}
                 center={{
                   lat: 20.907646,
                   lng: -0.848103,

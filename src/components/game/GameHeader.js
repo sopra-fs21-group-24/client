@@ -49,10 +49,10 @@ class GameHeader extends React.Component{
 		return `${this.props.currentRound}/5`;
 	}
 
-	exitGame = () =>(
-		//send exit to backend
-		alert("are you sure you want to leave the game?")
-	)
+	exitGame = () =>{
+		this.props.exitGame()
+	}
+	
 
 
 	render() {
