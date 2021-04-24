@@ -8,6 +8,7 @@ import GameHeader from "./GameHeader";
 import { key } from "./key";
 import MiniMap from "./MiniMap";
 import ScoreBox from "./ScoreBox";
+import { useState } from 'react';
 // import {useWindowDimensions} from '../shared/models/GeoMath';
 
 const MiniMapContainer = styled.div`
@@ -71,7 +72,7 @@ class GameController extends React.Component {
 
     // Start Timer
     this.startTimer();
-
+    
     // Fetch Question Image
     await this.getQuestion(currentQuestionId);
   }
@@ -289,7 +290,7 @@ class GameController extends React.Component {
           currentRound={this.state.currentRound}
           exitGame = {this.exitGame}
         />
-        <Component url={this.state.currentQuestionImage} />
+        <Component url={this.state.currentQuestionImage} timer={this.state.timer}/>
 
         {this.state.showScoreModal ? (
           <Modal basic open={true} size="small" trigger={null}>
@@ -336,6 +337,7 @@ const Component = (props) => {
   return (
     <div
       style={{
+        filter: `blur(${10-props.timer*0.30}px)`,
         minWidth: width,
         minHeight: height,
         backgroundImage: `url(${props.url})`,
