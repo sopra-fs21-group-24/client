@@ -1,7 +1,9 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { Button } from "semantic-ui-react";
+import { Button, Modal } from "semantic-ui-react";
 import styled from "styled-components";
+import Login from "../login/Login";
+import Register from "../register/Register";
 
 const Title = styled.h1`
   font-weight: bold;
@@ -34,7 +36,7 @@ const VideoOverlays = styled.div`
   width: 100%;
   min-height: 370px;
   background-color: transparent;
-  z-index: 300000;
+  z-index: 3;
 `;
 export const TopRightButton = styled(Button)`
   margin-top: 50ppx;
@@ -47,23 +49,28 @@ export const TopRightButton = styled(Button)`
 class Launch extends React.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      showLogin: false,
+      showRegister: false,
+    };
   }
   goToRegister() {
-    this.props.history.push("/register");
+    this.setState({ showLogin: false });
+    this.setState({ showRegister: true });
   }
   goToLogin() {
-    this.props.history.push("/login");
+    this.setState({ showRegister: false });
+    this.setState({ showLogin: true });
   }
   goToGame() {
-    this.props.history.push("/home");
+    this.setState({ showRegister: true });
   }
 
   componentDidMount() {}
 
   render() {
     return (
-      <div style={{backgroundColor:"black"}}>
+      <div style={{ backgroundColor: "black" }}>
         <center>
           <VideoBox>
             <VideoOverlays>
@@ -113,6 +120,16 @@ class Launch extends React.Component {
             <Video className="videoTag" autoPlay loop muted>
               <source src={window.location + "/video.mp4"} type="video/mp4" />
             </Video>{" "}
+            {this.state.showLogin ? (
+                <Modal basic open={true} size="small" trigger={null}>
+                  <Login change = {()=>{this.goToRegister()}}/>
+                </Modal>
+              ) : null}
+              {this.state.showRegister ? (
+                <Modal basic open={true} size="small" trigger={null}>
+                  <Register change = {()=>{this.goToLogin()}}/>
+                </Modal>
+              ) : null}
           </VideoBox>
         </center>
       </div>

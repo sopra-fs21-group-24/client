@@ -1,9 +1,19 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { Button, Form, Input } from "semantic-ui-react";
 import styled from "styled-components";
 import { api, handleError } from "../../helpers/api";
 import { BaseContainer } from "../../helpers/layout";
+import {
+  Button,
+
+  Form,
+
+  Header,
+
+  Segment,
+  Input,
+  Container
+} from "semantic-ui-react";
 import User from "../shared/models/User";
 
 const FormContainer = styled.div`
@@ -19,6 +29,7 @@ const ButtonContainer = styled.div`
   justify-content: center;
   margin-top: 20px;
 `;
+
 
 class Login extends React.Component {
   constructor() {
@@ -52,7 +63,7 @@ class Login extends React.Component {
   }
 
   navigateToRegisterPage() {
-    this.props.history.push("/register");
+    this.props.change();
   }
   navigateToHomePage() {
     this.props.history.push("/home");
@@ -67,10 +78,11 @@ class Login extends React.Component {
 
   render() {
     return (
-      <BaseContainer>
+
+      <Segment fluid>
+      <Header as="h2" color="black" textAlign="center">Login</Header>
         <FormContainer>
           <Form>
-            <h1>Login</h1>
             <Form.Field>
               <Input
                 placeholder="Username"
@@ -79,7 +91,6 @@ class Login extends React.Component {
                 }}
               />
             </Form.Field>
-
             <Form.Field>
               <Input
                 type="password"
@@ -115,7 +126,8 @@ class Login extends React.Component {
             </ButtonContainer>
           </Form>
         </FormContainer>
-      </BaseContainer>
+        </Segment>
+
     );
   }
 }

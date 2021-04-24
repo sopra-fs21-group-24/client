@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { Button, Form, Input } from "semantic-ui-react";
+import { Button, Form, Input,Grid,Segment,Header } from "semantic-ui-react";
 import styled from "styled-components";
 import { api, handleError } from "../../helpers/api";
 import { BaseContainer } from "../../helpers/layout";
@@ -12,11 +12,10 @@ const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 300px;
   justify-content: center;
 `;
 
-const InputField = styled(Input)``;
+
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -57,7 +56,7 @@ class Register extends React.Component {
   }
 
   navigateToLoginPage() {
-    this.props.history.push("/login");
+    this.props.change();
   }
   navigateToHomePage() {
     this.props.history.push(`/home`);
@@ -73,12 +72,12 @@ class Register extends React.Component {
 
   render() {
     return (
-      <BaseContainer>
+      <Segment raised fluid >
+        <Header as="h2" color="black" textAlign="center">Register</Header>
         <FormContainer>
           <Form>
-            <h1>Register</h1>
             <Form.Field>
-              <InputField
+              <Input
                 placeholder="Username"
                 onChange={(e) => {
                   this.handleInputChange("username", e.target.value);
@@ -86,9 +85,9 @@ class Register extends React.Component {
               />
             </Form.Field>
             <Form.Field>
-              <InputField
+              <Input
                 type="password"
-                placeholder="Enter here.."
+                placeholder="Password"
                 onChange={(e) => {
                   this.handleInputChange("password", e.target.value);
                 }}
@@ -121,7 +120,7 @@ class Register extends React.Component {
             </ButtonContainer>
           </Form>
         </FormContainer>
-      </BaseContainer>
+      </Segment>
     );
   }
 }
