@@ -1,0 +1,803 @@
+{
+  "games": [
+    {
+      "id": 5,
+      "currentRound": 1,
+      "questions": [
+        "1",
+        "11",
+        "12",
+        "80",
+        "53"
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "lou chaier",
+      "password": "",
+      "id": 10
+    }
+  ],
+  "login": [
+    {
+      "username": "a",
+      "password": "a",
+      "id": 21
+    },
+    {
+      "username": "a",
+      "password": "a",
+      "id": 22
+    },
+    {
+      "username": "a",
+      "password": "a",
+      "id": 23
+    },
+    {
+      "username": "a",
+      "password": "a",
+      "id": 24
+    },
+    {
+      "username": "a",
+      "password": "a",
+      "id": 25
+    }
+  ],
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "register": {
+    "username": "admin",
+    "name": "admin",
+    "password": "admin"
+  },
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": [
+    {
+      "name": "typicode"
+    }
+  ],
+  "playerScore": {
+    "answer": {
+      "lat": 1,
+      "lng": 4
+    },
+    "score": {
+      "name": "Player1",
+      "score": 3000,
+      "totalScore": 5000
+    }
+  },
+  "scores": [
+    {
+      "name": "Player1",
+      "score": 3000,
+      "totalScore": 5000
+    },
+    {
+      "name": "Player2",
+      "score": 2000,
+      "totalScore": 6000
+    },
+    {
+      "name": "Player3",
+      "score": 1000,
+      "totalScore": 2000
+    }
+  ],
+  "questions": [
+    {
+      "city": "Tokyo",
+      "zoom": 15,
+      "lat": 35.6897,
+      "lng": 139.6922,
+      "id": 1
+    },
+    {
+      "city": "Jakarta",
+      "zoom": 15,
+      "lat": -6.2146,
+      "lng": 106.8451,
+      "id": 2
+    },
+    {
+      "city": "Delhi",
+      "zoom": 15,
+      "lat": 28.66,
+      "lng": 77.23,
+      "id": 3
+    },
+    {
+      "city": "Mumbai",
+      "zoom": 15,
+      "lat": 18.9667,
+      "lng": 72.8333,
+      "id": 4
+    },
+    {
+      "city": "Manila",
+      "zoom": 15,
+      "lat": 14.5958,
+      "lng": 120.9772,
+      "id": 5
+    },
+    {
+      "city": "Shanghai",
+      "zoom": 15,
+      "lat": 31.1667,
+      "lng": 121.4667,
+      "id": 6
+    },
+    {
+      "city": "S√£o Paulo",
+      "zoom": 15,
+      "lat": -23.5504,
+      "lng": -46.6339,
+      "id": 7
+    },
+    {
+      "city": "Seoul",
+      "zoom": 15,
+      "lat": 37.5833,
+      "lng": 127,
+      "id": 8
+    },
+    {
+      "city": "Mexico City",
+      "zoom": 15,
+      "lat": 19.4333,
+      "lng": -99.1333,
+      "id": 9
+    },
+    {
+      "city": "Guangzhou",
+      "zoom": 15,
+      "lat": 23.1288,
+      "lng": 113.259,
+      "id": 10
+    },
+    {
+      "city": "Beijing",
+      "zoom": 15,
+      "lat": 39.905,
+      "lng": 116.3914,
+      "id": 11
+    },
+    {
+      "city": "Cairo",
+      "zoom": 15,
+      "lat": 30.0561,
+      "lng": 31.2394,
+      "id": 12
+    },
+    {
+      "city": "New York",
+      "zoom": 15,
+      "lat": 40.6943,
+      "lng": -73.9249,
+      "id": 13
+    },
+    {
+      "city": "KolkƒÅta",
+      "zoom": 15,
+      "lat": 22.5411,
+      "lng": 88.3378,
+      "id": 14
+    },
+    {
+      "city": "Moscow",
+      "zoom": 15,
+      "lat": 55.7558,
+      "lng": 37.6178,
+      "id": 15
+    },
+    {
+      "city": "Bangkok",
+      "zoom": 15,
+      "lat": 13.75,
+      "lng": 100.5167,
+      "id": 16
+    },
+    {
+      "city": "Buenos Aires",
+      "zoom": 15,
+      "lat": -34.5997,
+      "lng": -58.3819,
+      "id": 17
+    },
+    {
+      "city": "Shenzhen",
+      "zoom": 15,
+      "lat": 22.535,
+      "lng": 114.054,
+      "id": 18
+    },
+    {
+      "city": "Dhaka",
+      "zoom": 15,
+      "lat": 23.7161,
+      "lng": 90.3961,
+      "id": 19
+    },
+    {
+      "city": "Lagos",
+      "zoom": 15,
+      "lat": 6.45,
+      "lng": 3.4,
+      "id": 20
+    },
+    {
+      "city": "Istanbul",
+      "zoom": 15,
+      "lat": 41.01,
+      "lng": 28.9603,
+      "id": 21
+    },
+    {
+      "city": "≈åsaka",
+      "zoom": 15,
+      "lat": 34.6936,
+      "lng": 135.5019,
+      "id": 22
+    },
+    {
+      "city": "Karachi",
+      "zoom": 15,
+      "lat": 24.86,
+      "lng": 67.01,
+      "id": 23
+    },
+    {
+      "city": "Bangalore",
+      "zoom": 15,
+      "lat": 12.9699,
+      "lng": 77.598,
+      "id": 24
+    },
+    {
+      "city": "Tehran",
+      "zoom": 15,
+      "lat": 35.7,
+      "lng": 51.4167,
+      "id": 25
+    },
+    {
+      "city": "Kinshasa",
+      "zoom": 15,
+      "lat": -4.3317,
+      "lng": 15.3139,
+      "id": 26
+    },
+    {
+      "city": "Ho Chi Minh City",
+      "zoom": 15,
+      "lat": 10.8167,
+      "lng": 106.6333,
+      "id": 27
+    },
+    {
+      "city": "Los Angeles",
+      "zoom": 15,
+      "lat": 34.1139,
+      "lng": -118.4068,
+      "id": 28
+    },
+    {
+      "city": "Rio de Janeiro",
+      "zoom": 15,
+      "lat": -22.9083,
+      "lng": -43.1964,
+      "id": 29
+    },
+    {
+      "city": "Nanyang",
+      "zoom": 15,
+      "lat": 32.9987,
+      "lng": 112.5292,
+      "id": 30
+    },
+    {
+      "city": "Chennai",
+      "zoom": 15,
+      "lat": 13.0825,
+      "lng": 80.275,
+      "id": 31
+    },
+    {
+      "city": "Chengdu",
+      "zoom": 15,
+      "lat": 30.6636,
+      "lng": 104.0667,
+      "id": 32
+    },
+    {
+      "city": "Lahore",
+      "zoom": 15,
+      "lat": 31.5497,
+      "lng": 74.3436,
+      "id": 33
+    },
+    {
+      "city": "Paris",
+      "zoom": 15,
+      "lat": 48.8566,
+      "lng": 2.3522,
+      "id": 34
+    },
+    {
+      "city": "London",
+      "zoom": 15,
+      "lat": 51.5072,
+      "lng": -0.1275,
+      "id": 35
+    },
+    {
+      "city": "Linyi",
+      "zoom": 15,
+      "lat": 35.0606,
+      "lng": 118.3425,
+      "id": 36
+    },
+    {
+      "city": "Tianjin",
+      "zoom": 15,
+      "lat": 39.1467,
+      "lng": 117.2056,
+      "id": 37
+    },
+    {
+      "city": "Shijiazhuang",
+      "zoom": 15,
+      "lat": 38.0422,
+      "lng": 114.5086,
+      "id": 38
+    },
+    {
+      "city": "Baoding",
+      "zoom": 15,
+      "lat": 38.8671,
+      "lng": 115.4845,
+      "id": 39
+    },
+    {
+      "city": "Zhoukou",
+      "zoom": 15,
+      "lat": 33.625,
+      "lng": 114.6418,
+      "id": 40
+    },
+    {
+      "city": "Lima",
+      "zoom": 15,
+      "lat": -12.05,
+      "lng": -77.0333,
+      "id": 41
+    },
+    {
+      "city": "HyderƒÅbƒÅd",
+      "zoom": 15,
+      "lat": 17.3667,
+      "lng": 78.4667,
+      "id": 42
+    },
+    {
+      "city": "Bogot√°",
+      "zoom": 15,
+      "lat": 4.6126,
+      "lng": -74.0705,
+      "id": 43
+    },
+    {
+      "city": "Weifang",
+      "zoom": 15,
+      "lat": 36.7167,
+      "lng": 119.1,
+      "id": 44
+    },
+    {
+      "city": "Nagoya",
+      "zoom": 15,
+      "lat": 35.1167,
+      "lng": 136.9333,
+      "id": 45
+    },
+    {
+      "city": "Wuhan",
+      "zoom": 15,
+      "lat": 30.5872,
+      "lng": 114.2881,
+      "id": 46
+    },
+    {
+      "city": "Heze",
+      "zoom": 15,
+      "lat": 35.2333,
+      "lng": 115.4333,
+      "id": 47
+    },
+    {
+      "city": "Ganzhou",
+      "zoom": 15,
+      "lat": 25.8292,
+      "lng": 114.9336,
+      "id": 48
+    },
+    {
+      "city": "Tongshan",
+      "zoom": 15,
+      "lat": 34.261,
+      "lng": 117.1859,
+      "id": 49
+    },
+    {
+      "city": "Chicago",
+      "zoom": 15,
+      "lat": 41.8373,
+      "lng": -87.6862,
+      "id": 50
+    },
+    {
+      "city": "Handan",
+      "zoom": 15,
+      "lat": 36.6116,
+      "lng": 114.4894,
+      "id": 51
+    },
+    {
+      "city": "Luanda",
+      "zoom": 15,
+      "lat": -8.8383,
+      "lng": 13.2344,
+      "id": 52
+    },
+    {
+      "city": "Fuyang",
+      "zoom": 15,
+      "lat": 32.8986,
+      "lng": 115.8045,
+      "id": 53
+    },
+    {
+      "city": "Kuala Lumpur",
+      "zoom": 15,
+      "lat": 3.1478,
+      "lng": 101.6953,
+      "id": 54
+    },
+    {
+      "city": "Jining",
+      "zoom": 15,
+      "lat": 35.4,
+      "lng": 116.5667,
+      "id": 55
+    },
+    {
+      "city": "Dongguan",
+      "zoom": 15,
+      "lat": 23.0475,
+      "lng": 113.7493,
+      "id": 56
+    },
+    {
+      "city": "Hanoi",
+      "zoom": 15,
+      "lat": 21.0245,
+      "lng": 105.8412,
+      "id": 57
+    },
+    {
+      "city": "Pune",
+      "zoom": 15,
+      "lat": 18.5196,
+      "lng": 73.8553,
+      "id": 58
+    },
+    {
+      "city": "Chongqing",
+      "zoom": 15,
+      "lat": 29.55,
+      "lng": 106.5069,
+      "id": 59
+    },
+    {
+      "city": "Changchun",
+      "zoom": 15,
+      "lat": 43.9,
+      "lng": 125.2,
+      "id": 60
+    },
+    {
+      "city": "Zhumadian",
+      "zoom": 15,
+      "lat": 32.9773,
+      "lng": 114.0253,
+      "id": 61
+    },
+    {
+      "city": "Ningbo",
+      "zoom": 15,
+      "lat": 29.875,
+      "lng": 121.5492,
+      "id": 62
+    },
+    {
+      "city": "Onitsha",
+      "zoom": 15,
+      "lat": 6.1667,
+      "lng": 6.7833,
+      "id": 63
+    },
+    {
+      "city": "Nanjing",
+      "zoom": 15,
+      "lat": 32.05,
+      "lng": 118.7667,
+      "id": 64
+    },
+    {
+      "city": "Hefei",
+      "zoom": 15,
+      "lat": 31.8639,
+      "lng": 117.2808,
+      "id": 65
+    },
+    {
+      "city": "AhmadƒÅbƒÅd",
+      "zoom": 15,
+      "lat": 23.03,
+      "lng": 72.58,
+      "id": 66
+    },
+    {
+      "city": "Hong Kong",
+      "zoom": 15,
+      "lat": 22.305,
+      "lng": 114.185,
+      "id": 67
+    },
+    {
+      "city": "Khartoum",
+      "zoom": 15,
+      "lat": 15.6031,
+      "lng": 32.5265,
+      "id": 68
+    },
+    {
+      "city": "Nantong",
+      "zoom": 15,
+      "lat": 31.9829,
+      "lng": 120.8873,
+      "id": 69
+    },
+    {
+      "city": "Yancheng",
+      "zoom": 15,
+      "lat": 33.3936,
+      "lng": 120.1339,
+      "id": 70
+    },
+    {
+      "city": "Foshan",
+      "zoom": 15,
+      "lat": 23.0292,
+      "lng": 113.1056,
+      "id": 71
+    },
+    {
+      "city": "Nanning",
+      "zoom": 15,
+      "lat": 22.8192,
+      "lng": 108.315,
+      "id": 72
+    },
+    {
+      "city": "Hengyang",
+      "zoom": 15,
+      "lat": 26.8968,
+      "lng": 112.5857,
+      "id": 73
+    },
+    {
+      "city": "Xi‚Äôan",
+      "zoom": 15,
+      "lat": 34.2667,
+      "lng": 108.9,
+      "id": 74
+    },
+    {
+      "city": "Shenyang",
+      "zoom": 15,
+      "lat": 41.8039,
+      "lng": 123.4258,
+      "id": 75
+    },
+    {
+      "city": "Tangshan",
+      "zoom": 15,
+      "lat": 39.6292,
+      "lng": 118.1742,
+      "id": 76
+    },
+    {
+      "city": "Shaoyang",
+      "zoom": 15,
+      "lat": 27.2418,
+      "lng": 111.4725,
+      "id": 77
+    },
+    {
+      "city": "Changsha",
+      "zoom": 15,
+      "lat": 28.1987,
+      "lng": 112.9709,
+      "id": 78
+    },
+    {
+      "city": "Santiago",
+      "zoom": 15,
+      "lat": -33.45,
+      "lng": -70.6667,
+      "id": 79
+    },
+    {
+      "city": "Zhengzhou",
+      "zoom": 15,
+      "lat": 34.7492,
+      "lng": 113.6605,
+      "id": 80
+    },
+    {
+      "city": "Zhanjiang",
+      "zoom": 15,
+      "lat": 21.1967,
+      "lng": 110.4031,
+      "id": 81
+    },
+    {
+      "city": "Riyadh",
+      "zoom": 15,
+      "lat": 24.65,
+      "lng": 46.71,
+      "id": 82
+    },
+    {
+      "city": "Cangzhou",
+      "zoom": 15,
+      "lat": 38.3037,
+      "lng": 116.8452,
+      "id": 83
+    },
+    {
+      "city": "Dar es Salaam",
+      "zoom": 15,
+      "lat": -6.8,
+      "lng": 39.2833,
+      "id": 84
+    },
+    {
+      "city": "Maoming",
+      "zoom": 15,
+      "lat": 21.6618,
+      "lng": 110.9178,
+      "id": 85
+    },
+    {
+      "city": "Huanggang",
+      "zoom": 15,
+      "lat": 30.45,
+      "lng": 114.875,
+      "id": 86
+    },
+    {
+      "city": "Xinyang",
+      "zoom": 15,
+      "lat": 32.1264,
+      "lng": 114.0672,
+      "id": 87
+    },
+    {
+      "city": "Shangrao",
+      "zoom": 15,
+      "lat": 28.4419,
+      "lng": 117.9633,
+      "id": 88
+    },
+    {
+      "city": "Luoyang",
+      "zoom": 15,
+      "lat": 34.6587,
+      "lng": 112.4245,
+      "id": 89
+    },
+    {
+      "city": "Bijie",
+      "zoom": 15,
+      "lat": 27.3019,
+      "lng": 105.2863,
+      "id": 90
+    },
+    {
+      "city": "Yantai",
+      "zoom": 15,
+      "lat": 37.3997,
+      "lng": 121.2664,
+      "id": 91
+    },
+    {
+      "city": "Quanzhou",
+      "zoom": 15,
+      "lat": 24.9139,
+      "lng": 118.5858,
+      "id": 92
+    },
+    {
+      "city": "Hangzhou",
+      "zoom": 15,
+      "lat": 30.25,
+      "lng": 120.1675,
+      "id": 93
+    },
+    {
+      "city": "Miami",
+      "zoom": 15,
+      "lat": 25.7839,
+      "lng": -80.2102,
+      "id": 94
+    },
+    {
+      "city": "Kunming",
+      "zoom": 15,
+      "lat": 25.0433,
+      "lng": 102.7061,
+      "id": 95
+    },
+    {
+      "city": "Nanchong",
+      "zoom": 15,
+      "lat": 30.7991,
+      "lng": 106.0784,
+      "id": 96
+    },
+    {
+      "city": "Zunyi",
+      "zoom": 15,
+      "lat": 27.705,
+      "lng": 106.9336,
+      "id": 97
+    },
+    {
+      "city": "Lu‚Äôan",
+      "zoom": 15,
+      "lat": 31.7542,
+      "lng": 116.5078,
+      "id": 98
+    },
+    {
+      "city": "Yichun",
+      "zoom": 15,
+      "lat": 27.8041,
+      "lng": 114.383,
+      "id": 99
+    },
+    {
+      "city": "Taizhou",
+      "zoom": 15,
+      "lat": 28.6583,
+      "lng": 121.4221,
+      "id": 100
+    }
+  ]
+}

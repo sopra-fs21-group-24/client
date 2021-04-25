@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+/src/components/game/key.js
+/src/db.json
+/public/image.png
 # dependencies
 /node_modules
 /.pnp
@@ -22,3 +25,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .idea
+src/db.json
+src/helpers/converter.js

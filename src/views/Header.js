@@ -1,43 +1,55 @@
 import React from "react";
+import { Container, Dropdown, Header, Menu } from "semantic-ui-react";
 import styled from "styled-components";
-import { ReactLogo } from "./ReactLogo";
+import ProfileModal from "../components/profile/Profile";
 
-/**
- * Using styled-components you can visual HTML primitives and use props with it!
- * The idea behind this external package, it's to have a better structure and overview for your HTML and CSS
- * Using styled-components, you can have styling conditions using the following syntax: ${props => ...}
- * https://www.styled-components.com/
- */
-const Container = styled.div`
-  height: ${props => props.height}px;
-  background: ${props => props.background};
+const BigContainer = styled.div`
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
-const Title = styled.h1`
-  font-weight: bold;
-  color: white;
-  text-align: center;
-`;
-/**
- * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
- * Conceptually, components are like JavaScript functions. They accept arbitrary inputs (called “props”) and return React elements describing what should appear on the screen.
- * They are reusable pieces, and think about each piece in isolation.
- * Functional components have to return always something. However, they don't need a "render()" method.
- * https://reactjs.org/docs/components-and-props.html
- * @FunctionalComponent
- */
-const Header = props => {
+const HomeHeader = (props) => {
+  console.log("in home header", props);
+
+  let username = props.user ? props.user.username : "Placeholder";
+  let user = props.user ? props.user : { username: "", password: "" };
+  let userScore = props.userScore
+    ? props.userScore
+    : { clouds: 0, pixelation: 0, time: 0 };
+
   return (
-    <Container height={props.height}>
-      <Title>MAPGUESSЯ</Title>
-    </Container>
+    <BigContainer height={props.height}>
+      <Menu secondary fixed="top">
+        <Container>
+          <Menu.Item header>
+            {/* <Image size='mini' src='/logo.png' style={{ marginRight: '1.5em' }} /> */}
+            <Header as="h2">MAPGUESSЯ</Header>
+          </Menu.Item>
+          <Menu.Item position="right">
+            HighScore: {userScore.clouds} | {userScore.pixelation} |{" "}
+            {userScore.time}
+          </Menu.Item>
+          <Menu.Item as="a">
+            <Dropdown
+              button
+              floating
+              className="icon"
+              text={username}
+              icon="user"
+              position="right"
+            >
+              <Dropdown.Menu>
+                <ProfileModal user={user} updateUser={props.updateUser} />
+                <Dropdown.Item onClick={props.logout}>Logout</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </Menu.Item>
+        </Container>
+      </Menu>
+    </BigContainer>
   );
 };
 
-/**
- * Don't forget to export your component!
- */
-export default Header;
+export default HomeHeader;
