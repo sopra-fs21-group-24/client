@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { api, handleError } from "../../helpers/api";
 import useWindowDimensions from "../shared/models/WindowSize";
 import GameHeader from "./GameHeader";
-import { key } from "./key";
+// import { key } from "./key";
 import MiniMap from "./MiniMap";
 import ScoreBox from "./ScoreBox";
 // import {useWindowDimensions} from '../shared/models/GeoMath';
@@ -138,6 +138,7 @@ class GameController extends React.Component {
       //TODO: get the correct sizes of the user's screen
       const height = 1316;
       const width = 1057;
+      let key = "1"
 
       await api
         .get(
