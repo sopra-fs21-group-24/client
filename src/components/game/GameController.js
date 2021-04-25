@@ -29,6 +29,7 @@ class GameController extends React.Component {
       currentQuestionId: null,
       currentQuestionImage: null,
       questionTime: null,
+      gameMode: null,
 
       scores: null,
       playerScore: null,
@@ -290,7 +291,7 @@ class GameController extends React.Component {
           currentRound={this.state.currentRound}
           exitGame = {this.exitGame}
         />
-        <Component url={this.state.currentQuestionImage} timer={this.state.timer}/>
+        <Component url={this.state.currentQuestionImage} gameMode = {this.state.gameMode} timer={this.state.timer}/>
 
         {this.state.showScoreModal ? (
           <Modal basic open={true} size="small" trigger={null}>
@@ -333,11 +334,12 @@ class GameController extends React.Component {
 
 const Component = (props) => {
   const { height, width } = useWindowDimensions();
+  let filter = props.gameMode==1? 10-props.timer*0.30:0;
 
   return (
     <div
       style={{
-        filter: `blur(${10-props.timer*0.30}px)`,
+        filter: `blur(${filter}px)`,
         minWidth: width,
         minHeight: height,
         backgroundImage: `url(${props.url})`,
