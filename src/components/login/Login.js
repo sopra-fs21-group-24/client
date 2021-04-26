@@ -44,7 +44,7 @@ class Login extends React.Component {
     try {
       const requestBody = JSON.stringify({
         username: this.state.username,
-        password: this.state.password,
+        password: this.state.password
       });
       const response = await api.post("/login", requestBody);
 

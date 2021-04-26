@@ -9,7 +9,7 @@ import LobbySelection from "./LobbySelection";
 import UserModeSelection from "./UserModeSelection";
 
 const adsEnabled = false;
-class Home extends React.Component {
+class Home extends React.Component {_
   constructor() {
     super();
     this.state = {
@@ -111,18 +111,7 @@ class Home extends React.Component {
     try {
       let userId = localStorage.getItem("currentUserId");
       const response = await api.get("/users/" + userId);
-      // delays continuous execution of an async operation for 1 second.
-      // This is just a fake async call, so that the spinner can be displayed
-      // feel free to remove it :slight_smile:
-      // await new Promise(resolve => setTimeout(resolve, 500));
-
-      // Get the returned users and update the state.
-      let st = this.state;
-      st.user = response.data;
-      this.setState(st);
-
-      // See here to get more data.
-      console.log(this.state);
+      this.setState({user:response.data});
     } catch (error) {
       alert(
         `Something went wrong while fetching the users: \n${handleError(error)}`
@@ -132,27 +121,26 @@ class Home extends React.Component {
 
   async fetchUserHighScore(){
     //TODO: switch to real API - uncomment this
-    // let userId = localStorage.getItem("currentUserId");
+    let userId = localStorage.getItem("currentUserId");
 
-    // try {
-    //   const response = await api.get("/users/" + userId + '/scores', getAuthConfig());
-
-    //   this.setState({ userScore: response.data });
-    // } catch (error) {
-    //   alert(
-    //     `Something went wrong while fetching the your user: \n${handleError(
-    //       error
-    //     )}`
-    //   );
-    // }
-
-    let temporary = {
-      "clouds":1000,
-      "pixelation":500,
-      "time": 300
+    try {
+      const response = await api.get("/users/" + userId + '/scores');
+      // TODO: unset this
+      // this.setState({ userScore: response.data });
+      this.setState({
+        userScore:{
+        "clouds":1000,
+        "pixelation":500,
+        "time": 300
+      }})
+    } catch (error) {
+      alert(
+        `Something went wrong while fetching the your user: \n${handleError(
+          error
+        )}`
+      );
     }
-    this.setState({ userScore: temporary});
-    console.log("USER score", this.state)
+
   }
 
   async updateUser(username, password) {
@@ -163,20 +151,14 @@ class Home extends React.Component {
       let data = {
         username: username,
         password: password,
-        // id:userId
+        token: token
       };
       let config = {
         headers: {
-          Authorization: `Basic ${token}`,
+          Authorization: `${token}`,
         },
       };
       const response = await api.put("/users/" + userId, data, config);
-      console.log(response);
-      // this.setState({user:response})
-      // delays continuous execution of an async operation for 1 second.
-      // This is just a fake async call, so that the spinner can be displayed
-      // feel free to remove it :)
-      // await new Promise(resolve => setTimeout(resolve, 500));
 
       this.getUser();
     } catch (error) {

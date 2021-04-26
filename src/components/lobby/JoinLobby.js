@@ -15,10 +15,9 @@ class JoinLobby extends React.Component {
 
   sendJoinLobbyRequest = async () => {
     try {
-      const response = await api.get('/lobby', {
+      const response = await api.get('/lobby/' + this.state.lobbyId, {
         headers: {
-          Authorization: localStorage.getItem('token'),
-          lobbyId: this.state.lobbyId,
+          Authorization: localStorage.getItem('token')
         },
       });
       

@@ -33,8 +33,8 @@ class GameController extends React.Component {
 
       scores: null,
       playerScore: null,
-      answer: null,
-      answers:[],
+      solution: null,
+      solutions:[],
 
       pin: null,
       pins:[],
@@ -103,12 +103,13 @@ class GameController extends React.Component {
 
   //#region API Calls
   async getGame(gameId) {
+    this.setState({
+      // currentRound: response.data.currentRound, switch this on once BE works properly
+      questions: ["1", "2", "3"], //response.data.questions,
+    });
     try {
       const response = await api.get("/games/" + gameId);
-      this.setState({
-        // currentRound: response.data.currentRound,
-        questions: response.data.questions,
-      });
+     
     } catch (error) {
       alert(
         `Something went wrong while fetching the game with gameId: ${gameId}: \n${handleError(
@@ -118,75 +119,71 @@ class GameController extends React.Component {
     }
   }
   async getQuestion(questionId) {
-    // TODO: once BE returns an image
-    let question = null;
+    //TODO: get the correct sizes of the user's screen
+    const height = 1316;
+    const width = 1057;
+
     try {
-      const response = await api.get("/questions/" + questionId);
-      console.log(response.data);
-      question = response.data;
-      this.fetchScore();
-      // this.setState({question:response.data})
+      const response = await api.post(`/question/${questionId}`, {
+        width:width,
+        height:height
+      })
+      .then((response) => {
+        this.setState({ currentQuestionImage: "data:;base64," + response.data });
+      });
     } catch (error) {
       alert(
-        `Something went wrong while fetching the users: \n${handleError(error)}`
-      );
-    }
-
-    await this.fetchcurrentQuestionImage(question);
-  }
-
-  async fetchcurrentQuestionImage(question) {
-    try {
-      //TODO: get the correct sizes of the user's screen
-      const height = 1316;
-      const width = 1057;
-      let key = "1"
-
-      await api
-        .get(
-          `https://maps.googleapis.com/maps/api/staticmap?zoom=${question.zoom}&size=${height}x${width}&scale=2&maptype=satellite&key=${key}&center=${question.lat},${question.lng}`,
-          { responseType: "arraybuffer" }
-        )
-        .then((response) => {
-          const base64 = btoa(
-            new Uint8Array(response.data).reduce(
-              (data, byte) => data + String.fromCharCode(byte),
-              ""
-            )
-          );
-          this.setState({ currentQuestionImage: "data:;base64," + base64 });
-        });
-    } catch (error) {
-      alert(
-        `Something went wrong while fetching the users: \n${handleError(error)}`
+        `Couldn't fetch image: \n${handleError(error)}`
       );
     }
   }
-  async sendGuess(answer, questionId) {
-    // let data = {
-    //   questionId: questionId,
-    //   location: answer,
-    // };
+  async sendGuess(guess, questionId) {
+    let data = {
+      questionId: questionId,
+      difficulty:1,
+      lng:guess.lat,
+      lat:guess.lng
+    };
 
     try {
       let token = localStorage.getItem("token");
 
       let config = {
         headers: {
-          Authorization: `Basic ${token}`,
-        },
+          Authorization: `${token}`,
+        }
       };
 
-      // const response = await api.post(`/game/${gameId}/submit`, data, config);
-      const response = await api.get("/playerScore/", config);
-      let oldAnswers = this.state.answers
-      oldAnswers.push(response.data.answer)
+      const response = await api.post(`/games/${this.state.gameId}/guess/`, data, config);
+      // let responseData = response.data
+      
+      //TODO: current override
+      let responseData = {
+        playerScore: {
+          "name": "Player1",
+          "score": 3000,
+          "totalScore": 5000
+        },
+        lat:1,
+        lng:2
+      }
+
+      let solution = {
+        lat: responseData.lat,
+        lng: responseData.lng
+      }
+     
+      let solutions = this.state.solutions
+      solutions.push(solution)
+
       this.setState({
-        playerScore: response.data.score,
-        answer: response.data.answer,
-        answers:oldAnswers
+        playerScore: responseData.playerScore,
+        solution: solution,
+        solutions:solutions
       });
-      console.log("PLAYERSCORE", this.state);
+
+      await this.fetchScore()
+
     } catch (error) {
       alert(
         `Something went wrong while fetching the users: \n${handleError(error)}`
@@ -196,13 +193,61 @@ class GameController extends React.Component {
 
   async fetchScore() {
     try {
-      // const response = await api.get('/games/' + this.state.gameId + '/score')
-      const response = await api.get("/scores");
-      console.log(response.data);
+      const response = await api.get("games/"+ this.state.gameId + "/scores/" );
+      // console.log(response.data);
+      // let responseData = response.data
+      // TODO: Comment this once BE works
+      let responseData = {
+        scores : [
+          {
+            "name": "Player1",
+            "score": 3000,
+            "totalScore": 5000,
+            "guess":{
+              "lat":1,
+              "lng":3
+            }
+          },
+          {
+            "name": "Player2",
+            "score": 2000,
+            "totalScore": 6000,
+            "guess":{
+              "lat":1,
+              "lng":3
+            }
+          }
+        ],
+        solution:{
+          lat:1,
+          lng:1
+        }
+      }
+      
       this.setState({
-        scores: response.data,
+        scores: [
+          {
+            "name": "Player1",
+            "score": 3000,
+            "totalScore": 5000,
+            "guess":{
+              "lat":1,
+              "lng":3
+            }
+          },
+          {
+            "name": "Player2",
+            "score": 2000,
+            "totalScore": 6000,
+            "guess":{
+              "lat":1,
+              "lng":3
+            }
+          }
+        ],
+        solution: responseData.solution
       });
-      console.log("SCOOOOOOREE", response.data);
+
     } catch (error) {
       alert(
         `Something went wrong while fetching the users: \n${handleError(error)}`
@@ -235,9 +280,10 @@ class GameController extends React.Component {
     await this.sendGuess({ lat: lat, lng: lng }, this.state.currentQuestionId);
 
     // Continously fetch the score
-    this.setState({ pin: null, answer: null });
+    this.setState({ pin: null, solution: null });
 
     // Display the inbetween rounds scoreboard
+    await this.fetchScore()
     this.setState({ showScoreModal: true });
 
     // Fetching incoming scores every second
@@ -297,16 +343,16 @@ class GameController extends React.Component {
         {this.state.showScoreModal ? (
           <Modal basic open={true} size="small" trigger={null}>
             <ScoreBox
-              scores={this.state.scores}
-              playerScore={this.playerScore}
+              playerScore={this.state.playerScore}
+              scores={this.state.scores ? this.state.scores : []}
               nextRound={this.nextRound}
               lastRound={this.state.isLastRound}
               endGame={this.endGame}
               state={{
    
-                answer: this.state.answer,
+                answer: this.state.solution,
                 pin: this.state.pin,
-                answers:this.state.answers,
+                answers:this.state.solutions,
                 pins:this.state.pins,
               }}
             />
@@ -319,9 +365,9 @@ class GameController extends React.Component {
                 lat: 20.907646,
                 lng: -0.848103,
               },
-              answer: this.state.answer,
+              answer: this.state.solution,
               pin: this.state.pin,
-              answers:this.state.answers,
+              answers:this.state.solutions,
               pins:this.state.pins,
               zoom: 2,
             }}

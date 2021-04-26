@@ -1,8 +1,7 @@
 {
   "games": [
     {
-      "id": 5,
-      "currentRound": 1,
+      "id":5,
       "questions": [
         "1",
         "11",
@@ -14,7 +13,7 @@
   ],
   "users": [
     {
-      "username": "lou chaier",
+      "username": "lou chaiera",
       "password": "",
       "id": 10
     }
@@ -44,6 +43,16 @@
       "username": "a",
       "password": "a",
       "id": 25
+    },
+    {
+      "username": "a",
+      "password": "a",
+      "id": 26
+    },
+    {
+      "username": "a",
+      "password": "a",
+      "id": 27
     }
   ],
   "posts": [
@@ -85,17 +94,20 @@
     {
       "name": "Player1",
       "score": 3000,
-      "totalScore": 5000
+      "totalScore": 5000,
+      "guess":{
+        "lat":1,
+        "lng":3
+      }
     },
     {
       "name": "Player2",
       "score": 2000,
-      "totalScore": 6000
-    },
-    {
-      "name": "Player3",
-      "score": 1000,
-      "totalScore": 2000
+      "totalScore": 6000,
+      "guess":{
+        "lat":1,
+        "lng":3
+      }
     }
   ],
   "questions": [
