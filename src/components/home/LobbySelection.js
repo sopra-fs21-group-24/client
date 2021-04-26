@@ -1,18 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router";
-import { Button, Grid } from "semantic-ui-react";
+import {
+  Button,
+  Grid,
+  Segment,
+  Dimmer,
+  Loader,
+  Image,
+} from "semantic-ui-react";
+import { handleError, api } from "../../helpers/api";
 
 const LobbySelection = ({
   toggleUsermodeDisplay,
   toggleCreateJoinLobbyDisplay,
   toggleGamemodeDisplay,
+  sendCreateGameRequest,
 }) => {
   const history = useHistory();
+
+  const LoaderExampleActive = () => (
+    <Segment>
+      <Loader active />
+      <Image src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
+    </Segment>
+  );
 
   return (
     <Grid centered>
       <Grid.Row>
-        <p>Create a new lobby or join an existing lobby!</p>
+        <h1>Create a new lobby or join an existing lobby!</h1>
       </Grid.Row>
       <Grid.Row>
         <Grid.Column width="4">
@@ -22,10 +38,8 @@ const LobbySelection = ({
             color="blue"
             onClick={() => {
               toggleCreateJoinLobbyDisplay();
-              toggleGamemodeDisplay();
-              history.push({
-                pathname: "/lobby",
-              });
+              LoaderExampleActive();
+              sendCreateGameRequest();
             }}
           >
             Create Lobby

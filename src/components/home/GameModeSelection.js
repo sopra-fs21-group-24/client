@@ -12,7 +12,7 @@ const GameModeSelection = ({
   return (
     <Grid centered>
       <Grid.Row>
-        <p>Choose which gamemode you want to play!</p>
+        <h1>Choose which gamemode you want to play!</h1>
       </Grid.Row>
       <Grid.Row>
         <Grid.Column width="4">
@@ -20,7 +20,7 @@ const GameModeSelection = ({
             size="big"
             fluid
             animated
-            color="grey"
+            color="blue"
             onClick={() => {
               setGamemode("time");
             }}
