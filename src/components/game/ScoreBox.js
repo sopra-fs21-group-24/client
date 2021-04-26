@@ -124,7 +124,7 @@ const ScoreBox = (props) => {
   return (
     <Segment placeholder raised>
       <Header as="h2" color="teal" textAlign="center">
-        <text>Your Score {props.scores[0].name}</text>
+        <text>Your Score {props.playerScore}</text>
         <ProgressBar />
         <Divider horizontal></Divider>
       </Header>

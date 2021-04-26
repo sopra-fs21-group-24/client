@@ -180,7 +180,7 @@ class Home extends React.Component {_
   logout() {
     localStorage.removeItem("token");
     localStorage.removeItem("currentUserId");
-    this.props.history.push("/login");
+    this.props.history.push("/");
   }
 
   // render() {
