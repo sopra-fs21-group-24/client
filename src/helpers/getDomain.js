@@ -13,5 +13,5 @@ export const getDomain = () => {
 
   // SEARCH FOR QWERTZUIO if you want to switch to a different endpoint
 
-  return isProduction() ? prodUrl : localURL;
+  return isProduction() ? prodUrl : devUrl;
 };

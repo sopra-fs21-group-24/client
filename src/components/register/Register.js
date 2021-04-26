@@ -2,7 +2,7 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import { Button, Form, Input,Grid,Segment,Header } from "semantic-ui-react";
 import styled from "styled-components";
-import { api, handleError } from "../../helpers/api";
+import { api, handleError, handleUserFriendlyError } from "../../helpers/api";
 import { BaseContainer } from "../../helpers/layout";
 import User from "../shared/models/User";
 
@@ -44,13 +44,14 @@ class Register extends React.Component {
 
       // Store the token into the local storage.
       localStorage.setItem("token", user.token);
+      localStorage.setItem("username", user.username);
       localStorage.setItem("currentUserId", user.id);
 
       // After successful registration
       this.navigateToHomePage();
     } catch (error) {
       alert(
-        `Something went wrong during the register: \n${handleError(error)}`
+        `Something went wrong during the register process: \n${handleUserFriendlyError(error)}`
       );
     }
   }

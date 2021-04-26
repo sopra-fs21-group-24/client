@@ -2,22 +2,14 @@ import React from "react";
 import { withRouter } from "react-router";
 import { Modal } from "semantic-ui-react";
 import styled from "styled-components";
-import { api, handleError } from "../../helpers/api";
+import { api, getAuthConfig, handleError } from "../../helpers/api";
 import useWindowDimensions from "../shared/models/WindowSize";
 import GameHeader from "./GameHeader";
 // import { key } from "./key";
 import MiniMap from "./MiniMap";
 import ScoreBox from "./ScoreBox";
-import { useState } from 'react';
+import { useState } from "react";
 // import {useWindowDimensions} from '../shared/models/GeoMath';
-
-const MiniMapContainer = styled.div`
-  position: absolute;
-  bottom: 15px;
-  right: 15px;
-  width: 450px;
-`;
-
 
 class GameController extends React.Component {
   constructor(props) {
@@ -34,15 +26,15 @@ class GameController extends React.Component {
       scores: null,
       playerScore: null,
       solution: null,
-      solutions:[],
+      solutions: [],
 
       pin: null,
-      pins:[],
+      pins: [],
 
       showScoreModal: false, // Show the scorepage flag
       players: null,
 
-      isLastRound: false
+      isLastRound: false,
     };
 
     console.log("Starting up Game with GameId", props.gameId);
@@ -73,7 +65,7 @@ class GameController extends React.Component {
 
     // Start Timer
     this.startTimer();
-    
+
     // Fetch Question Image
     await this.getQuestion(currentQuestionId);
   }
@@ -90,14 +82,14 @@ class GameController extends React.Component {
       // Fetch changes to the game
       await this.getGame(this.state.gameId);
       //TODO: Just an override to increase the round Counter
-      this.setState({currentRound: this.state.currentRound +1})
-      console.log(this.state.currentRound)
+      this.setState({ currentRound: this.state.currentRound + 1 });
+      console.log(this.state.currentRound);
       // Start playing the next Round
       await this.startRound(this.state.currentRound);
     }
 
-    if (this.state.currentRound  === 5){
-      this.setState({isLastRound:true})
+    if (this.state.currentRound === 5) {
+      this.setState({ isLastRound: true });
     }
   }
 
@@ -109,13 +101,12 @@ class GameController extends React.Component {
     });
     try {
       const response = await api.get("/games/" + gameId);
-     
     } catch (error) {
-      alert(
-        `Something went wrong while fetching the game with gameId: ${gameId}: \n${handleError(
-          error
-        )}`
-      );
+      // alert(
+      //   `Something went wrong while fetching the game with gameId: ${gameId}: \n${handleError(
+      //     error
+      //   )}`
+      // );
     }
   }
   async getQuestion(questionId) {
@@ -124,130 +115,125 @@ class GameController extends React.Component {
     const width = 1057;
 
     try {
-      const response = await api.post(`/question/${questionId}`, {
-        width:width,
-        height:height
-      })
-      .then((response) => {
-        this.setState({ currentQuestionImage: "data:;base64," + response.data });
-      });
+      const response = await api
+        .post(`/question/${questionId}`, {
+          width: width,
+          height: height,
+        })
+        .then((response) => {
+          this.setState({
+            currentQuestionImage: "data:;base64," + response.data,
+          });
+        });
     } catch (error) {
-      alert(
-        `Couldn't fetch image: \n${handleError(error)}`
-      );
+      alert(`Couldn't fetch image: \n${handleError(error)}`);
     }
   }
   async sendGuess(guess, questionId) {
-    let data = {
-      questionId: questionId,
-      difficulty:1,
-      lng:guess.lat,
-      lat:guess.lng
-    };
-
     try {
-      let token = localStorage.getItem("token");
-
-      let config = {
-        headers: {
-          Authorization: `${token}`,
-        }
+      let guessData = {
+        questionId: questionId,
+        difficulty: 1,
+        lng: guess.lat,
+        lat: guess.lng,
       };
 
-      const response = await api.post(`/games/${this.state.gameId}/guess/`, data, config);
+      const response = await api.post(
+        `/games/${this.state.gameId}/guess/`,
+        guessData,
+        getAuthConfig()
+      );
       // let responseData = response.data
-      
-      //TODO: current override
       let responseData = {
         playerScore: {
-          "name": "Player1",
-          "score": 3000,
-          "totalScore": 5000
+          name: "Player1",
+          score: 3000,
+          totalScore: 5000,
         },
-        lat:1,
-        lng:2
-      }
+        lat: 1,
+        lng: 2,
+      };
 
       let solution = {
         lat: responseData.lat,
-        lng: responseData.lng
-      }
-     
-      let solutions = this.state.solutions
-      solutions.push(solution)
+        lng: responseData.lng,
+      };
+
+      let solutions = this.state.solutions;
+      solutions.push(solution);
 
       this.setState({
         playerScore: responseData.playerScore,
         solution: solution,
-        solutions:solutions
+        solutions: solutions,
       });
 
-      await this.fetchScore()
-
+      await this.fetchScore();
     } catch (error) {
       alert(
-        `Something went wrong while fetching the users: \n${handleError(error)}`
+        `Something went wrong while submitting your guess: \n${handleError(
+          error
+        )}`
       );
     }
   }
 
   async fetchScore() {
     try {
-      const response = await api.get("games/"+ this.state.gameId + "/scores/" );
+      const response = await api.get("games/" + this.state.gameId + "/scores/");
       // console.log(response.data);
       // let responseData = response.data
       // TODO: Comment this once BE works
       let responseData = {
-        scores : [
+        scores: [
           {
-            "name": "Player1",
-            "score": 3000,
-            "totalScore": 5000,
-            "guess":{
-              "lat":1,
-              "lng":3
-            }
+            name: "Player1",
+            score: 3000,
+            totalScore: 5000,
+            guess: {
+              lat: 1,
+              lng: 3,
+            },
           },
           {
-            "name": "Player2",
-            "score": 2000,
-            "totalScore": 6000,
-            "guess":{
-              "lat":1,
-              "lng":3
-            }
-          }
+            name: "Player2",
+            score: 2000,
+            totalScore: 6000,
+            guess: {
+              lat: 1,
+              lng: 3,
+            },
+          },
         ],
-        solution:{
-          lat:1,
-          lng:1
-        }
-      }
-      
+        solution: {
+          lat: 1,
+          lng: 1,
+        },
+      };
+
       this.setState({
         scores: [
           {
-            "name": "Player1",
-            "score": 3000,
-            "totalScore": 5000,
-            "guess":{
-              "lat":1,
-              "lng":3
-            }
+            name: "Player1",
+            score: 3000,
+            totalScore: 5000,
+            guess: {
+              lat: 1,
+              lng: 3,
+            },
           },
           {
-            "name": "Player2",
-            "score": 2000,
-            "totalScore": 6000,
-            "guess":{
-              "lat":1,
-              "lng":3
-            }
-          }
+            name: "Player2",
+            score: 2000,
+            totalScore: 6000,
+            guess: {
+              lat: 1,
+              lng: 3,
+            },
+          },
         ],
-        solution: responseData.solution
+        solution: responseData.solution,
       });
-
     } catch (error) {
       alert(
         `Something went wrong while fetching the users: \n${handleError(error)}`
@@ -262,16 +248,15 @@ class GameController extends React.Component {
     this.setState({ pin: mapState });
   }
   async handleGuessSubmit() {
-
     if (this.state.pin == null) {
       throw Error("Please drop a pin on the map before you submit!");
     }
     const lat = this.state.pin.lat;
     const lng = this.state.pin.lng;
 
-    let oldGuesses = this.state.pins
-    oldGuesses.push(this.state.pin)
-    this.setState({pins:oldGuesses})
+    let oldGuesses = this.state.pins;
+    oldGuesses.push(this.state.pin);
+    this.setState({ pins: oldGuesses });
 
     // Stop Timer
     this.stopTimer();
@@ -283,7 +268,7 @@ class GameController extends React.Component {
     this.setState({ pin: null, solution: null });
 
     // Display the inbetween rounds scoreboard
-    await this.fetchScore()
+    await this.fetchScore();
     this.setState({ showScoreModal: true });
 
     // Fetching incoming scores every second
@@ -316,16 +301,16 @@ class GameController extends React.Component {
     this.setState({ questionTime: null });
   }
 
-  async exitGame(){
+  async exitGame() {
     //TODO: some cool animation?
     alert("are you sure you want to leave the game?");
     //TODO: send to BE request and depending if user was creator some logic takes place
-    this.props.history.push('/home')
+    this.props.history.push("/home");
   }
 
-  async endGame(){
+  async endGame() {
     //TODO: some cool animation?
-    this.props.history.push('/home')
+    this.props.history.push("/home");
   }
 
   render() {
@@ -336,9 +321,13 @@ class GameController extends React.Component {
           timer={this.state.timer}
           playerScore={this.state.playerScore}
           currentRound={this.state.currentRound}
-          exitGame = {this.exitGame}
+          exitGame={this.exitGame}
         />
-        <Component url={this.state.currentQuestionImage} gameMode = {this.state.gameMode} timer={this.state.timer}/>
+        <Component
+          url={this.state.currentQuestionImage}
+          gameMode={this.state.gameMode}
+          timer={this.state.timer}
+        />
 
         {this.state.showScoreModal ? (
           <Modal basic open={true} size="small" trigger={null}>
@@ -349,32 +338,29 @@ class GameController extends React.Component {
               lastRound={this.state.isLastRound}
               endGame={this.endGame}
               state={{
-   
                 answer: this.state.solution,
                 pin: this.state.pin,
-                answers:this.state.solutions,
-                pins:this.state.pins,
+                answers: this.state.solutions,
+                pins: this.state.pins,
               }}
             />
           </Modal>
         ) : null}
-        <MiniMapContainer>
-          <MiniMap
-            state={{
-              center: {
-                lat: 20.907646,
-                lng: -0.848103,
-              },
-              answer: this.state.solution,
-              pin: this.state.pin,
-              answers:this.state.solutions,
-              pins:this.state.pins,
-              zoom: 2,
-            }}
-            handleGuessSubmit={this.handleGuessSubmit}
-            pinMarkerOnClick={this.handlePinPlacedOnMap}
-          />
-        </MiniMapContainer>
+        <MiniMap
+          state={{
+            center: {
+              lat: 20.907646,
+              lng: -0.848103,
+            },
+            answer: this.state.solution,
+            pin: this.state.pin,
+            answers: this.state.solutions,
+            pins: this.state.pins,
+            zoom: 2,
+          }}
+          handleGuessSubmit={this.handleGuessSubmit}
+          pinMarkerOnClick={this.handlePinPlacedOnMap}
+        />
       </div>
     );
   }
@@ -382,7 +368,7 @@ class GameController extends React.Component {
 
 const Component = (props) => {
   const { height, width } = useWindowDimensions();
-  let filter = props.gameMode==1? 10-props.timer*0.30:0;
+  let filter = props.gameMode == 1 ? 10 - props.timer * 0.3 : 0;
 
   return (
     <div

@@ -68,7 +68,7 @@ class Home extends React.Component {_
   };
 
   async componentDidMount() {
-    this.fetchUserHighScore();
+    // this.fetchUserHighScore();
     this.getUser();
   }
 
@@ -138,7 +138,12 @@ class Home extends React.Component {_
     try {
       let userId = localStorage.getItem("currentUserId");
       const response = await api.get("/users/" + userId);
-      this.setState({user:response.data});
+      let userScore:{
+        "clouds":response.data.highClouds,
+        "pixelation":response.data.highPixel,
+        "time": response.data.highTime
+      }
+      this.setState({user:response.data, userScore:userScore});
     } catch (error) {
       alert(
         `Something went wrong while fetching the users: \n${handleError(error)}`
@@ -146,29 +151,29 @@ class Home extends React.Component {_
     }
   }
 
-  async fetchUserHighScore() {
-    //TODO: switch to real API - uncomment this
-    let userId = localStorage.getItem("currentUserId");
+  // async fetchUserHighScore(){
+  //   //TODO: switch to real API - uncomment this
+  //   let userId = localStorage.getItem("currentUserId");
 
-    try {
-      const response = await api.get("/users/" + userId + '/scores');
-      // TODO: unset this
-      // this.setState({ userScore: response.data });
-      this.setState({
-        userScore:{
-        "clouds":1000,
-        "pixelation":500,
-        "time": 300
-      }})
-    } catch (error) {
-      alert(
-        `Something went wrong while fetching the your user: \n${handleError(
-          error
-        )}`
-      );
-    }
+  //   try {
+  //     const response = await api.get("/users/" + userId + '/scores');
+  //     // TODO: unset this
+  //     // this.setState({ userScore: response.data });
+  //     this.setState({
+  //       userScore:{
+  //       "clouds":1000,
+  //       "pixelation":500,
+  //       "time": 300
+  //     }})
+  //   } catch (error) {
+  //     alert(
+  //       `Something went wrong while fetching the your user: \n${handleError(
+  //         error
+  //       )}`
+  //     );
+  //   }
 
-  }
+  // }
 
   async updateUser(username, password) {
     console.log(username, password);
@@ -202,7 +207,7 @@ class Home extends React.Component {_
   logout() {
     localStorage.removeItem("token");
     localStorage.removeItem("currentUserId");
-    this.props.history.push("/login");
+    this.props.history.push("/");
   }
 
   // render() {
