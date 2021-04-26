@@ -1,7 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
-import { api, handleError } from "../../helpers/api";
+import { api, handleError, handleUserFriendlyError } from "../../helpers/api";
 import { BaseContainer } from "../../helpers/layout";
 import {
   Button,
@@ -53,12 +53,12 @@ class Login extends React.Component {
 
       // Store the token into the local storage.
       localStorage.setItem("token", user.token);
-      //TODO: user the correct user.id here and not just the defaulting to 10
-      localStorage.setItem("currentUserId", /*user.id*/ "10");
+      localStorage.setItem("username", user.username);
+      localStorage.setItem("currentUserId", user.id);
 
       this.navigateToHomePage()
     } catch (error) {
-      alert(`Something went wrong during the login process: \n${handleError(error)}`);
+      alert(`Something went wrong during the login process: \n${handleUserFriendlyError(error)}`);
     }
   }
 
