@@ -298,6 +298,7 @@ class GameController extends React.Component {
           <Modal basic open={true} size="small" trigger={null}>
             <ScoreBox
               scores={this.state.scores}
+              playerScore={this.playerScore}
               nextRound={this.nextRound}
               lastRound={this.state.isLastRound}
               endGame={this.endGame}
