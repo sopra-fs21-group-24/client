@@ -11,13 +11,6 @@ import ScoreBox from "./ScoreBox";
 import { useState } from 'react';
 // import {useWindowDimensions} from '../shared/models/GeoMath';
 
-const MiniMapContainer = styled.div`
-  position: absolute;
-  bottom: 15px;
-  right: 15px;
-  width: 450px;
-`;
-
 
 class GameController extends React.Component {
   constructor(props) {
@@ -111,11 +104,11 @@ class GameController extends React.Component {
       const response = await api.get("/games/" + gameId);
      
     } catch (error) {
-      alert(
-        `Something went wrong while fetching the game with gameId: ${gameId}: \n${handleError(
-          error
-        )}`
-      );
+      // alert(
+      //   `Something went wrong while fetching the game with gameId: ${gameId}: \n${handleError(
+      //     error
+      //   )}`
+      // );
     }
   }
   async getQuestion(questionId) {
@@ -358,7 +351,6 @@ class GameController extends React.Component {
             />
           </Modal>
         ) : null}
-        <MiniMapContainer>
           <MiniMap
             state={{
               center: {
@@ -374,7 +366,6 @@ class GameController extends React.Component {
             handleGuessSubmit={this.handleGuessSubmit}
             pinMarkerOnClick={this.handlePinPlacedOnMap}
           />
-        </MiniMapContainer>
       </div>
     );
   }
