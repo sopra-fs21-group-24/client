@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { Button, Modal, Container } from "semantic-ui-react";
+import { Button, Modal } from "semantic-ui-react";
 import styled from "styled-components";
 import Login from "../login/Login";
 import Register from "../register/Register";
@@ -75,7 +75,7 @@ class Launch extends React.Component {
     this.setState({ showRegister: true });
     }
   }
-
+  
   componentDidMount() {}
 
   render() {
@@ -119,11 +119,13 @@ class Launch extends React.Component {
             </Video>{" "}
             {this.state.showLogin ? (
                 <Modal basic open={true} size="small" trigger={null}>
+                  <Button position="right" size = "mini" color="red" onClick={() => {this.setState({showLogin: false, showRegister: false})}}>X</Button>
                   <Login change = {()=>{this.goToRegister()}}/>
                 </Modal>
               ) : null}
               {this.state.showRegister ? (
                 <Modal basic open={true} size="small" trigger={null}>
+                  <Button size = "mini" color="red" onClick={() => {this.setState({showLogin: false, showRegister: false})}}>X</Button>
                   <Register change = {()=>{this.goToLogin()}}/>
                 </Modal>
               ) : null}
