@@ -187,7 +187,7 @@ class Home extends React.Component {_
       };
       let config = {
         headers: {
-          Authorization: `${token}`,
+          token: `${token}`,
         },
       };
       const response = await api.put("/users/" + userId, data, config);
