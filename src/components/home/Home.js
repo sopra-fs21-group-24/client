@@ -82,16 +82,17 @@ class Home extends React.Component {_
           user={this.state.user}
           height={"50"}
         />
-        <Segment placeholder raised>
-          <Grid columns={2} divided centered>
-            <Grid.Row></Grid.Row>
-            {adsEnabled ? (
-              <Grid.Column>
-                <Advertisement centered unit="half page" test="Half Page" />
-              </Grid.Column>
-            ) : null}
+        <div style={{marginLeft:"50px", marginRight:"50px", marginTop:"125px"}}>
+
+        {/* <Segment placeholder raised> */}
+      
+          <Grid columns={2}  centered>
+            {/* <Grid.Row></Grid.Row> */}
 
             <Grid.Column>
+              <Segment raised>
+
+          
               {this.state.isUsermodeDisplayed === true ? (
                 <UserModeSelection
                   toggleUsermodeDisplay={this.toggleUsermodeDisplay}
@@ -123,12 +124,17 @@ class Home extends React.Component {_
                   sendCreateGameRequest={this.sendCreateGameRequest}
                 />
               ) : null}
+                  </Segment>
             </Grid.Column>
             <Grid.Column>
+              <Segment raised>
+
               <h1>Leaderboard will be displayed in this column!</h1>
+              </Segment>
             </Grid.Column>
           </Grid>
-        </Segment>
+          </div>
+        {/* </Segment> */}
         {/* <ReactGlobe height="100vh" width="100vw"/> */}
       </div>
     );
