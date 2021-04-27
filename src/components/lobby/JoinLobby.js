@@ -10,54 +10,61 @@ import {
   Header,
   Icon,
   Table,
-  Label,
 } from "semantic-ui-react";
-import HomeHeader from "../../views/Header";
-
 class JoinLobby extends React.Component {
   constructor() {
     super();
     this.state = {
-      lobbyId: null,
+      roomKey: null,
+      lobbies: [],
     };
   }
 
-  // TODO: Fetch lobbies for the first time when page renders
-  async componentDidMount() {}
+  async componentDidMount() {
 
-  // TODO: Handles when the user wants to join a lobby/game
-  sendJoinLobbyRequest = async () => {
-    const lobbyId = 1;
-    const userId = localStorage.getItem("currentUserId");
-
+    while(true) {
     try {
-      const response = await api.get('/lobby/' + this.state.lobbyId, {
-        headers: {
-          Authorization: localStorage.getItem('token')
-        },
-      });
-      
-      console.log(response)
-
-      this.props.history.push(`/lobby/${lobbyId}`);
+      const response = await api.get(`/lobby`);
+      this.setState({ lobbies: response.data });
+      console.log(this.state.lobbies)
     } catch (error) {
-      alert(`Something went wrong during the login: \n${handleError(error)}`);
+      alert(
+        `Something went wrong when fetching all public lobbies: \n${handleError(
+          error
+        )}`
+      );
     }
-  };
+    await new Promise((resolve) => setTimeout(resolve, 2000))
+  }
+  }
+  joinLobbyWithKey = async () => {
+    const userId = localStorage.getItem("currentUserId");
+    try {
+      const response = await api.get(`/lobby/roomKey/${this.state.roomKey}`);
+      const res = await api.post(`/lobby/${this.state.roomKey}/${userId}`);
 
-  // TODO: Add button to refresh the list of all lobbies
-  reloadLobbyList = async () => {};
+      localStorage.setItem("lobbyId", response.data.id);
+
+      this.props.history.push(`/lobby`);
+    } catch (error) {
+      alert(
+        `Something went wrong when joining this lobby: \n${handleError(error)}`
+      );
+    }
+  }
+
+  joinPublicLobby = async () => {
+   
+  }
 
   handleInputChange(key, value) {
     this.setState({
       [key]: value,
     });
   }
-
   render() {
     return (
       <div>
-        <HomeHeader />
         <Segment raised>
           <Grid columns={2} stackable textAlign="center">
             <Divider vertical>Or</Divider>
@@ -76,25 +83,16 @@ class JoinLobby extends React.Component {
                       <Table.HeaderCell># Players</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
-
                   <Table.Body>
+                  {this.state.lobbies.map((lobby) => {
+                    return(
                     <Table.Row>
-                      <Table.Cell>
-                        <Label>First</Label>
-                      </Table.Cell>
-                      <Table.Cell>Cell</Table.Cell>
-                      <Table.Cell>Cell</Table.Cell>
+                      <Table.Cell>{lobby.username}'s Lobby</Table.Cell>
+                      <Table.Cell>{lobby.username}</Table.Cell>
+                      <Table.Cell>[{lobby.users}/3]</Table.Cell>
                     </Table.Row>
-                    <Table.Row>
-                      <Table.Cell>Cell</Table.Cell>
-                      <Table.Cell>Cell</Table.Cell>
-                      <Table.Cell>Cell</Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell>Cell</Table.Cell>
-                      <Table.Cell>Cell</Table.Cell>
-                      <Table.Cell>Cell</Table.Cell>
-                    </Table.Row>
+                    );
+                  })}
                   </Table.Body>
                 </Table>
               </Grid.Column>
@@ -109,13 +107,13 @@ class JoinLobby extends React.Component {
                     icon="key"
                     placeholder="Enter key"
                     onChange={(e) => {
-                      this.handleInputChange("lobbyId", e.target.value);
+                      this.handleInputChange("roomKey", e.target.value);
                     }}
                   />
                   <Button
                     primary
                     onClick={() => {
-                      this.sendJoinLobbyRequest();
+                      this.joinLobbyWithKey();
                     }}
                   >
                     Join

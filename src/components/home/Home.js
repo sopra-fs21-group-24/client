@@ -9,7 +9,8 @@ import LobbySelection from "./LobbySelection";
 import UserModeSelection from "./UserModeSelection";
 
 const adsEnabled = false;
-class Home extends React.Component {_
+class Home extends React.Component {
+  _;
   constructor() {
     super();
     this.state = {
@@ -48,21 +49,25 @@ class Home extends React.Component {_
     this.setState({ selectedGamemode: gamemode });
   };
 
-  // TODO: Maybe use localStorage instead of path variable to access the correct lobby
   sendCreateGameRequest = async () => {
     const requestBody = JSON.stringify({
-      usermode: this.state.selectedUsermode,
-      gamemode: this.state.selectedGamemode,
-      creator: localStorage.getItem("currentUserId"),
-      public: true,
+      userId: localStorage.getItem("currentUserId"),
+      usermode: "Multiplayer",
+      gamemode: "Time",
+      publicStatus: true,
     });
     try {
-      const response = await api.post(`/games`, requestBody);
-      const lobbyId = response.data.id;
-      this.props.history.push(`/lobby/${lobbyId}`);
+      const response = await api.post(`/games`, requestBody, {
+        headers: {
+          token: localStorage.getItem("token"),
+        },
+      });
+      localStorage.setItem("lobbyId", response.data.lobbyId);
+      localStorage.setItem("gameId", response.data.gameId);
+      this.props.history.push(`/lobby`);
     } catch (error) {
       alert(
-        `Something went wrong while joining the lobby\n${handleError(error)}`
+        `Something went wrong while creating the lobby\n${handleError(error)}`
       );
     }
   };
@@ -144,12 +149,12 @@ class Home extends React.Component {_
     try {
       let userId = localStorage.getItem("currentUserId");
       const response = await api.get("/users/" + userId);
-      let userScore:{
-        "clouds":response.data.highClouds,
-        "pixelation":response.data.highPixel,
-        "time": response.data.highTime
-      }
-      this.setState({user:response.data, userScore:userScore});
+      let userScore = {
+        clouds: response.data.highClouds,
+        pixelation: response.data.highPixel,
+        time: response.data.highTime,
+      };
+      this.setState({ user: response.data, userScore: userScore });
     } catch (error) {
       alert(
         `Something went wrong while fetching the users: \n${handleError(error)}`
@@ -189,7 +194,7 @@ class Home extends React.Component {_
       let data = {
         username: username,
         password: password,
-        token: token
+        token: token,
       };
       let config = {
         headers: {
