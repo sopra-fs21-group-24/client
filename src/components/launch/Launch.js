@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { Button, Modal } from "semantic-ui-react";
+import { Button, Modal, Container } from "semantic-ui-react";
 import styled from "styled-components";
 import Login from "../login/Login";
 import Register from "../register/Register";
@@ -59,11 +59,21 @@ class Launch extends React.Component {
     this.setState({ showRegister: true });
   }
   goToLogin() {
+    if(localStorage.getItem("token")!==null){
+      this.props.history.push("/home");
+    }
+    else{
     this.setState({ showRegister: false });
     this.setState({ showLogin: true });
+    }
   }
   goToGame() {
+    if(localStorage.getItem("token")!==null){
+      this.props.history.push("/home");
+    }
+    else{
     this.setState({ showRegister: true });
+    }
   }
 
   componentDidMount() {}
@@ -71,7 +81,7 @@ class Launch extends React.Component {
   render() {
     return (
       <div style={{ backgroundColor: "black" }}>
-        <center>
+        <center >
           <VideoBox>
             <VideoOverlays>
               <TopRightButton
@@ -83,13 +93,9 @@ class Launch extends React.Component {
                 Login{" "}
               </TopRightButton>
 
-              <center>
-                <br />
-                <br />
+              <center style={{"margin-top":"250px"}}>
+                
                 <img alt="" width="50" height="50" src="logo.png" />
-                <br />
-                <br />
-                <br />
                 <Title> MAPGUESSЯ </Title>
                 <Label> Group 24 </Label> <br />
                 <Label> David Diener </Label> <br />
@@ -105,16 +111,7 @@ class Launch extends React.Component {
                 >
                   Start Playing
                 </Button>
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <Title> The worlds #2 Map Game*</Title>
-                <Label>*Unverified Statisic</Label>
+
               </center>
             </VideoOverlays>
             <Video className="videoTag" autoPlay loop muted>
