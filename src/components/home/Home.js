@@ -1,7 +1,7 @@
 import React from "react";
 // import ReactGlobe from "react-globe";
-import { withRouter } from "react-router-dom";
-import { Advertisement, Grid } from "semantic-ui-react";
+import { withRouter, useHistory } from "react-router-dom";
+import { Advertisement, Grid, Segment } from "semantic-ui-react";
 import { api, handleError } from "../../helpers/api";
 import HomeHeader from "../../views/Header";
 import GameModeSelection from "./GameModeSelection";
@@ -18,8 +18,8 @@ class Home extends React.Component {_
       isCreateJoinLobbyDisplayed: false,
       selectedUsermode: null,
       selectedGamemode: null,
-      userScore:null,
-      user: null
+      userScore: null,
+      user: null,
     };
 
     this.updateUser = this.updateUser.bind(this);
@@ -48,6 +48,25 @@ class Home extends React.Component {_
     this.setState({ selectedGamemode: gamemode });
   };
 
+  // TODO: Maybe use localStorage instead of path variable to access the correct lobby
+  sendCreateGameRequest = async () => {
+    const requestBody = JSON.stringify({
+      usermode: this.state.selectedUsermode,
+      gamemode: this.state.selectedGamemode,
+      creator: localStorage.getItem("currentUserId"),
+      public: true,
+    });
+    try {
+      const response = await api.post(`/games`, requestBody);
+      const lobbyId = response.data.id;
+      this.props.history.push(`/lobby/${lobbyId}`);
+    } catch (error) {
+      alert(
+        `Something went wrong while joining the lobby\n${handleError(error)}`
+      );
+    }
+  };
+
   async componentDidMount() {
     // this.fetchUserHighScore();
     this.getUser();
@@ -63,45 +82,59 @@ class Home extends React.Component {_
           user={this.state.user}
           height={"50"}
         />
+        <div style={{marginLeft:"50px", marginRight:"50px", marginTop:"125px"}}>
 
-        <Grid columns={2} divided centered>
-          <Grid.Row></Grid.Row>
-          {adsEnabled ? (
+        {/* <Segment placeholder raised> */}
+      
+          <Grid columns={2}  centered>
+            {/* <Grid.Row></Grid.Row> */}
+
             <Grid.Column>
-              <Advertisement centered unit="half page" test="Half Page" />
-            </Grid.Column>
-          ) : null}
+              <Segment raised>
 
-          <Grid.Column>
-            {this.state.isUsermodeDisplayed === true ? (
-              <UserModeSelection
-                toggleUsermodeDisplay={this.toggleUsermodeDisplay}
-                toggleGamemodeDisplay={this.toggleGamemodeDisplay}
-                toggleCreateJoinLobbyDisplay={this.toggleCreateJoinLobbyDisplay}
-                setUsermode={this.setUsermode}
-              />
-            ) : null}
-            {this.state.isGamemodeDisplayed === true ? (
-              <GameModeSelection
-                toggleUsermodeDisplay={this.toggleUsermodeDisplay}
-                toggleGamemodeDisplay={this.toggleGamemodeDisplay}
-                toggleCreateJoinLobbyDisplay={this.toggleCreateJoinLobbyDisplay}
-                usermode={this.state.selectedUsermode}
-                setGamemode={this.setGamemode}
-              />
-            ) : null}
-            {this.state.isCreateJoinLobbyDisplayed === true ? (
-              <LobbySelection
-                toggleUsermodeDisplay={this.toggleUsermodeDisplay}
-                toggleCreateJoinLobbyDisplay={this.toggleCreateJoinLobbyDisplay}
-                toggleGamemodeDisplay={this.toggleGamemodeDisplay}
-              />
-            ) : null}
-          </Grid.Column>
-          <Grid.Column>
-            <p>Leaderboard will be displayed in this column!</p>
-          </Grid.Column>
-        </Grid>
+          
+              {this.state.isUsermodeDisplayed === true ? (
+                <UserModeSelection
+                  toggleUsermodeDisplay={this.toggleUsermodeDisplay}
+                  toggleGamemodeDisplay={this.toggleGamemodeDisplay}
+                  toggleCreateJoinLobbyDisplay={
+                    this.toggleCreateJoinLobbyDisplay
+                  }
+                  setUsermode={this.setUsermode}
+                />
+              ) : null}
+              {this.state.isGamemodeDisplayed === true ? (
+                <GameModeSelection
+                  toggleUsermodeDisplay={this.toggleUsermodeDisplay}
+                  toggleGamemodeDisplay={this.toggleGamemodeDisplay}
+                  toggleCreateJoinLobbyDisplay={
+                    this.toggleCreateJoinLobbyDisplay
+                  }
+                  usermode={this.state.selectedUsermode}
+                  setGamemode={this.setGamemode}
+                />
+              ) : null}
+              {this.state.isCreateJoinLobbyDisplayed === true ? (
+                <LobbySelection
+                  toggleUsermodeDisplay={this.toggleUsermodeDisplay}
+                  toggleCreateJoinLobbyDisplay={
+                    this.toggleCreateJoinLobbyDisplay
+                  }
+                  toggleGamemodeDisplay={this.toggleGamemodeDisplay}
+                  sendCreateGameRequest={this.sendCreateGameRequest}
+                />
+              ) : null}
+                  </Segment>
+            </Grid.Column>
+            <Grid.Column>
+              <Segment raised>
+
+              <h1>Leaderboard will be displayed in this column!</h1>
+              </Segment>
+            </Grid.Column>
+          </Grid>
+          </div>
+        {/* </Segment> */}
         {/* <ReactGlobe height="100vh" width="100vw"/> */}
       </div>
     );
@@ -160,7 +193,7 @@ class Home extends React.Component {_
       };
       let config = {
         headers: {
-          Authorization: `${token}`,
+          token: `${token}`,
         },
       };
       const response = await api.put("/users/" + userId, data, config);

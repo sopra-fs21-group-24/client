@@ -10,7 +10,7 @@ const UserModeSelection = ({
   return (
     <Grid centered>
       <Grid.Row>
-        <p>Start a singleplayer game or play with friends!</p>
+        <h1>Start a singleplayer game or play with friends!</h1>
       </Grid.Row>
       <Grid.Row>
         <Grid.Column width="4">
