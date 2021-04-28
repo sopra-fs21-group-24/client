@@ -22,7 +22,6 @@ const UserModeSelection = ({
             onClick={() => {
               toggleUsermodeDisplay();
               toggleGamemodeDisplay();
-              setUsermode("singleplayer");
             }}
           >
             <Button.Content visible>Singleplayer</Button.Content>
@@ -42,7 +41,6 @@ const UserModeSelection = ({
             onClick={() => {
               toggleUsermodeDisplay();
               toggleCreateJoinLobbyDisplay();
-              setUsermode("multiplayer");
             }}
           >
             <Button.Content visible>Multiplayer</Button.Content>

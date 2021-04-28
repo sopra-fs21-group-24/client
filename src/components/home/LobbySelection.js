@@ -14,7 +14,7 @@ const LobbySelection = ({
   toggleUsermodeDisplay,
   toggleCreateJoinLobbyDisplay,
   toggleGamemodeDisplay,
-  sendCreateGameRequest,
+  createLobby,
 }) => {
   const history = useHistory();
 
@@ -39,7 +39,7 @@ const LobbySelection = ({
             onClick={() => {
               toggleCreateJoinLobbyDisplay();
               LoaderExampleActive();
-              sendCreateGameRequest();
+              createLobby();
             }}
           >
             Create Lobby

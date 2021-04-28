@@ -5,8 +5,8 @@ const GameModeSelection = ({
   toggleGamemodeDisplay,
   toggleUsermodeDisplay,
   toggleCreateJoinLobbyDisplay,
-  setGamemode,
   usermode,
+  createSingleplayerGame,
 }) => {
 
   return (
@@ -19,16 +19,12 @@ const GameModeSelection = ({
           <Button
             size="big"
             fluid
-            animated
             color="blue"
             onClick={() => {
-              setGamemode("time");
+              createSingleplayerGame("Time");
             }}
           >
-            <Button.Content visible>Time</Button.Content>
-            <Button.Content hidden>
-              <Icon name="hourglass half" />
-            </Button.Content>
+            Time
           </Button>
         </Grid.Column>
       </Grid.Row>
@@ -39,7 +35,7 @@ const GameModeSelection = ({
             fluid
             color="blue"
             onClick={() => {
-              setGamemode("pixelation");
+              createSingleplayerGame("Pixelation");
             }}
           >
             Pixelation
@@ -53,7 +49,7 @@ const GameModeSelection = ({
             fluid
             color="blue"
             onClick={() => {
-              setGamemode("clouds");
+              createSingleplayerGame("Clouds");
             }}
           >
             Clouds

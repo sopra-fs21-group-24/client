@@ -17,8 +17,6 @@ class Home extends React.Component {
       isUsermodeDisplayed: true,
       isGamemodeDisplayed: false,
       isCreateJoinLobbyDisplayed: false,
-      selectedUsermode: null,
-      selectedGamemode: null,
       userScore: null,
       user: null,
     };
@@ -41,15 +39,34 @@ class Home extends React.Component {
     });
   };
 
-  setUsermode = (usermode) => {
-    this.setState({ selectedUsermode: usermode });
-  };
+  // API Call to create a new singleplayer game
+  // /games/{gameId}/start endpoint returns a game, what to do with it?
+  createSingleplayerGame = async (gamemode) => {
+    const requestBody = JSON.stringify({
+      userId: localStorage.getItem("currentUserId"),
+      usermode: "Singleplayer",
+      gamemode: gamemode,
+      publicStatus: false,
+    });
 
-  setGamemode = (gamemode) => {
-    this.setState({ selectedGamemode: gamemode });
+      await api.post(`/games`, requestBody, {
+        headers: {
+          token: localStorage.getItem("token"),
+        },
+      })
+      .then((response) => {
+        localStorage.setItem("gameId", response.data.gameId);
+        api.get(`/games/${response.data.gameId}/start`)
+      })
+      .catch((err) => {
+        alert(`Something went wrong when creating a singleplayer game\n${handleError(err)}`)
+      })
+ 
+      this.props.history.push(`/game`);
   };
-
-  sendCreateGameRequest = async () => {
+  
+  // API Call to create a new multiplayer game/lobby
+  createLobby = async () => {
     const requestBody = JSON.stringify({
       userId: localStorage.getItem("currentUserId"),
       usermode: "Multiplayer",
@@ -67,7 +84,7 @@ class Home extends React.Component {
       this.props.history.push(`/lobby`);
     } catch (error) {
       alert(
-        `Something went wrong while creating the lobby\n${handleError(error)}`
+        `Something went wrong when creating a multiplayer lobby\n${handleError(error)}`
       );
     }
   };
@@ -87,58 +104,61 @@ class Home extends React.Component {
           user={this.state.user}
           height={"50"}
         />
-        <div style={{marginLeft:"50px", marginRight:"50px", marginTop:"125px"}}>
+        <div
+          style={{
+            marginLeft: "50px",
+            marginRight: "50px",
+            marginTop: "125px",
+          }}
+        >
+          {/* <Segment placeholder raised> */}
 
-        {/* <Segment placeholder raised> */}
-      
-          <Grid columns={2}  centered>
+          <Grid columns={2} centered>
             {/* <Grid.Row></Grid.Row> */}
 
             <Grid.Column>
               <Segment raised>
-
-          
-              {this.state.isUsermodeDisplayed === true ? (
-                <UserModeSelection
-                  toggleUsermodeDisplay={this.toggleUsermodeDisplay}
-                  toggleGamemodeDisplay={this.toggleGamemodeDisplay}
-                  toggleCreateJoinLobbyDisplay={
-                    this.toggleCreateJoinLobbyDisplay
-                  }
-                  setUsermode={this.setUsermode}
-                />
-              ) : null}
-              {this.state.isGamemodeDisplayed === true ? (
-                <GameModeSelection
-                  toggleUsermodeDisplay={this.toggleUsermodeDisplay}
-                  toggleGamemodeDisplay={this.toggleGamemodeDisplay}
-                  toggleCreateJoinLobbyDisplay={
-                    this.toggleCreateJoinLobbyDisplay
-                  }
-                  usermode={this.state.selectedUsermode}
-                  setGamemode={this.setGamemode}
-                />
-              ) : null}
-              {this.state.isCreateJoinLobbyDisplayed === true ? (
-                <LobbySelection
-                  toggleUsermodeDisplay={this.toggleUsermodeDisplay}
-                  toggleCreateJoinLobbyDisplay={
-                    this.toggleCreateJoinLobbyDisplay
-                  }
-                  toggleGamemodeDisplay={this.toggleGamemodeDisplay}
-                  sendCreateGameRequest={this.sendCreateGameRequest}
-                />
-              ) : null}
-                  </Segment>
+                {this.state.isUsermodeDisplayed === true ? (
+                  <UserModeSelection
+                    toggleUsermodeDisplay={this.toggleUsermodeDisplay}
+                    toggleGamemodeDisplay={this.toggleGamemodeDisplay}
+                    toggleCreateJoinLobbyDisplay={
+                      this.toggleCreateJoinLobbyDisplay
+                    }
+                    setUsermode={this.setUsermode}
+                  />
+                ) : null}
+                {this.state.isGamemodeDisplayed === true ? (
+                  <GameModeSelection
+                    toggleUsermodeDisplay={this.toggleUsermodeDisplay}
+                    toggleGamemodeDisplay={this.toggleGamemodeDisplay}
+                    toggleCreateJoinLobbyDisplay={
+                      this.toggleCreateJoinLobbyDisplay
+                    }
+                    usermode={this.state.selectedUsermode}
+                    setGamemode={this.setGamemode}
+                    createSingleplayerGame={this.createSingleplayerGame}
+                  />
+                ) : null}
+                {this.state.isCreateJoinLobbyDisplayed === true ? (
+                  <LobbySelection
+                    toggleUsermodeDisplay={this.toggleUsermodeDisplay}
+                    toggleCreateJoinLobbyDisplay={
+                      this.toggleCreateJoinLobbyDisplay
+                    }
+                    toggleGamemodeDisplay={this.toggleGamemodeDisplay}
+                    createLobby={this.createLobby}
+                  />
+                ) : null}
+              </Segment>
             </Grid.Column>
             <Grid.Column>
               <Segment raised>
-
-              <h1>Leaderboard will be displayed in this column!</h1>
+                <h1>Leaderboard will be displayed in this column!</h1>
               </Segment>
             </Grid.Column>
           </Grid>
-          </div>
+        </div>
         {/* </Segment> */}
         {/* <ReactGlobe height="100vh" width="100vw"/> */}
       </div>

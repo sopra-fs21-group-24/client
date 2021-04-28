@@ -56,6 +56,7 @@ class Lobby extends React.Component {
 
   updateLobbyConfiguration = async () => {
     const gameId = localStorage.getItem("gameId");
+    this.setState({hasGameStarted : true})
 
     const requestBody = JSON.stringify({
       userId: localStorage.getItem("currentUserId"),
@@ -71,6 +72,7 @@ class Lobby extends React.Component {
         },
       });
       this.setState({ isUpdating: false });
+      this.setState({hasGameStarted : false})
     } catch (error) {
       alert(
         `Something went wrong when updating the lobby configuration: \n${handleError(
@@ -106,7 +108,7 @@ class Lobby extends React.Component {
     const lobbyId = localStorage.getItem("lobbyId");
     const gameId = localStorage.getItem("gameId");
 
-    while(!this.state.hasGameStarted) {
+    while(!this.state.hasGameStarted && !this.state.isUpdating) {
     try {
       const response = await api.get(`/lobby/${lobbyId}`);
       this.setState({ lobbyId: response.data.id });
@@ -114,6 +116,10 @@ class Lobby extends React.Component {
       this.setState({ users: response.data.users });
       this.setState({ roomKey: response.data.roomKey });
       this.setState({ isLobbyPublic: response.data.public });
+
+      let res = await api.get(`/games/${gameId}`);
+      this.setState({ selectedGamemode: res.data.gameMode.name });
+
     } catch (error) {
       alert(
         `Something went wrong when fetching the lobby \n${handleError(error)}`
@@ -166,7 +172,7 @@ class Lobby extends React.Component {
                       onChange={() => {
                         this.setState({ isLobbyPublic: !this.state.isLobbyPublic });
                         this.setState({ isUpdating: true });
-                        setTimeout(this.updateLobbyConfiguration, 1500);
+                        setTimeout(this.updateLobbyConfiguration(),1500)
                       }}
                     />
                   </div>
