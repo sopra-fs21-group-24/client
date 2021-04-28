@@ -15,7 +15,7 @@ class GameController extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      gameId: props.gameId,
+      gameId: localStorage.getItem("gameId"),
       currentRound: 1,
       questions: null,
       currentQuestionId: null,
@@ -36,8 +36,11 @@ class GameController extends React.Component {
 
       isLastRound: false,
     };
+    let id = localStorage.getItem("gameId")
+    this.setState({gameId:id})
 
-    console.log("Starting up Game with GameId", props.gameId);
+    console.log("Starting up Game with GameId", id);
+    console.log(this.state.gameId)
 
     // Mini Map Method Binding
     this.handleGuessSubmit = this.handleGuessSubmit.bind(this);
@@ -51,7 +54,9 @@ class GameController extends React.Component {
   }
 
   async init() {
+    
     await this.getGame(this.state.gameId);
+    await this.getQuestionsForGame(this.state.gameId)
     await this.startRound(this.state.currentRound);
   }
 
@@ -59,8 +64,9 @@ class GameController extends React.Component {
     console.log("Starting Game Round ", currentRound);
 
     // Setting our current Question Id
-    let questionIndex = currentRound - 1; // cuz rounds start at 1 and question at 0
+    let questionIndex = currentRound -1;
     let currentQuestionId = this.state.questions[questionIndex];
+    console.log(questionIndex, currentQuestionId, "DATAAA")
     this.setState({ currentQuestionId: currentQuestionId });
 
     // Start Timer
@@ -95,19 +101,39 @@ class GameController extends React.Component {
 
   //#region API Calls
   async getGame(gameId) {
-    this.setState({
-      // currentRound: response.data.currentRound, switch this on once BE works properly
-      questions: ["1", "2", "3"], //response.data.questions,
-    });
+
     try {
-      const response = await api.get("/games/" + gameId);
+      const response = await api.get("/games/" + gameId, getAuthConfig());
+      this.setState({
+        currentRound: response.data.round
+      });
     } catch (error) {
-      // alert(
-      //   `Something went wrong while fetching the game with gameId: ${gameId}: \n${handleError(
-      //     error
-      //   )}`
-      // );
+      alert(
+        `Something went wrong while fetching the game with gameId: ${gameId}: \n${handleError(
+          error
+        )}`
+      );
     }
+
+    
+  }
+
+  async getQuestionsForGame(gameId){
+  
+    try {
+      const response = await api.get("/games/" + gameId + "/questions", getAuthConfig());
+      console.log(response.data,"QUESTONS!")
+      this.setState({
+        questions: response.data,
+      });
+    } catch (error) {
+      alert(
+        `Something went wrong while fetching the questions for game with gameId: ${gameId}: \n${handleError(
+          error
+        )}`
+      );
+    }
+
   }
   async getQuestion(questionId) {
     //TODO: get the correct sizes of the user's screen
@@ -133,9 +159,12 @@ class GameController extends React.Component {
     try {
       let guessData = {
         questionId: questionId,
-        difficulty: 1,
-        lng: guess.lat,
-        lat: guess.lng,
+        coordGuess:{
+          lon: guess.lng,
+          lat: guess.lat,
+
+        },
+        difficultyFactor: 1
       };
 
       const response = await api.post(
@@ -180,7 +209,7 @@ class GameController extends React.Component {
 
   async fetchScore() {
     try {
-      const response = await api.get("games/" + this.state.gameId + "/scores/");
+      const response = await api.get("games/" + this.state.gameId + "/scores/", getAuthConfig());
       // console.log(response.data);
       // let responseData = response.data
       // TODO: Comment this once BE works

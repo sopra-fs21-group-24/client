@@ -10,7 +10,7 @@ export const getAuthConfig = () => {
     let token = localStorage.getItem("token");
     return  {
       headers: {
-        Authorization: token,
+        token: token,
       },
     };
 }

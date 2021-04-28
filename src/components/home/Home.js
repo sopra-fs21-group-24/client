@@ -2,7 +2,7 @@ import React from "react";
 // import ReactGlobe from "react-globe";
 import { withRouter, useHistory } from "react-router-dom";
 import { Advertisement, Grid, Segment } from "semantic-ui-react";
-import { api, handleError } from "../../helpers/api";
+import { api, getAuthConfig, handleError } from "../../helpers/api";
 import HomeHeader from "../../views/Header";
 import GameModeSelection from "./GameModeSelection";
 import LobbySelection from "./LobbySelection";
@@ -49,14 +49,10 @@ class Home extends React.Component {
       publicStatus: false,
     });
 
-      await api.post(`/games`, requestBody, {
-        headers: {
-          token: localStorage.getItem("token"),
-        },
-      })
+      await api.post(`/games`, requestBody, getAuthConfig())
       .then((response) => {
         localStorage.setItem("gameId", response.data.gameId);
-        api.get(`/games/${response.data.gameId}/start`)
+        api.get(`/games/${response.data.gameId}/start`, getAuthConfig())
       })
       .catch((err) => {
         alert(`Something went wrong when creating a singleplayer game\n${handleError(err)}`)
@@ -170,9 +166,9 @@ class Home extends React.Component {
       let userId = localStorage.getItem("currentUserId");
       const response = await api.get("/users/" + userId);
       let userScore = {
-        clouds: response.data.highClouds,
-        pixelation: response.data.highPixel,
-        time: response.data.highTime,
+        clouds: response.data.highscores.Clouds,
+        pixelation: response.data.highscores.Pixelation,
+        time: response.data.highscores.Time,
       };
       this.setState({ user: response.data, userScore: userScore });
     } catch (error) {
