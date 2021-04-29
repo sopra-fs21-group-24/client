@@ -21,27 +21,34 @@ class JoinLobby extends React.Component {
   }
 
   async componentDidMount() {
-
-    while(true) {
-    try {
-      const response = await api.get(`/lobby`);
-      this.setState({ lobbies: response.data });
-      console.log(this.state.lobbies)
-    } catch (error) {
-      alert(
-        `Something went wrong when fetching all public lobbies: \n${handleError(
-          error
-        )}`
-      );
+    while (true) {
+      try {
+        const response = await api.get(`/lobby`);
+        this.setState({ lobbies: response.data });
+        console.log(this.state.lobbies);
+      } catch (error) {
+        alert(
+          `Something went wrong when fetching all public lobbies: \n${handleError(
+            error
+          )}`
+        );
+      }
+      await new Promise((resolve) => setTimeout(resolve, 2000));
     }
-    await new Promise((resolve) => setTimeout(resolve, 2000))
   }
-  }
+
   joinLobbyWithKey = async () => {
-    const userId = localStorage.getItem("currentUserId");
     try {
       const response = await api.get(`/lobby/roomKey/${this.state.roomKey}`);
-      const res = await api.post(`/lobby/${this.state.roomKey}/${userId}`);
+      await api.post(
+        `/lobby/${this.state.roomKey}/roomkey`,
+        {},
+        {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        }
+      );
 
       localStorage.setItem("lobbyId", response.data.id);
 
@@ -51,11 +58,30 @@ class JoinLobby extends React.Component {
         `Something went wrong when joining this lobby: \n${handleError(error)}`
       );
     }
-  }
+  };
 
-  joinPublicLobby = async () => {
-   
-  }
+  // TODO: Implement clickable table that lets users join public lobbies
+  joinPublicLobby = async (lobbyId) => {
+    try {
+      await api.post(
+        `/lobby/${lobbyId}`,
+        {},
+        {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        }
+      );
+
+      localStorage.setItem("lobbyId", lobbyId);
+
+      this.props.history.push(`/lobby`);
+    } catch (error) {
+      alert(
+        `Something went wrong when joining this lobby: \n${handleError(error)}`
+      );
+    }
+  };
 
   handleInputChange(key, value) {
     this.setState({
@@ -68,7 +94,6 @@ class JoinLobby extends React.Component {
         <Segment raised>
           <Grid columns={2} stackable textAlign="center">
             <Divider vertical>Or</Divider>
-
             <Grid.Row verticalAlign="middle">
               <Grid.Column>
                 <Header icon>
@@ -84,19 +109,25 @@ class JoinLobby extends React.Component {
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>
-                  {this.state.lobbies.map((lobby) => {
-                    return(
-                    <Table.Row>
-                      <Table.Cell>{lobby.username}'s Lobby</Table.Cell>
-                      <Table.Cell>{lobby.username}</Table.Cell>
-                      <Table.Cell>[{lobby.users}/3]</Table.Cell>
-                    </Table.Row>
-                    );
-                  })}
+                    {this.state.lobbies.length === 0
+                      ? "Sorry, there are no public lobbies at the moment!"
+                      : this.state.lobbies.map((lobby) => {
+                          return (
+                            <Table.Row
+                              positive
+                              onClick={() => {
+                                this.joinPublicLobby(lobby.id);
+                              }}
+                            >
+                              <Table.Cell>{lobby.username}'s Lobby</Table.Cell>
+                              <Table.Cell>{lobby.username}</Table.Cell>
+                              <Table.Cell>[{lobby.users}/3]</Table.Cell>
+                            </Table.Row>
+                          );
+                        })}
                   </Table.Body>
                 </Table>
               </Grid.Column>
-
               <Grid.Column>
                 <Header icon>
                   <Icon name="key" />

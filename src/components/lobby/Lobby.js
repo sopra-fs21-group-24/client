@@ -33,6 +33,7 @@ class Lobby extends React.Component {
       users: [],
       isUpdating: false,
       hasGameStarted: false,
+      gameId: null,
     };
   }
 
@@ -45,7 +46,7 @@ class Lobby extends React.Component {
           token: localStorage.getItem("token"),
         },
       });
-      this.setState({hasGameStarted: true})
+      this.setState({ hasGameStarted: true });
       this.props.history.push("/game");
     } catch (error) {
       alert(
@@ -54,9 +55,10 @@ class Lobby extends React.Component {
     }
   };
 
+  // API Call to update lobby visibility & gamemode
   updateLobbyConfiguration = async () => {
     const gameId = localStorage.getItem("gameId");
-    this.setState({hasGameStarted : true})
+    this.setState({ hasGameStarted: true });
 
     const requestBody = JSON.stringify({
       userId: localStorage.getItem("currentUserId"),
@@ -72,7 +74,7 @@ class Lobby extends React.Component {
         },
       });
       this.setState({ isUpdating: false });
-      this.setState({hasGameStarted : false})
+      this.setState({ hasGameStarted: false });
     } catch (error) {
       alert(
         `Something went wrong when updating the lobby configuration: \n${handleError(
@@ -82,14 +84,21 @@ class Lobby extends React.Component {
     }
   };
 
+  // API Call to remove the user from the lobby list
   leaveLobby = async () => {
     try {
-      const requestBody = JSON.stringify({
-        userId: localStorage.getItem("currentUserId"),
-      });
-      await api.put(`/lobby/${this.state.lobbyId}`, requestBody);
+      await api.put(
+        `/lobby/${this.state.lobbyId}`,
+        {},
+        {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        }
+      );
 
       localStorage.removeItem("lobbyId");
+      localStorage.removeItem("gameId");
       this.props.history.push("/home");
     } catch (error) {
       alert(
@@ -104,29 +113,31 @@ class Lobby extends React.Component {
     setTimeout(this.updateLobbyConfiguration, 1500);
   };
 
+  // API Call to fetch the lobby all four seconds for changes
   async componentDidMount() {
     const lobbyId = localStorage.getItem("lobbyId");
-    const gameId = localStorage.getItem("gameId");
 
-    while(!this.state.hasGameStarted && !this.state.isUpdating) {
-    try {
-      const response = await api.get(`/lobby/${lobbyId}`);
-      this.setState({ lobbyId: response.data.id });
-      this.setState({ creator: response.data.creator });
-      this.setState({ users: response.data.users });
-      this.setState({ roomKey: response.data.roomKey });
-      this.setState({ isLobbyPublic: response.data.public });
+    while (!this.state.hasGameStarted && !this.state.isUpdating) {
+      try {
+        const response = await api.get(`/lobby/${lobbyId}`);
+        this.setState({ lobbyId: response.data.id });
+        this.setState({ creator: response.data.creator });
+        this.setState({ users: response.data.users });
+        this.setState({ roomKey: response.data.roomKey });
+        this.setState({ isLobbyPublic: response.data.publicStatus });
+        this.setState({ gameId: response.data.gameId });
+        this.setState({selectedGamemode : response.data.gamemode.name})
 
-      let res = await api.get(`/games/${gameId}`);
-      this.setState({ selectedGamemode: res.data.gameMode.name });
+        localStorage.removeItem("gameId");
+        localStorage.setItem("gameId", this.state.gameId);
 
-    } catch (error) {
-      alert(
-        `Something went wrong when fetching the lobby \n${handleError(error)}`
-      );
+      } catch (error) {
+        alert(
+          `Something went wrong when fetching the lobby \n${handleError(error)}`
+        );
+      }
+      await new Promise((resolve) => setTimeout(resolve, 4000));
     }
-    await new Promise((resolve) => setTimeout(resolve, 4000))
-  }
   }
   // TODO: Display highscore according to gamemode
   render() {
@@ -170,9 +181,11 @@ class Lobby extends React.Component {
                       checked={this.state.isLobbyPublic}
                       label="Public Lobby"
                       onChange={() => {
-                        this.setState({ isLobbyPublic: !this.state.isLobbyPublic });
+                        this.setState({
+                          isLobbyPublic: !this.state.isLobbyPublic,
+                        });
                         this.setState({ isUpdating: true });
-                        setTimeout(this.updateLobbyConfiguration(),1500)
+                        setTimeout(this.updateLobbyConfiguration, 1500);
                       }}
                     />
                   </div>
@@ -203,7 +216,7 @@ class Lobby extends React.Component {
                       return (
                         <Table.Row>
                           <Table.Cell>{user.username}</Table.Cell>
-                          <Table.Cell>{user.highTime}</Table.Cell>
+                          <Table.Cell>{user.highscores.Time}</Table.Cell>
                           <Table.Cell>
                             {" "}
                             {this.state.creator == user.id ? (
