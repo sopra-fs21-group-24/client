@@ -216,7 +216,11 @@ class Lobby extends React.Component {
                       return (
                         <Table.Row>
                           <Table.Cell>{user.username}</Table.Cell>
-                          <Table.Cell>{user.highscores.Time}</Table.Cell>
+                          <Table.Cell>
+                            {this.state.selectedGamemode === "Time" && user.highscores.Time}
+                            {this.state.selectedGamemode === "Pixelation" && user.highscores.Pixelation}
+                            {this.state.selectedGamemode === "Clouds" && user.highscores.Clouds}
+                            </Table.Cell>
                           <Table.Cell>
                             {" "}
                             {this.state.creator == user.id ? (
