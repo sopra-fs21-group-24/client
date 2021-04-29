@@ -46,7 +46,7 @@ class GameHeader extends React.Component{
 
 	displayRound = () =>{
 		//this.state.game.round
-		return `${this.props.currentRound}/5`;
+		return `${this.props.currentRound}/3`;
 	}
 
 	exitGame = () =>{

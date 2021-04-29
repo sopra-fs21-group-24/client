@@ -50,15 +50,20 @@ class Home extends React.Component {
     });
 
       await api.post(`/games`, requestBody, getAuthConfig())
-      .then((response) => {
+      .then(async (response) => {
         localStorage.setItem("gameId", response.data.gameId);
-        api.get(`/games/${response.data.gameId}/start`, getAuthConfig())
+        await api.get(`/games/${response.data.gameId}/start`, getAuthConfig()).then(()=>{
+
+          
+          this.props.history.push(`/game`);
+        })
       })
       .catch((err) => {
         alert(`Something went wrong when creating a singleplayer game\n${handleError(err)}`)
       })
  
-      this.props.history.push(`/game`);
+
+      
   };
   
   // API Call to create a new multiplayer game/lobby

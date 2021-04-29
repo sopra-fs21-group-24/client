@@ -38,8 +38,8 @@ const ScoreBox = (props) => {
   const ProgressBar = () => {
     let color = props.playerScore > 2500 ? "green" : "red";
     return (
-      <Progress percent={(props.playerScore.score / 5000) * 100} color={color}>
-        <h3>{props.playerScore.score}/5000</h3>
+      <Progress percent={(props.playerScore.score / 3000) * 100} color={color}>
+        <h3>{props.playerScore.score}/3000</h3>
       </Progress>
     );
   };
@@ -111,9 +111,9 @@ const ScoreBox = (props) => {
             <ExitGame />
           </Grid.Column>
 
-          <Grid.Column style={{ maxWidth: 450 }}>
+          {/* <Grid.Column style={{ maxWidth: 450 }}>
             <PlayAgain />
-          </Grid.Column>
+          </Grid.Column> */}
         </Grid>
       );
     } else {
@@ -124,7 +124,7 @@ const ScoreBox = (props) => {
   return (
     <Segment placeholder raised>
       <Header as="h2" color="teal" textAlign="center">
-        <text>Your Score {props.playerScore.score}</text>
+        <text>Your Score {props.playerScore ? props.playerScore.score : "?"}</text>
         <ProgressBar />
         <Divider horizontal></Divider>
       </Header>

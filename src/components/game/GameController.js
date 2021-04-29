@@ -16,7 +16,8 @@ class GameController extends React.Component {
     super(props);
     this.state = {
       gameId: localStorage.getItem("gameId"),
-      currentRound: 1,
+      gameOngoing:true,
+      currentRound: null,
       questions: null,
       currentQuestionId: null,
       currentQuestionImage: null,
@@ -50,6 +51,7 @@ class GameController extends React.Component {
     this.endGame = this.endGame.bind(this);
   }
   componentDidMount() {
+    this.mounted = true;
     this.init();
   }
 
@@ -78,23 +80,23 @@ class GameController extends React.Component {
 
   async nextRound() {
     //end of game?
-    if (this.state.currentRound === 5) {
-      //TODO: set lastround flag on scorebox for final score page
-      alert("Finished the game - show the final score page");
-    } else {
+    console.log("user pressed next round")
+
       // Hide inbetween rounds scoreboard
       this.setState({ showScoreModal: false });
 
       // Fetch changes to the game
+      console.log("right now this round", this.state.currentRound);
+      let oldRound = this.state.currentRound
       await this.getGame(this.state.gameId);
-      //TODO: Just an override to increase the round Counter
-      this.setState({ currentRound: this.state.currentRound + 1 });
-      console.log(this.state.currentRound);
+     
+      // this.setState({ currentRound: oldRound + 1 });  //TODO: Just an override to increase the round Counter once BE works remove this
+      console.log("after increase this round", this.state.currentRound);
       // Start playing the next Round
       await this.startRound(this.state.currentRound);
-    }
+    
 
-    if (this.state.currentRound === 5) {
+    if (this.state.currentRound === 3) {
       this.setState({ isLastRound: true });
     }
   }
@@ -107,6 +109,7 @@ class GameController extends React.Component {
       this.setState({
         currentRound: response.data.round
       });
+      console.log("Fetched this game round from BE: ", response.data.round)
     } catch (error) {
       alert(
         `Something went wrong while fetching the game with gameId: ${gameId}: \n${handleError(
@@ -142,10 +145,10 @@ class GameController extends React.Component {
 
     try {
       const response = await api
-        .post(`/question/${questionId}`, {
+        .post(`games/${this.state.gameId}/questions/${questionId}`, {
           width: width,
           height: height,
-        })
+        },getAuthConfig())
         .then((response) => {
           this.setState({
             currentQuestionImage: "data:;base64," + response.data,
@@ -172,27 +175,32 @@ class GameController extends React.Component {
         guessData,
         getAuthConfig()
       );
-      // let responseData = response.data
-      let responseData = {
-        playerScore: {
-          name: "Player1",
-          score: 3000,
-          totalScore: 5000,
-        },
-        lat: 1,
-        lng: 2,
-      };
+      let responseData = response.data
+      // let responseData = {
+      //   playerScore: {
+      //     name: "Player1",
+      //     score: 3000,
+      //     totalScore: 5000,
+      //   },
+      //   lat: 1,
+      //   lng: 2,
+      // };
 
       let solution = {
-        lat: responseData.lat,
-        lng: responseData.lng,
+        lat: responseData.solutionCoordinate.lat,
+        lng: responseData.solutionCoordinate.lon,
       };
 
       let solutions = this.state.solutions;
       solutions.push(solution);
 
       this.setState({
-        playerScore: responseData.playerScore,
+        playerScore: {
+          score:responseData.tempScore,
+          totalScore:responseData.totalScore,
+          userId:response.data.userId,
+          name:"this shouldn't display"
+        },
         solution: solution,
         solutions: solutions,
       });
@@ -211,57 +219,24 @@ class GameController extends React.Component {
     try {
       const response = await api.get("games/" + this.state.gameId + "/scores/", getAuthConfig());
       // console.log(response.data);
-      // let responseData = response.data
+      let responseData = response.data
       // TODO: Comment this once BE works
-      let responseData = {
-        scores: [
-          {
-            name: "Player1",
-            score: 3000,
-            totalScore: 5000,
-            guess: {
-              lat: 1,
-              lng: 3,
-            },
-          },
-          {
-            name: "Player2",
-            score: 2000,
-            totalScore: 6000,
-            guess: {
-              lat: 1,
-              lng: 3,
-            },
-          },
-        ],
-        solution: {
-          lat: 1,
-          lng: 1,
-        },
-      };
-
+      
+    
+    let different = response.data.map((value, index, array) => {
+      return {
+        name: value.userId,
+        score: value.tempScore,
+        totalScore : value.totalScore,
+        guess:{
+          lat:value.lastCoordinate.lat,
+          lng: value.lastCoordinate.lon
+        }
+      }
+    })
+    console.log(different, responseData)
       this.setState({
-        scores: [
-          {
-            name: "Player1",
-            score: 3000,
-            totalScore: 5000,
-            guess: {
-              lat: 1,
-              lng: 3,
-            },
-          },
-          {
-            name: "Player2",
-            score: 2000,
-            totalScore: 6000,
-            guess: {
-              lat: 1,
-              lng: 3,
-            },
-          },
-        ],
-        solution: responseData.solution,
+        scores: different
       });
     } catch (error) {
       alert(
@@ -301,10 +276,12 @@ class GameController extends React.Component {
     this.setState({ showScoreModal: true });
 
     // Fetching incoming scores every second
-    while (this.state.showScoreModal) {
+    while (this.state.showScoreModal && this.state.gameOngoing && this.state.mounted) {
       await this.fetchScore();
       // wait for 1 s and fetch scores again
-      await new Promise((resolve) => setTimeout(resolve, 10000));
+      console.log("still fetching scores here", this.state.showScoreModal, this.state.gameOngoing)
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      if (!this.state.gameOngoing) return
     }
   }
   //#endregion MiniMap
@@ -314,11 +291,23 @@ class GameController extends React.Component {
     this.setState({ questionTime: new Date().getTime() });
     this.setState({ timerRunning: true });
     while (this.state.timerRunning) {
+
+      // if we passed 30 s
+      if(this.state.timer > 25 && this.state.timer < 26) {
+        console.log("WE PASSED 30 S - send backup request")
+        this.setState({pin:{lat:1,lng:1}})
+        this.handleGuessSubmit()
+      }
       this.updateSeconds();
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
   }
 
+  componentWillUnmount(){
+    console.log("unmounting")
+    this.mounted = false
+    this.setState({showScoreModal:false, gameOngoing:false})
+  }
   updateSeconds() {
     if (this.state.questionTime) var now = new Date().getTime();
     var difference = (now - this.state.questionTime) / 1000;
@@ -332,14 +321,29 @@ class GameController extends React.Component {
 
   async exitGame() {
     //TODO: some cool animation?
-    alert("are you sure you want to leave the game?");
+    console.log("ending game")
+    this.setState({showScoreModal:false, gameOngoing:false})
+    localStorage.removeItem("gameId")
+
+    // try {
+    //   const response = await api.get("/games/" + this.state.gameId + "/exit", getAuthConfig());
+    //   this.setState({
+    //     currentRound: response.data.round
+    //   });
+    // } catch (error) {
+    //   alert(
+    //     `Something went wrong while fetching the game with gameId: ${gameId}: \n${handleError(
+    //       error
+    //     )}`
+    //   );
+    // }
+    
     //TODO: send to BE request and depending if user was creator some logic takes place
     this.props.history.push("/home");
   }
 
   async endGame() {
-    //TODO: some cool animation?
-    this.props.history.push("/home");
+    await this.exitGame()
   }
 
   render() {
