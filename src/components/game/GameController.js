@@ -26,6 +26,7 @@ class GameController extends React.Component {
 
       scores: null,
       playerScore: null,
+      everyOneGuessed:false,
       solution: null,
       solutions: [],
 
@@ -80,18 +81,13 @@ class GameController extends React.Component {
 
   async nextRound() {
     //end of game?
+
     console.log("user pressed next round")
 
       // Hide inbetween rounds scoreboard
-      this.setState({ showScoreModal: false });
+      this.setState({ showScoreModal: false, everyOneGuessed:false });
 
-      // Fetch changes to the game
-      console.log("right now this round", this.state.currentRound);
-      let oldRound = this.state.currentRound
-      await this.getGame(this.state.gameId);
      
-      // this.setState({ currentRound: oldRound + 1 });  //TODO: Just an override to increase the round Counter once BE works remove this
-      console.log("after increase this round", this.state.currentRound);
       // Start playing the next Round
       await this.startRound(this.state.currentRound);
     
@@ -282,14 +278,41 @@ class GameController extends React.Component {
     this.setState({ showScoreModal: true });
 
     // Fetching incoming scores every second
-    while (this.state.showScoreModal && this.state.gameOngoing && this.state.mounted) {
+    console.log("START FETCHING SCORES",this.state.showScoreModal , this.state.gameOngoing ,this.mounted,!this.state.everyOneGuessed)
+    while (this.state.showScoreModal && this.state.gameOngoing && this.mounted && !this.state.everyOneGuessed) {
       await this.fetchScore();
+      await this.checkIfEveryoneGuessed()
+      
+
       // wait for 1 s and fetch scores again
       console.log("still fetching scores here", this.state.showScoreModal, this.state.gameOngoing)
       await new Promise((resolve) => setTimeout(resolve, 1000));
       if (!this.state.gameOngoing) return
     }
   }
+
+  async  checkIfEveryoneGuessed(){
+    let oldRound = this.state.currentRound
+
+    await this.getGame(this.state.gameId)
+
+    console.log("old Round ", oldRound, " new Round: ", this.state.currentRound)
+
+
+    if(oldRound < this.state.currentRound){
+      this.setState({everyOneGuessed: true})
+      console.log("EVERYONE GUESSED")
+      return
+    } else {
+      this.setState({everyOneGuessed: false})
+      console.log("NOT EVERYONE GUESSED")
+    }
+
+  }
+
+
+
+
   //#endregion MiniMap
 
   //#region Timer
@@ -371,6 +394,7 @@ class GameController extends React.Component {
         {this.state.showScoreModal ? (
           <Modal basic open={true} size="small" trigger={null}>
             <ScoreBox
+              everyOneGuessed={this.state.everyOneGuessed}
               playerScore={this.state.playerScore}
               scores={this.state.scores ? this.state.scores : []}
               nextRound={this.nextRound}

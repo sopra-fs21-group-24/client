@@ -45,6 +45,7 @@ const ScoreBox = (props) => {
   };
 
   const NextRound = (props) => {
+    console.log(props.everyOneGuessed, "EVERYONEGUESSED?")
     //TODO: get the lastRound flag from the gamecontroller
     let button = "Next round";
     return (
@@ -57,8 +58,8 @@ const ScoreBox = (props) => {
           props.nextRound();
         }}
       >
-        <Button.Content visible>{button}</Button.Content>
-        <Button.Content hidden>Go</Button.Content>
+        {props.everyOneGuessed ? "READY":"WATING FOR GUESSES"}
+        Start Next Round
       </Button>
     );
   };
@@ -117,7 +118,7 @@ const ScoreBox = (props) => {
         </Grid>
       );
     } else {
-      return <NextRound nextRound={props.nextRound} />;
+      return props.everyOneGuessed ? <NextRound nextRound={props.nextRound} everyOneGuessed={props.everyOneGuessed} />:<p>Please wait till everyone made their guess</p> ;
     }
   };
   //SCORE = NULL
