@@ -126,11 +126,10 @@ class Lobby extends React.Component {
         this.setState({ roomKey: response.data.roomKey });
         this.setState({ isLobbyPublic: response.data.publicStatus });
         this.setState({ gameId: response.data.gameId });
-        this.setState({selectedGamemode : response.data.gamemode.name})
+        this.setState({ selectedGamemode: response.data.gamemode.name });
 
         localStorage.removeItem("gameId");
         localStorage.setItem("gameId", this.state.gameId);
-
       } catch (error) {
         alert(
           `Something went wrong when fetching the lobby \n${handleError(error)}`
@@ -199,9 +198,7 @@ class Lobby extends React.Component {
                 </Header>
                 <Header as="h2">Gamemode: {this.state.selectedGamemode}</Header>
                 <Header as="h3">
-                  {this.state.selectedGamemode === ""
-                    ? "Status: Please select a gamemode"
-                    : "Status: Waiting for the host to start the game"}
+                  Status: Waiting for the host to start the game
                 </Header>
                 <Table singleLine size="big">
                   <TableHeader>
@@ -217,10 +214,13 @@ class Lobby extends React.Component {
                         <Table.Row>
                           <Table.Cell>{user.username}</Table.Cell>
                           <Table.Cell>
-                            {this.state.selectedGamemode === "Time" && user.highscores.Time}
-                            {this.state.selectedGamemode === "Pixelation" && user.highscores.Pixelation}
-                            {this.state.selectedGamemode === "Clouds" && user.highscores.Clouds}
-                            </Table.Cell>
+                            {this.state.selectedGamemode === "Time" &&
+                              user.highscores.Time}
+                            {this.state.selectedGamemode === "Pixelation" &&
+                              user.highscores.Pixelation}
+                            {this.state.selectedGamemode === "Clouds" &&
+                              user.highscores.Clouds}
+                          </Table.Cell>
                           <Table.Cell>
                             {" "}
                             {this.state.creator == user.id ? (
