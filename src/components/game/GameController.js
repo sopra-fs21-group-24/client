@@ -107,7 +107,8 @@ class GameController extends React.Component {
     try {
       const response = await api.get("/games/" + gameId, getAuthConfig());
       this.setState({
-        currentRound: response.data.round
+        currentRound: response.data.round,
+        gameMode : response.data.gameMode.name 
       });
       console.log("Fetched this game round from BE: ", response.data.round)
     } catch (error) {
@@ -401,7 +402,7 @@ class GameController extends React.Component {
 
 const Component = (props) => {
   const { height, width } = useWindowDimensions();
-  let filter = props.gameMode == 1 ? 10 - props.timer * 0.3 : 0;
+  let filter = props.gameMode !== "Time" ? 10 - props.timer * 0.4 : 0;
 
   return (
     <div

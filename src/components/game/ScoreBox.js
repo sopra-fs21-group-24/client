@@ -24,7 +24,7 @@ const ScoreBox = (props) => {
             src="https://react.semantic-ui.com/images/avatar/small/matthew.png"
           />
           <List.Content floated="left">
-            <List.Header as="a">{user.name}</List.Header>
+            <List.Header as="a">{user.userName}</List.Header>
             <List.Description>Total: {user.totalScore}</List.Description>
           </List.Content>
           <Button floated="right">
@@ -36,17 +36,17 @@ const ScoreBox = (props) => {
   );
 
   const ProgressBar = () => {
-    let color = props.playerScore > 2500 ? "green" : "red";
+    let color = props.playerScore.score > 250 ? "green" : "red";
     return (
-      <Progress percent={(props.playerScore.score / 3000) * 100} color={color}>
-        <h3>{props.playerScore.score}/3000</h3>
+      <Progress percent={(props.playerScore.score / 500) * 100} color={color}>
+        <h3>{props.playerScore.score}/500</h3>
       </Progress>
     );
   };
 
   const NextRound = (props) => {
     //TODO: get the lastRound flag from the gamecontroller
-    let button = "Next round: 00:00";
+    let button = "Next round";
     return (
       <Button
         animated="fade"
@@ -124,7 +124,7 @@ const ScoreBox = (props) => {
   return (
     <Segment placeholder raised>
       <Header as="h2" color="teal" textAlign="center">
-        <text>Your Score {props.playerScore ? props.playerScore.score : "?"}</text>
+        <text>Your Score</text>
         <ProgressBar />
         <Divider horizontal></Divider>
       </Header>
@@ -139,7 +139,6 @@ const ScoreBox = (props) => {
 
           <Grid.Column style={{ maxWidth: 300 }}>
             <Form size="large">
-              {/* <h1 style={{color:'black'}}>MINIMAP WITH DISTANCE</h1> */}
               <MapElem
                 containerElement={
                   <div style={{ height: `150px`, width: `100%` }} />
