@@ -17,7 +17,7 @@ import {
   Loader,
 } from "semantic-ui-react";
 import Crown from "../../assets/Crown.png";
-import { handleError, api } from "../../helpers/api";
+import { handleError, api, getAuthConfig } from "../../helpers/api";
 import HomeHeader from "../../views/Header";
 import UpdateAnimation from "../../views/design/UpdateAnimation";
 
@@ -30,6 +30,7 @@ class Lobby extends React.Component {
       roomKey: "",
       isLobbyPublic: null,
       creator: null,
+      round: 0,
       users: [],
       isUpdating: false,
       hasGameStarted: false,
@@ -52,6 +53,36 @@ class Lobby extends React.Component {
       alert(
         `Something went wrong when starting the game: \n${handleError(error)}`
       );
+    }
+  };
+
+  fetchGame = async () => {
+    const gameId = localStorage.getItem("gameId");
+    try {
+      const response = await api.get(`/games/${gameId}/`, getAuthConfig());
+      this.setState({ round: response.data.round });
+      console.log("Fetched this round: ", this.state.round);
+    } catch (error) {
+      alert(
+        `Something went wrong when starting the game: \n${handleError(error)}`
+      );
+    }
+  };
+
+  listenForGameStart = async () => {
+    let userId = localStorage.getItem("currentUserId");
+    console.log("start listening for games");
+    console.log(this.state.round, this.mounted);
+    while (this.state.round == 0 && this.mounted) {
+      await this.fetchGame();
+      console.log("Fetched Game and round is ", this.state.round);
+      // wait for 1 s and fetch scores again
+      if (this.state.round == 1 && this.state.creator !== userId) {
+        this.setState({ hasGameStarted: true });
+        this.props.history.push("/game");
+      }
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // if (!this.state.mounted) return;
     }
   };
 
@@ -115,9 +146,10 @@ class Lobby extends React.Component {
 
   // API Call to fetch the lobby all four seconds for changes
   async componentDidMount() {
+    this.mounted = true;
     const lobbyId = localStorage.getItem("lobbyId");
 
-    while (!this.state.hasGameStarted && !this.state.isUpdating) {
+    if (!this.state.hasGameStarted && !this.state.isUpdating && this.mounted) {
       try {
         const response = await api.get(`/lobby/${lobbyId}`);
         this.setState({ lobbyId: response.data.id });
@@ -126,11 +158,36 @@ class Lobby extends React.Component {
         this.setState({ roomKey: response.data.roomKey });
         this.setState({ isLobbyPublic: response.data.publicStatus });
         this.setState({ gameId: response.data.gameId });
-        this.setState({selectedGamemode : response.data.gamemode.name})
+        this.setState({ selectedGamemode: response.data.gamemode.name });
 
         localStorage.removeItem("gameId");
         localStorage.setItem("gameId", this.state.gameId);
+      } catch (error) {
+        alert(
+          `Something went wrong when fetching the lobby \n${handleError(error)}`
+        );
+      }
+    }
 
+    this.listenForGameStart();
+
+    while (
+      !this.state.hasGameStarted &&
+      !this.state.isUpdating &&
+      this.mounted
+    ) {
+      try {
+        const response = await api.get(`/lobby/${lobbyId}`);
+        this.setState({ lobbyId: response.data.id });
+        this.setState({ creator: response.data.creator });
+        this.setState({ users: response.data.users });
+        this.setState({ roomKey: response.data.roomKey });
+        this.setState({ isLobbyPublic: response.data.publicStatus });
+        this.setState({ gameId: response.data.gameId });
+        this.setState({ selectedGamemode: response.data.gamemode.name });
+
+        localStorage.removeItem("gameId");
+        localStorage.setItem("gameId", this.state.gameId);
       } catch (error) {
         alert(
           `Something went wrong when fetching the lobby \n${handleError(error)}`
@@ -138,6 +195,11 @@ class Lobby extends React.Component {
       }
       await new Promise((resolve) => setTimeout(resolve, 4000));
     }
+  }
+
+  componentWillUnmount() {
+    console.log("unmounting");
+    this.mounted = false;
   }
   // TODO: Display highscore according to gamemode
   render() {
@@ -217,10 +279,13 @@ class Lobby extends React.Component {
                         <Table.Row>
                           <Table.Cell>{user.username}</Table.Cell>
                           <Table.Cell>
-                            {this.state.selectedGamemode === "Time" && user.highscores.Time}
-                            {this.state.selectedGamemode === "Pixelation" && user.highscores.Pixelation}
-                            {this.state.selectedGamemode === "Clouds" && user.highscores.Clouds}
-                            </Table.Cell>
+                            {this.state.selectedGamemode === "Time" &&
+                              user.highscores.Time}
+                            {this.state.selectedGamemode === "Pixelation" &&
+                              user.highscores.Pixelation}
+                            {this.state.selectedGamemode === "Clouds" &&
+                              user.highscores.Clouds}
+                          </Table.Cell>
                           <Table.Cell>
                             {" "}
                             {this.state.creator == user.id ? (

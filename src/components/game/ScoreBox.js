@@ -36,10 +36,10 @@ const ScoreBox = (props) => {
   );
 
   const ProgressBar = () => {
-    let color = props.playerScore > 2500 ? "green" : "red";
+    let color = props.playerScore > 1000 ? "green" : "red";
     return (
-      <Progress percent={(props.playerScore.score / 3000) * 100} color={color}>
-        <h3>{props.playerScore.score}/3000</h3>
+      <Progress percent={(props.playerScore.score / 1500) * 100} color={color}>
+        <h3>{props.playerScore.score}/1500</h3>
       </Progress>
     );
   };

@@ -223,16 +223,21 @@ class GameController extends React.Component {
       // TODO: Comment this once BE works
       
     
-    let different = response.data.map((value, index, array) => {
+      let filtered = response.data.filter((value, index, array) => {
+        return value.lastCoordinate != null
+      })
+    let different = filtered.map((value, index, array) => {
+  
+
       return {
         name: value.userId,
         score: value.tempScore,
         totalScore : value.totalScore,
         guess:{
-          lat:value.lastCoordinate.lat,
-          lng: value.lastCoordinate.lon
+          lat:value.lastCoordinate ? value.lastCoordinate.lat : null,
+          lng: value.lastCoordinate.lon ? value.lastCoordinate.lon : null
         }
-      }
+      } 
     })
     console.log(different, responseData)
       this.setState({
@@ -295,7 +300,7 @@ class GameController extends React.Component {
       // if we passed 30 s
       if(this.state.timer > 25 && this.state.timer < 26) {
         console.log("WE PASSED 30 S - send backup request")
-        this.setState({pin:{lat:1,lng:1}})
+        this.setState({pin:{lat:null,lng:null}})
         this.handleGuessSubmit()
       }
       this.updateSeconds();
