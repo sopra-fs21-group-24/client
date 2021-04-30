@@ -45,6 +45,7 @@ const GameModeSelection = ({
       <Grid.Row>
         <Grid.Column width="4">
           <Button
+            disabled
             size="big"
             fluid
             color="blue"
@@ -52,7 +53,7 @@ const GameModeSelection = ({
               createSingleplayerGame("Clouds");
             }}
           >
-            Clouds
+            Coming Soon 
           </Button>
         </Grid.Column>
       </Grid.Row>

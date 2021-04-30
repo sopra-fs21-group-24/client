@@ -155,7 +155,7 @@ class Home extends React.Component {
             </Grid.Column>
             <Grid.Column>
               <Segment raised>
-                <h1>Leaderboard will be displayed in this column!</h1>
+                <img src = "https://lh4.googleusercontent.com/-qlNchFWqgPk/TzeIkn8u86I/AAAAAAAABXI/bY5uoSlu4rY/s916/Capture.jpg"/>
               </Segment>
             </Grid.Column>
           </Grid>

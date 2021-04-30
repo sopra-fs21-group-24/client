@@ -261,9 +261,7 @@ class Lobby extends React.Component {
                 </Header>
                 <Header as="h2">Gamemode: {this.state.selectedGamemode}</Header>
                 <Header as="h3">
-                  {this.state.selectedGamemode === ""
-                    ? "Status: Please select a gamemode"
-                    : "Status: Waiting for the host to start the game"}
+                  Status: Waiting for the host to start the game
                 </Header>
                 <Table singleLine size="big">
                   <TableHeader>
