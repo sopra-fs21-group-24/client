@@ -24,7 +24,7 @@ const ScoreBox = (props) => {
             src="https://react.semantic-ui.com/images/avatar/small/matthew.png"
           />
           <List.Content floated="left">
-            <List.Header as="a">{user.userName}</List.Header>
+            <List.Header>{user.username}</List.Header>
             <List.Description>Total: {user.totalScore}</List.Description>
           </List.Content>
           <Button floated="right">

@@ -11,6 +11,8 @@ import {
   Icon,
   Table,
 } from "semantic-ui-react";
+
+
 class JoinLobby extends React.Component {
   constructor() {
     super();
@@ -122,6 +124,7 @@ class JoinLobby extends React.Component {
                               <Table.Cell>{lobby.username}'s Lobby</Table.Cell>
                               <Table.Cell>{lobby.username}</Table.Cell>
                               <Table.Cell>[{lobby.users}/3]</Table.Cell>
+                              
                             </Table.Row>
                           );
                         })}

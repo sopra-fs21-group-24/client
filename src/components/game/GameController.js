@@ -225,11 +225,11 @@ class GameController extends React.Component {
       })
     let different = filtered.map((value, index, array) => {
   
-
       return {
         name: value.userId,
         score: value.tempScore,
         totalScore : value.totalScore,
+        username : value.username,
         guess:{
           lat:value.lastCoordinate ? value.lastCoordinate.lat : null,
           lng: value.lastCoordinate.lon ? value.lastCoordinate.lon : null
@@ -255,7 +255,8 @@ class GameController extends React.Component {
   }
   async handleGuessSubmit() {
     if (this.state.pin == null) {
-      throw Error("Please drop a pin on the map before you submit!");
+      alert("Please drop a pin on the map before you submit!");
+      return;
     }
     const lat = this.state.pin.lat;
     const lng = this.state.pin.lng;
@@ -396,7 +397,7 @@ class GameController extends React.Component {
             <ScoreBox
               everyOneGuessed={this.state.everyOneGuessed}
               playerScore={this.state.playerScore}
-              scores={this.state.scores ? this.state.scores : []}
+              scores={this.state.scores}
               nextRound={this.nextRound}
               lastRound={this.state.isLastRound}
               endGame={this.endGame}
