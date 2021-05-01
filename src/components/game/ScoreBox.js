@@ -58,8 +58,8 @@ const ScoreBox = (props) => {
           props.nextRound();
         }}
       >
-        {props.everyOneGuessed ? "READY":"WATING FOR GUESSES"}
-        Start Next Round
+        {props.everyOneGuessed ? "NEXT ROUND":"WATING FOR GUESSES"}
+
       </Button>
     );
   };
@@ -118,7 +118,7 @@ const ScoreBox = (props) => {
         </Grid>
       );
     } else {
-      return props.everyOneGuessed ? <NextRound nextRound={props.nextRound} everyOneGuessed={props.everyOneGuessed} />:<p>Please wait till everyone made their guess</p> ;
+      return props.everyOneGuessed ? <NextRound nextRound={props.nextRound} everyOneGuessed={props.everyOneGuessed} />:<h4 style={{color:"black"}}>Please wait till everyone made their guess</h4> ;
     }
   };
   //SCORE = NULL

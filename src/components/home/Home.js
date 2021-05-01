@@ -1,7 +1,7 @@
 import React from "react";
 // import ReactGlobe from "react-globe";
 import { withRouter, useHistory } from "react-router-dom";
-import { Advertisement, Grid, Segment } from "semantic-ui-react";
+import { Advertisement, Grid, Segment, Image } from "semantic-ui-react";
 import { api, getAuthConfig, handleError } from "../../helpers/api";
 import HomeHeader from "../../views/Header";
 import GameModeSelection from "./GameModeSelection";
@@ -155,7 +155,7 @@ class Home extends React.Component {
             </Grid.Column>
             <Grid.Column>
               <Segment raised>
-                <img src = "https://lh4.googleusercontent.com/-qlNchFWqgPk/TzeIkn8u86I/AAAAAAAABXI/bY5uoSlu4rY/s916/Capture.jpg"/>
+                <Image src = "https://lh4.googleusercontent.com/-qlNchFWqgPk/TzeIkn8u86I/AAAAAAAABXI/bY5uoSlu4rY/s916/Capture.jpg" wrapped/>
               </Segment>
             </Grid.Column>
           </Grid>
