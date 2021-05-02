@@ -91,7 +91,7 @@ class Home extends React.Component {
   };
 
   async componentDidMount() {
-    // this.fetchUserHighScore();
+
     this.getUser();
   }
 
