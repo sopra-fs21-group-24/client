@@ -97,7 +97,7 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div style={{backgroundImage:`url(https://wallpaperaccess.com/full/199469.jpg)`}}>
+      <div style={{backgroundImage:`url(https://wallpaperaccess.com/full/199469.jpg)`,'background-size': 'cover'}}>
         <HomeHeader
           logout={this.logout}
           updateUser={this.updateUser}
