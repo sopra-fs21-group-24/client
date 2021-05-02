@@ -18,13 +18,16 @@ const GameModeSelection = ({
         <Grid.Column width="4">
           <Button
             size="big"
+            animated ='fade'
             fluid
             color="blue"
             onClick={() => {
               createSingleplayerGame("Time");
             }}
           >
-            Time
+            <Button.Content visible>Time</Button.Content>
+            <Button.Content hidden><Icon name="clock outline" /></Button.Content>
+
           </Button>
         </Grid.Column>
       </Grid.Row>
@@ -32,13 +35,16 @@ const GameModeSelection = ({
         <Grid.Column width="4">
           <Button
             size="big"
+            animated ='fade'
             fluid
             color="blue"
             onClick={() => {
               createSingleplayerGame("Pixelation");
             }}
           >
-            Pixelation
+            <Button.Content visible>Pixelation</Button.Content>
+            <Button.Content hidden><Icon name="chess board" /></Button.Content>
+            
           </Button>
         </Grid.Column>
       </Grid.Row>
