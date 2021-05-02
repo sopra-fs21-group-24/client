@@ -29,8 +29,8 @@ const HomeHeader = (props) => {
           </Menu.Item>
           <Menu.Item position="right">
             
-          <Popup content ='Here you can see your highscores for clouds|pixelation|time mode' trigger ={<Header inverted as = 'h3'>HighScores:  {userScore.clouds} | {userScore.pixelation} | {"0"}</Header>}/> 
-            {userScore.time}
+          <Popup content ='Here you can see your highscores for clouds|pixelation|time mode' trigger ={<Header inverted as = 'h3'>HighScores:  {userScore.clouds} | {userScore.pixelation} | {userScore.time}</Header>}/> 
+            
             
           </Menu.Item>
           
