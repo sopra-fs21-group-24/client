@@ -105,16 +105,12 @@ const ScoreBox = (props) => {
   const LowerPart = () => {
     if (props.lastRound) {
       return (
+        props.everyOneGuessed ? 
         <Grid columns={2} stackable textAlign="center">
-          
           <Grid.Column style={{ maxWidth: 450 }}>
             <ExitGame />
           </Grid.Column>
-
-          {/* <Grid.Column style={{ maxWidth: 450 }}>
-            <PlayAgain />
-          </Grid.Column> */}
-        </Grid>
+        </Grid>:<h4 style={{color:"black"}}>Please wait till everyone made their guess</h4>
       );
     } else {
       return props.everyOneGuessed ? <NextRound nextRound={props.nextRound} everyOneGuessed={props.everyOneGuessed} />:<h4 style={{color:"black"}}>Please wait till everyone made their guess</h4> ;

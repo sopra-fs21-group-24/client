@@ -11,5 +11,8 @@ import { Redirect } from "react-router-dom";
  * @param props
  */
 export const GamepageGuard = props => {
-  return props.children;
+  if (localStorage.getItem("token")) {
+    return props.children;
+  }
+  return <Redirect to={"/"} />;
 };

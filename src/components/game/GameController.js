@@ -167,11 +167,19 @@ class GameController extends React.Component {
         difficultyFactor: 1
       };
 
-      const response = await api.post(
+      let response;
+      try{
+      response = await api.post(
         `/games/${this.state.gameId}/guess/`,
         guessData,
         getAuthConfig()
       );
+      }catch(error){
+        alert("All players left the game, you'll be redirected");
+        this.props.history.push("/home");
+        return;
+      }
+
       let responseData = response.data
       // let responseData = {
       //   playerScore: {
@@ -350,14 +358,13 @@ class GameController extends React.Component {
   }
 
   async exitGame() {
-    //try {
-    //   await api.get("/games/" + this.state.gameId + "/exit", {headers: {token: localStorage.getItem("token")}});
+    try {
+       await api.get("/games/" + this.state.gameId + "/exit", {headers: {token: localStorage.getItem("token")}});
 
-    // } catch (error) {
-    //   alert(
-    //    `Something went wrong while fetching the game with gameId`
-    //   );
-    // }
+     } catch (error) {
+        this.props.history.push("/home");
+       
+     }
     console.log("ending game");
     this.setState({showScoreModal:false, gameOngoing:false});
     localStorage.removeItem("gameId");
