@@ -114,10 +114,10 @@ class Home extends React.Component {
         >
           {/* <Segment placeholder raised> */}
 
-          <Grid columns={2} centered>
+          <Grid columns={2} centered >
             {/* <Grid.Row></Grid.Row> */}
 
-            <Grid.Column>
+            <Grid.Column style={{minWidth:"300px"}}>
               <Segment raised>
                 {this.state.isUsermodeDisplayed === true ? (
                   <UserModeSelection
@@ -153,7 +153,7 @@ class Home extends React.Component {
                 ) : null}
               </Segment>
             </Grid.Column>
-            <Grid.Column>
+            <Grid.Column style={{minWidth:"300px"}}>
               <Segment raised>
                 <Header as='h1' textAlign='center'>Leaderboard</Header>
                 <Image src = "https://lh4.googleusercontent.com/-qlNchFWqgPk/TzeIkn8u86I/AAAAAAAABXI/bY5uoSlu4rY/s916/Capture.jpg" wrapped/>

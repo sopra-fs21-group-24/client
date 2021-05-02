@@ -10,26 +10,30 @@ const GameModeSelection = ({
 }) => {
 
   return (
-    <Grid centered>
-      <Grid.Row>
+    <Grid centered >
+      <Grid.Row centered>
         <h1>Choose which gamemode you want to play!</h1>
       </Grid.Row>
-      <Grid.Row>
-        <Grid.Column width="4">
+      <Grid.Row centered>
+        <Grid.Column centered width={7}>
+          <center >
+
           <Button
             size="big"
-            fluid
+            // fluid
             color="blue"
             onClick={() => {
               createSingleplayerGame("Time");
             }}
-          >
+            >
             Time
           </Button>
+            </center>
         </Grid.Column>
       </Grid.Row>
-      <Grid.Row>
-        <Grid.Column width="4">
+      <Grid.Row centered>
+        <Grid.Column centered width={7}>
+        <center>
           <Button
             size="big"
             fluid
@@ -40,10 +44,12 @@ const GameModeSelection = ({
           >
             Pixelation
           </Button>
+          </center>
         </Grid.Column>
       </Grid.Row>
       <Grid.Row>
-        <Grid.Column width="4">
+        <Grid.Column centered width={7}>
+          <center>
           <Button
             disabled
             size="big"
@@ -55,13 +61,17 @@ const GameModeSelection = ({
           >
             Coming Soon 
           </Button>
+          </center>
         </Grid.Column>
       </Grid.Row>
       <Grid.Row>
-        <Grid.Column width="4">
+        <Grid.Column centered>
+          <center>
+
+        
           <Button
             size="big"
-            fluid
+            // fluid
             color="black"
             onClick={() => {
               if (usermode === "multiplayer") {
@@ -75,6 +85,7 @@ const GameModeSelection = ({
           >
             Go back
           </Button>
+          </center>
         </Grid.Column>
       </Grid.Row>
     </Grid>

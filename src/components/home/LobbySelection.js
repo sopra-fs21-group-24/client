@@ -26,12 +26,14 @@ const LobbySelection = ({
   );
 
   return (
-    <Grid centered>
-      <Grid.Row>
+    <Grid centered >
+      <Grid.Row centered>
         <h1>Create a new lobby or join an existing lobby!</h1>
       </Grid.Row>
-      <Grid.Row>
-        <Grid.Column width="4">
+      <Grid.Row centered>
+        <Grid.Column centered width="7">
+          <center>
+
           <Button
             size="big"
             fluid
@@ -41,13 +43,16 @@ const LobbySelection = ({
               LoaderExampleActive();
               createLobby();
             }}
-          >
+            >
             Create Lobby
           </Button>
+            </center>
         </Grid.Column>
       </Grid.Row>
-      <Grid.Row>
-        <Grid.Column width="4">
+      <Grid.Row centered>
+        <Grid.Column centered width="7">
+          <center>
+            
           <Button
             size="big"
             fluid
@@ -57,13 +62,14 @@ const LobbySelection = ({
                 pathname: "/lobby/join",
               });
             }}
-          >
+            >
             Join Lobby
           </Button>
+            </center>
         </Grid.Column>
       </Grid.Row>
       <Grid.Row>
-        <Grid.Column width="4">
+        <Grid.Column centered width="7">
           <Button
             size="big"
             fluid
