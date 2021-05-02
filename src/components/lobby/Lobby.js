@@ -130,7 +130,7 @@ class Lobby extends React.Component {
 
       localStorage.removeItem("lobbyId");
       localStorage.removeItem("gameId");
-      this.props.history.push("/home");
+      this.props.history.push("/lobby/join");
     } catch (error) {
       alert(
         `Something went wrong when leaving the lobby \n${handleError(error)}`

@@ -156,7 +156,9 @@ class JoinLobby extends React.Component {
               </Grid.Column>
             </Grid.Row>
           </Grid>
+          
         </Segment>
+        <Button color='teal' onClick={()=>{this.props.history.push(`/home`);}}>Go back</Button>
         </Segment>
       </div>
     );
