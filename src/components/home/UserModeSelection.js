@@ -17,9 +17,9 @@ const UserModeSelection = ({
           <center>
 
           <Button
-            size="huge"
+            size="big"
             // fluid
-            animated
+            animated ='fade'
             color="green"
             onClick={() => {
               toggleUsermodeDisplay();
@@ -39,9 +39,9 @@ const UserModeSelection = ({
           <center>
 
           <Button
-            size="huge"
+            size="big"
             // fluid
-            animated
+            animated = 'fade'
             color="red"
             onClick={() => {
               toggleUsermodeDisplay();

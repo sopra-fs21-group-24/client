@@ -46,11 +46,9 @@ const ScoreBox = (props) => {
 
   const NextRound = (props) => {
     console.log(props.everyOneGuessed, "EVERYONEGUESSED?")
-    //TODO: get the lastRound flag from the gamecontroller
     let button = "Next round";
     return (
       <Button
-        animated="fade"
         color="teal"
         fluid
         size="large"
@@ -59,7 +57,6 @@ const ScoreBox = (props) => {
         }}
       >
         {props.everyOneGuessed ? "NEXT ROUND":"WATING FOR GUESSES"}
-
       </Button>
     );
   };

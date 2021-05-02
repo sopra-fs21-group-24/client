@@ -350,25 +350,17 @@ class GameController extends React.Component {
   }
 
   async exitGame() {
-    //TODO: some cool animation?
-    console.log("ending game")
-    this.setState({showScoreModal:false, gameOngoing:false})
-    localStorage.removeItem("gameId")
+    //try {
+    //   await api.get("/games/" + this.state.gameId + "/exit", {headers: {token: localStorage.getItem("token")}});
 
-    // try {
-    //   const response = await api.get("/games/" + this.state.gameId + "/exit", getAuthConfig());
-    //   this.setState({
-    //     currentRound: response.data.round
-    //   });
     // } catch (error) {
     //   alert(
-    //     `Something went wrong while fetching the game with gameId: ${gameId}: \n${handleError(
-    //       error
-    //     )}`
+    //    `Something went wrong while fetching the game with gameId`
     //   );
     // }
-    
-    //TODO: send to BE request and depending if user was creator some logic takes place
+    console.log("ending game");
+    this.setState({showScoreModal:false, gameOngoing:false});
+    localStorage.removeItem("gameId");
     this.props.history.push("/home");
   }
 
