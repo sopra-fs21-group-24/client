@@ -12,7 +12,6 @@ import {
   Table,
 } from "semantic-ui-react";
 
-
 class JoinLobby extends React.Component {
   constructor() {
     super();
@@ -92,7 +91,8 @@ class JoinLobby extends React.Component {
   }
   render() {
     return (
-      <div>
+      <div style={{height:'100vh'}}>
+        <Segment placeholder raised size="big" style={{height:'100vh', backgroundImage:`url(https://wallpaperaccess.com/full/199469.jpg)`}}>
         <Segment raised>
           <Grid columns={2} stackable textAlign="center">
             <Divider vertical>Or</Divider>
@@ -156,6 +156,7 @@ class JoinLobby extends React.Component {
               </Grid.Column>
             </Grid.Row>
           </Grid>
+        </Segment>
         </Segment>
       </div>
     );

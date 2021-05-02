@@ -204,8 +204,9 @@ class Lobby extends React.Component {
   // TODO: Display highscore according to gamemode
   render() {
     return (
-      <div>
-        <Segment placeholder raised size="big">
+      <div style={{height:'100vh'}}>
+        <Segment placeholder raised size="big" style={{height:'100vh', backgroundImage:`url(https://wallpaperaccess.com/full/199469.jpg)`}}>
+          <Segment>
           <Grid columns={3} stackable textAlign="center">
             <Grid.Row verticalAlign="middle">
               <Grid.Column>
@@ -329,6 +330,7 @@ class Lobby extends React.Component {
               </Grid.Column>
             </Grid.Row>
           </Grid>
+          </Segment>
         </Segment>
       </div>
     );

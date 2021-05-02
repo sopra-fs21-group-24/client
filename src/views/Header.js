@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Dropdown, Header, Menu } from "semantic-ui-react";
+import { Container, Dropdown, Header, Menu, Popup } from "semantic-ui-react";
 import styled from "styled-components";
 import ProfileModal from "../components/profile/Profile";
 
@@ -25,12 +25,15 @@ const HomeHeader = (props) => {
         <Container>
           <Menu.Item header>
             {/* <Image size='mini' src='/logo.png' style={{ marginRight: '1.5em' }} /> */}
-            <Header as="h2">MAPGUESSЯ</Header>
+            <Header inverted as="h2">MAPGUESSЯ</Header>
           </Menu.Item>
           <Menu.Item position="right">
-            HighScore: {userScore.clouds} | {userScore.pixelation} |{" "}
+            
+          <Popup content ='Here you can see your highscores for clouds|pixelation|time mode' trigger ={<Header inverted as = 'h3'>HighScores:  {userScore.clouds} | {userScore.pixelation} | {"0"}</Header>}/> 
             {userScore.time}
+            
           </Menu.Item>
+          
           <Menu.Item as="a">
             <Dropdown
               button
