@@ -44,6 +44,7 @@ const ScoreBox = (props) => {
     );
   };
 
+
   const NextRound = (props) => {
     console.log(props.everyOneGuessed, "EVERYONEGUESSED?")
     let button = "Next round";
@@ -62,8 +63,8 @@ const ScoreBox = (props) => {
   };
 
   const ExitGame = () => {
-    let button = "END GAME";
-    return (
+
+    return (   
       <Button
         animated="fade"
         color="red"
@@ -73,9 +74,9 @@ const ScoreBox = (props) => {
           props.endGame();
         }}
       >
-        <Button.Content visible>{button}</Button.Content>
+        <Button.Content visible>FINAL SCORE: {props.playerScore.totalScore}</Button.Content>
         <Button.Content hidden>
-          <Icon name="sign-out" />
+          EXIT GAME
         </Button.Content>
       </Button>
     );
@@ -105,6 +106,7 @@ const ScoreBox = (props) => {
     if (props.lastRound) {
       return (
         <Grid columns={2} stackable textAlign="center">
+          
           <Grid.Column style={{ maxWidth: 450 }}>
             <ExitGame />
           </Grid.Column>
