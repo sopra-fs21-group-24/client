@@ -7,6 +7,7 @@ import HomeHeader from "../../views/Header";
 import GameModeSelection from "./GameModeSelection";
 import LobbySelection from "./LobbySelection";
 import UserModeSelection from "./UserModeSelection";
+import LeaderboardLoader from "./Leaderboard";
 
 const adsEnabled = false;
 class Home extends React.Component {
@@ -156,7 +157,7 @@ class Home extends React.Component {
             <Grid.Column style={{minWidth:"300px"}}>
               <Segment raised>
                 <Header as='h1' textAlign='center'>Leaderboard</Header>
-                <Image src = "https://lh4.googleusercontent.com/-qlNchFWqgPk/TzeIkn8u86I/AAAAAAAABXI/bY5uoSlu4rY/s916/Capture.jpg" wrapped/>
+                <LeaderboardLoader/>
               </Segment>
             </Grid.Column>
           </Grid>
