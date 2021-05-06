@@ -3,12 +3,15 @@ import { withRouter } from "react-router";
 import { Modal } from "semantic-ui-react";
 import styled from "styled-components";
 import { api, getAuthConfig, handleError } from "../../helpers/api";
-import useWindowDimensions from "../shared/models/WindowSize";
+import {getWindowDimensions, useWindowDimensions} from "../shared/models/WindowSize";
 import GameHeader from "./GameHeader";
 // import { key } from "./key";
 import MiniMap from "./MiniMap";
 import ScoreBox from "./ScoreBox";
 import { useState } from "react";
+import CloudSVGFilter from "./CloudSVGFilter";
+import CloudDisplay from "./CloudDisplay";
+import CloudCanvas from "./CloudCanvas";
 // import {useWindowDimensions} from '../shared/models/GeoMath';
 
 class GameController extends React.Component {
@@ -16,7 +19,8 @@ class GameController extends React.Component {
     super(props);
     this.state = {
       gameId: localStorage.getItem("gameId"),
-      gameOngoing:true,
+      gameOngoing: true,
+      showCloud:true,
       currentRound: null,
       questions: null,
       currentQuestionId: null,
@@ -26,7 +30,7 @@ class GameController extends React.Component {
 
       scores: null,
       playerScore: null,
-      everyOneGuessed:false,
+      everyOneGuessed: false,
       solution: null,
       solutions: [],
 
@@ -38,11 +42,11 @@ class GameController extends React.Component {
 
       isLastRound: false,
     };
-    let id = localStorage.getItem("gameId")
-    this.setState({gameId:id})
+    let id = localStorage.getItem("gameId");
+    this.setState({ gameId: id });
 
     console.log("Starting up Game with GameId", id);
-    console.log(this.state.gameId)
+    console.log(this.state.gameId);
 
     // Mini Map Method Binding
     this.handleGuessSubmit = this.handleGuessSubmit.bind(this);
@@ -57,9 +61,8 @@ class GameController extends React.Component {
   }
 
   async init() {
-    
     await this.getGame(this.state.gameId);
-    await this.getQuestionsForGame(this.state.gameId)
+    await this.getQuestionsForGame(this.state.gameId);
     await this.startRound(this.state.currentRound);
   }
 
@@ -67,9 +70,9 @@ class GameController extends React.Component {
     console.log("Starting Game Round ", currentRound);
 
     // Setting our current Question Id
-    let questionIndex = currentRound -1;
+    let questionIndex = currentRound - 1;
     let currentQuestionId = this.state.questions[questionIndex];
-    console.log(questionIndex, currentQuestionId, "DATAAA")
+    console.log(questionIndex, currentQuestionId, "DATAAA");
     this.setState({ currentQuestionId: currentQuestionId });
 
     // Start Timer
@@ -82,15 +85,13 @@ class GameController extends React.Component {
   async nextRound() {
     //end of game?
 
-    console.log("user pressed next round")
+    console.log("user pressed next round");
 
-      // Hide inbetween rounds scoreboard
-      this.setState({ showScoreModal: false, everyOneGuessed:false });
+    // Hide inbetween rounds scoreboard
+    this.setState({ showScoreModal: false, everyOneGuessed: false });
 
-     
-      // Start playing the next Round
-      await this.startRound(this.state.currentRound);
-    
+    // Start playing the next Round
+    await this.startRound(this.state.currentRound);
 
     if (this.state.currentRound === 3) {
       this.setState({ isLastRound: true });
@@ -99,14 +100,13 @@ class GameController extends React.Component {
 
   //#region API Calls
   async getGame(gameId) {
-
     try {
       const response = await api.get("/games/" + gameId, getAuthConfig());
       this.setState({
         currentRound: response.data.round,
-        gameMode : response.data.gameMode.name 
+        gameMode: response.data.gameMode.name,
       });
-      console.log("Fetched this game round from BE: ", response.data.round)
+      console.log("Fetched this game round from BE: ", response.data.round);
     } catch (error) {
       alert(
         `Something went wrong while fetching the game with gameId: ${gameId}: \n${handleError(
@@ -114,15 +114,15 @@ class GameController extends React.Component {
         )}`
       );
     }
-
-    
   }
 
-  async getQuestionsForGame(gameId){
-  
+  async getQuestionsForGame(gameId) {
     try {
-      const response = await api.get("/games/" + gameId + "/questions", getAuthConfig());
-      console.log(response.data,"QUESTONS!")
+      const response = await api.get(
+        "/games/" + gameId + "/questions",
+        getAuthConfig()
+      );
+      console.log(response.data, "QUESTONS!");
       this.setState({
         questions: response.data,
       });
@@ -133,19 +133,30 @@ class GameController extends React.Component {
         )}`
       );
     }
-
   }
   async getQuestion(questionId) {
+
     //TODO: get the correct sizes of the user's screen
-    const height = 1316;
-    const width = 1057;
+    const { height, width } = getWindowDimensions();
+    // const height = 300;
+    // const width = width;
+    console.log("SIIIIZZZZZE", width, height)
+
+    let scaleFactor = width /640;
+    let actualWidth = width/ scaleFactor;
+    let actualHeight = height/ scaleFactor - 20;
+    console.log("new scalefactor", actualWidth, actualHeight)
 
     try {
       const response = await api
-        .post(`games/${this.state.gameId}/questions/${questionId}`, {
-          width: width,
-          height: height,
-        },getAuthConfig())
+        .post(
+          `games/${this.state.gameId}/questions/${questionId}`,
+          {
+            width: actualWidth,
+            height: actualHeight,
+          },
+          getAuthConfig()
+        )
         .then((response) => {
           this.setState({
             currentQuestionImage: "data:;base64," + response.data,
@@ -159,28 +170,27 @@ class GameController extends React.Component {
     try {
       let guessData = {
         questionId: questionId,
-        coordGuess:{
+        coordGuess: {
           lon: guess.lng,
           lat: guess.lat,
-
         },
-        difficultyFactor: 1
+        difficultyFactor: 1,
       };
 
       let response;
-      try{
-      response = await api.post(
-        `/games/${this.state.gameId}/guess/`,
-        guessData,
-        getAuthConfig()
-      );
-      }catch(error){
+      try {
+        response = await api.post(
+          `/games/${this.state.gameId}/guess/`,
+          guessData,
+          getAuthConfig()
+        );
+      } catch (error) {
         alert("All players left the game, you'll be redirected");
         this.props.history.push("/home");
         return;
       }
 
-      let responseData = response.data
+      let responseData = response.data;
       // let responseData = {
       //   playerScore: {
       //     name: "Player1",
@@ -201,10 +211,10 @@ class GameController extends React.Component {
 
       this.setState({
         playerScore: {
-          score:responseData.tempScore,
-          totalScore:responseData.totalScore,
-          userId:response.data.userId,
-          name:"this shouldn't display"
+          score: responseData.tempScore,
+          totalScore: responseData.totalScore,
+          userId: response.data.userId,
+          name: "this shouldn't display",
         },
         solution: solution,
         solutions: solutions,
@@ -222,31 +232,32 @@ class GameController extends React.Component {
 
   async fetchScore() {
     try {
-      const response = await api.get("games/" + this.state.gameId + "/scores/", getAuthConfig());
+      const response = await api.get(
+        "games/" + this.state.gameId + "/scores/",
+        getAuthConfig()
+      );
       // console.log(response.data);
-      let responseData = response.data
+      let responseData = response.data;
       // TODO: Comment this once BE works
-      
-    
+
       let filtered = response.data.filter((value, index, array) => {
-        return value.lastCoordinate != null
-      })
-    let different = filtered.map((value, index, array) => {
-  
-      return {
-        name: value.userId,
-        score: value.tempScore,
-        totalScore : value.totalScore,
-        username : value.username,
-        guess:{
-          lat:value.lastCoordinate ? value.lastCoordinate.lat : null,
-          lng: value.lastCoordinate.lon ? value.lastCoordinate.lon : null
-        }
-      } 
-    })
-    console.log(different, responseData)
+        return value.lastCoordinate != null;
+      });
+      let different = filtered.map((value, index, array) => {
+        return {
+          name: value.userId,
+          score: value.tempScore,
+          totalScore: value.totalScore,
+          username: value.username,
+          guess: {
+            lat: value.lastCoordinate ? value.lastCoordinate.lat : null,
+            lng: value.lastCoordinate.lon ? value.lastCoordinate.lon : null,
+          },
+        };
+      });
+      console.log(different, responseData);
       this.setState({
-        scores: different
+        scores: different,
       });
     } catch (error) {
       alert(
@@ -287,40 +298,54 @@ class GameController extends React.Component {
     this.setState({ showScoreModal: true });
 
     // Fetching incoming scores every second
-    console.log("START FETCHING SCORES",this.state.showScoreModal , this.state.gameOngoing ,this.mounted,!this.state.everyOneGuessed)
-    while (this.state.showScoreModal && this.state.gameOngoing && this.mounted && !this.state.everyOneGuessed) {
+    console.log(
+      "START FETCHING SCORES",
+      this.state.showScoreModal,
+      this.state.gameOngoing,
+      this.mounted,
+      !this.state.everyOneGuessed
+    );
+    while (
+      this.state.showScoreModal &&
+      this.state.gameOngoing &&
+      this.mounted &&
+      !this.state.everyOneGuessed
+    ) {
       await this.fetchScore();
-      await this.checkIfEveryoneGuessed()
-      
+      await this.checkIfEveryoneGuessed();
 
       // wait for 1 s and fetch scores again
-      console.log("still fetching scores here", this.state.showScoreModal, this.state.gameOngoing)
+      console.log(
+        "still fetching scores here",
+        this.state.showScoreModal,
+        this.state.gameOngoing
+      );
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      if (!this.state.gameOngoing) return
+      if (!this.state.gameOngoing) return;
     }
   }
 
-  async  checkIfEveryoneGuessed(){
-    let oldRound = this.state.currentRound
+  async checkIfEveryoneGuessed() {
+    let oldRound = this.state.currentRound;
 
-    await this.getGame(this.state.gameId)
+    await this.getGame(this.state.gameId);
 
-    console.log("old Round ", oldRound, " new Round: ", this.state.currentRound)
+    console.log(
+      "old Round ",
+      oldRound,
+      " new Round: ",
+      this.state.currentRound
+    );
 
-
-    if(oldRound < this.state.currentRound){
-      this.setState({everyOneGuessed: true})
-      console.log("EVERYONE GUESSED")
-      return
+    if (oldRound < this.state.currentRound) {
+      this.setState({ everyOneGuessed: true });
+      console.log("EVERYONE GUESSED");
+      return;
     } else {
-      this.setState({everyOneGuessed: false})
-      console.log("NOT EVERYONE GUESSED")
+      this.setState({ everyOneGuessed: false });
+      console.log("NOT EVERYONE GUESSED");
     }
-
   }
-
-
-
 
   //#endregion MiniMap
 
@@ -329,22 +354,21 @@ class GameController extends React.Component {
     this.setState({ questionTime: new Date().getTime() });
     this.setState({ timerRunning: true });
     while (this.state.timerRunning) {
-
       // if we passed 30 s
-      if(this.state.timer > 25 && this.state.timer < 26) {
-        console.log("WE PASSED 30 S - send backup request")
-        this.setState({pin:{lat:null,lng:null}})
-        this.handleGuessSubmit()
+      if (this.state.timer > 25 && this.state.timer < 26) {
+        console.log("WE PASSED 30 S - send backup request");
+        // this.setState({ pin: { lat: null, lng: null } });
+        // this.handleGuessSubmit();
       }
       this.updateSeconds();
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
   }
 
-  componentWillUnmount(){
-    console.log("unmounting")
-    this.mounted = false
-    this.setState({showScoreModal:false, gameOngoing:false})
+  componentWillUnmount() {
+    console.log("unmounting");
+    this.mounted = false;
+    this.setState({ showScoreModal: false, gameOngoing: false });
   }
   updateSeconds() {
     if (this.state.questionTime) var now = new Date().getTime();
@@ -359,20 +383,20 @@ class GameController extends React.Component {
 
   async exitGame() {
     try {
-       await api.get("/games/" + this.state.gameId + "/exit", {headers: {token: localStorage.getItem("token")}});
-
-     } catch (error) {
-        this.props.history.push("/home");
-       
-     }
+      await api.get("/games/" + this.state.gameId + "/exit", {
+        headers: { token: localStorage.getItem("token") },
+      });
+    } catch (error) {
+      this.props.history.push("/home");
+    }
     console.log("ending game");
-    this.setState({showScoreModal:false, gameOngoing:false});
+    this.setState({ showScoreModal: false, gameOngoing: false });
     localStorage.removeItem("gameId");
     this.props.history.push("/home");
   }
 
   async endGame() {
-    await this.exitGame()
+    await this.exitGame();
   }
 
   render() {
@@ -390,6 +414,41 @@ class GameController extends React.Component {
           gameMode={this.state.gameMode}
           timer={this.state.timer}
         />
+        {/* <CloudCanvas
+          url={this.state.currentQuestionImage}
+          gameMode={this.state.gameMode}
+          timer={this.state.timer}>
+
+        </CloudCanvas> */}
+
+        {/* <div  style={{ width:"100%", width:"100%", position: "fixed", top: "50px", left: "0px" }}>
+          <CloudSVGFilter
+            scaleVal={221}
+            numOctavesVal={8}
+            baseFrequencyVal={0.01}
+            seedVal={633}
+          ></CloudSVGFilter>
+          <CloudDisplay blurVal={100} spreadVal={50} />
+        </div> */}
+
+        {/* <div style={{ width:"100%", width:"100%", position: "absolute", bottom: "0px", right: "0px" }}>
+          <CloudSVGFilter
+            scaleVal={221}
+            numOctavesVal={8}
+            baseFrequencyVal={0.01}
+            seedVal={633}
+          ></CloudSVGFilter>
+          <CloudDisplay blurVal={100} spreadVal={50} />
+        </div> */}
+       {/* <div style={{ minWidth:"500px", minHeight:"500px", position: "absolute", top: "100px", left: "100px" }}>
+           <CloudSVGFilter
+            scaleVal={221}
+            numOctavesVal={8}
+            baseFrequencyVal={0.01}
+            seedVal={633}
+          ></CloudSVGFilter>
+          <CloudDisplay blurVal={100} spreadVal={50} />
+        </div> */}
 
         {this.state.showScoreModal ? (
           <Modal basic open={true} size="small" trigger={null}>
@@ -431,19 +490,30 @@ class GameController extends React.Component {
 
 const Component = (props) => {
   const { height, width } = useWindowDimensions();
-  let filter = props.gameMode !== "Time" ? 10 - props.timer * 0.4 : 0;
+  let filter = props.gameMode == "Pixelation" ? 10 - props.timer * 0.4 : 0;
 
   return (
     <div
       style={{
+        // minWidth: width,
+        width:width,
+        height:height,
+        // height:'100%',
         filter: `blur(${filter}px)`,
-        minWidth: width,
-        minHeight: height,
         backgroundImage: `url(${props.url})`,
-        backgroundPosition: "center",
-        backgroundSize: "cover",
+        // backgroundPosition:'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: "contain",
+        overflow:'hidden',
+        // backgroundSize: 'cover',
+        // heigh:'100%',
+
+        // backgroundSize: 'auto,auto',
+        // objectFit: 'contain'
       }}
-    ></div>
+    >
+       {props.gameMode == "Clouds" && <CloudCanvas height={height} width={width}></CloudCanvas>}
+    </div>
   );
 };
 

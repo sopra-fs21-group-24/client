@@ -57,15 +57,16 @@ const GameModeSelection = ({
         <Grid.Column centered width={7}>
           <center>
           <Button
-            disabled
             size="big"
+            animated ='fade'
             fluid
             color="blue"
             onClick={() => {
               createSingleplayerGame("Clouds");
             }}
           >
-            Coming Soon 
+            <Button.Content visible>Clouds</Button.Content>
+            <Button.Content hidden><Icon name="cloud"/></Button.Content>
           </Button>
           </center>
         </Grid.Column>
