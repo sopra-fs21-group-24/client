@@ -34,7 +34,7 @@ class JoinLobby extends React.Component {
           )}`
         );
       }
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 10000));
     }
   }
 
