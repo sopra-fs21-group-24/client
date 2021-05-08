@@ -321,7 +321,7 @@ class Lobby extends React.Component {
                             <Table.Cell>
                               {" "}
                               {this.state.creator == user.id ? (
-                                <Image src={Crown} rounded size="mini" />
+                                <Image src="./Crown.png" rounded size="mini" />
                               ) : null}{" "}
                             </Table.Cell>
                           </Table.Row>
@@ -329,7 +329,7 @@ class Lobby extends React.Component {
                       })}
                     </Table.Body>
                   </Table>
-                  &nbsp;&nbsp;&nbsp;
+                 <br></br>
                   {this.state.creator ==
                   localStorage.getItem("currentUserId") ? (
                     <Button
