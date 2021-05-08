@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router";
-import { Modal } from "semantic-ui-react";
+import { Modal, Transition } from "semantic-ui-react";
 import styled from "styled-components";
 import { api, getAuthConfig, handleError } from "../../helpers/api";
 import {getWindowDimensions, useWindowDimensions} from "../shared/models/WindowSize";
@@ -21,7 +21,7 @@ class GameController extends React.Component {
       gameId: localStorage.getItem("gameId"),
       gameOngoing: true,
       showCloud:true,
-      currentRound: null,
+      currentRound: -1,
       questions: null,
       currentQuestionId: null,
       currentQuestionImage: null,
@@ -73,13 +73,15 @@ class GameController extends React.Component {
     let questionIndex = currentRound - 1;
     let currentQuestionId = this.state.questions[questionIndex];
     console.log(questionIndex, currentQuestionId, "DATAAA");
-    this.setState({ currentQuestionId: currentQuestionId });
+   
 
-    // Start Timer
-    this.startTimer();
+    
 
     // Fetch Question Image
     await this.getQuestion(currentQuestionId);
+    // Start Timer
+    this.setState({ currentQuestionId: currentQuestionId });
+    this.startTimer();
   }
 
   async nextRound() {
@@ -357,8 +359,8 @@ class GameController extends React.Component {
       // if we passed 30 s
       if (this.state.timer > 25 && this.state.timer < 26) {
         console.log("WE PASSED 30 S - send backup request");
-        // this.setState({ pin: { lat: null, lng: null } });
-        // this.handleGuessSubmit();
+        this.setState({ pin: { lat: null, lng: null } });
+        this.handleGuessSubmit();
       }
       this.updateSeconds();
       await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -400,6 +402,7 @@ class GameController extends React.Component {
   }
 
   render() {
+   
     return (
       <div>
         <GameHeader
@@ -410,46 +413,13 @@ class GameController extends React.Component {
           exitGame={this.exitGame}
         />
         <Component
+          questionId={this.state.currentQuestionId}
+          round={this.state.currentRound}
           url={this.state.currentQuestionImage}
           gameMode={this.state.gameMode}
           timer={this.state.timer}
         />
-        {/* <CloudCanvas
-          url={this.state.currentQuestionImage}
-          gameMode={this.state.gameMode}
-          timer={this.state.timer}>
-
-        </CloudCanvas> */}
-
-        {/* <div  style={{ width:"100%", width:"100%", position: "fixed", top: "50px", left: "0px" }}>
-          <CloudSVGFilter
-            scaleVal={221}
-            numOctavesVal={8}
-            baseFrequencyVal={0.01}
-            seedVal={633}
-          ></CloudSVGFilter>
-          <CloudDisplay blurVal={100} spreadVal={50} />
-        </div> */}
-
-        {/* <div style={{ width:"100%", width:"100%", position: "absolute", bottom: "0px", right: "0px" }}>
-          <CloudSVGFilter
-            scaleVal={221}
-            numOctavesVal={8}
-            baseFrequencyVal={0.01}
-            seedVal={633}
-          ></CloudSVGFilter>
-          <CloudDisplay blurVal={100} spreadVal={50} />
-        </div> */}
-       {/* <div style={{ minWidth:"500px", minHeight:"500px", position: "absolute", top: "100px", left: "100px" }}>
-           <CloudSVGFilter
-            scaleVal={221}
-            numOctavesVal={8}
-            baseFrequencyVal={0.01}
-            seedVal={633}
-          ></CloudSVGFilter>
-          <CloudDisplay blurVal={100} spreadVal={50} />
-        </div> */}
-
+      
         {this.state.showScoreModal ? (
           <Modal basic open={true} size="small" trigger={null}>
             <ScoreBox
@@ -491,28 +461,27 @@ class GameController extends React.Component {
 const Component = (props) => {
   const { height, width } = useWindowDimensions();
   let filter = props.gameMode == "Pixelation" ? 10 - props.timer * 0.4 : 0;
-
+  console.log(props.round,props.questionId,  "ROUND IN COMPONENT COMPONENT")
   return (
     <div
       style={{
-        // minWidth: width,
         width:width,
-        height:height,
-        // height:'100%',
+        height:height-50,
         filter: `blur(${filter}px)`,
         backgroundImage: `url(${props.url})`,
-        // backgroundPosition:'center',
         backgroundRepeat: 'no-repeat',
         backgroundSize: "contain",
         overflow:'hidden',
-        // backgroundSize: 'cover',
-        // heigh:'100%',
-
-        // backgroundSize: 'auto,auto',
-        // objectFit: 'contain'
+  
       }}
     >
-       {props.gameMode == "Clouds" && <CloudCanvas height={height} width={width}></CloudCanvas>}
+       {(props.gameMode == "Clouds" && props.round != -1 && props.questionId != null) ? 
+       <Transition visible={true} animation='fade' duration={5000}>
+
+         <CloudCanvas key={props.questionId} questionId={props.questionId} round={props.round} height={height} width={width}></CloudCanvas>
+        </Transition>
+       
+       :null}
     </div>
   );
 };

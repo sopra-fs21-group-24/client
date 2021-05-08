@@ -54,9 +54,7 @@ class Home extends React.Component {
       await api.post(`/games`, requestBody, getAuthConfig())
       .then(async (response) => {
         localStorage.setItem("gameId", response.data.gameId);
-        await api.get(`/games/${response.data.gameId}/start`, getAuthConfig()).then(()=>{
-
-          
+        await api.get(`/games/${response.data.gameId}/start`, getAuthConfig()).then(()=>{          
           this.props.history.push(`/game`);
         })
       })
@@ -102,18 +100,11 @@ class Home extends React.Component {
     return (
       <div style={{
         backgroundImage:`url(./wallpaper.jpeg)`,
-        // 'background-size': 'cover', 
-        // 'height':'100%',
-        // minWidth:width,
-        // minHeight:height,
         height:height,
-        // filter: `blur(${filter}px)`,
-        // backgroundImage: `url(${props.url})`,
         backgroundPosition:'center',
         backgroundRepeat: 'no-repeat',
         backgroundSize: "cover",
         overflow:'hidden',
-        
         }}>
         <HomeHeader
           logout={this.logout}
@@ -178,8 +169,6 @@ class Home extends React.Component {
             </Grid.Column>
           </Grid>
         </div>
-        {/* </Segment> */}
-        {/* <ReactGlobe height="100vh" width="100vw"/> */}
       </div>
     );
   }
@@ -200,30 +189,6 @@ class Home extends React.Component {
       this.logout()
     }
   }
-
-  // async fetchUserHighScore(){
-  //   //TODO: switch to real API - uncomment this
-  //   let userId = localStorage.getItem("currentUserId");
-
-  //   try {
-  //     const response = await api.get("/users/" + userId + '/scores');
-  //     // TODO: unset this
-  //     // this.setState({ userScore: response.data });
-  //     this.setState({
-  //       userScore:{
-  //       "clouds":1000,
-  //       "pixelation":500,
-  //       "time": 300
-  //     }})
-  //   } catch (error) {
-  //     alert(
-  //       `Something went wrong while fetching the your user: \n${handleError(
-  //         error
-  //       )}`
-  //     );
-  //   }
-
-  // }
 
   async updateUser(username, password) {
     console.log(username, password);
@@ -249,16 +214,12 @@ class Home extends React.Component {
       );
     }
   }
-
-
-
   logout() {
     localStorage.removeItem("token");
     localStorage.removeItem("currentUserId");
     localStorage.removeItem("username");
     this.props.history.push("/");
   }
-
 
 }
 

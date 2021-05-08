@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import CloudDisplay from "./CloudDisplay";
 import CloudModel from "./CloudModel";
+import CloudSVGFilter from "./CloudSVGFilter";
 // const sliderThumbStyles = props => props;
 const StyledCloudDisplay = styled.section`
   grid-column: 1;
@@ -44,7 +46,6 @@ class CloudCanvas extends React.Component {
       width: props.width,
       height: props.height,
     };
-    console.log(this.state,"CLOUDCANVAS STATE")
 
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
@@ -52,10 +53,9 @@ class CloudCanvas extends React.Component {
     //this.componentDidMount = this.componentDidMount.bind(this);
   }
 
-  componentDidMount() {
-      console.log(this.state,"HERRREEE")
-      let width = this.state.width
-      let height = this.state.height
+  setup5Dice() {
+    let width = this.state.width;
+    let height = this.state.height;
     var url =
       "https://gallery.yopriceville.com/var/albums/Free-Clipart-Pictures/Cloud-PNG/Soft_Cloud_PNG_Clip_Art_Image.png?m=1537570070";
     var canvas = document.getElementById("canvas");
@@ -63,15 +63,124 @@ class CloudCanvas extends React.Component {
     var img = new Image();
     img.src = url;
     img.onload = function () {
-      //   var width = Math.min(500, img.width);
-      //   var height = img.height * (width / img.width);
-
       canvas.width = width;
-      canvas.height = height-50;
-      ctx.drawImage(img, 0, 0, width/2, height/2);
-      ctx.drawImage(img, width/2, 50, width/2, height/1.5);
-      ctx.drawImage(img, 500,300, width/2, height/1.5);
+      canvas.height = height;
+      ctx.drawImage(img, -50, 0, width / 1.4, height / 1.7);
+      ctx.drawImage(img, width / 4, height / 4, width / 2, height / 2);
+      ctx.drawImage(img, -50, height / 2.5, width / 1.6, height / 1.9);
+      ctx.drawImage(img, width - width / 2, 0, width / 1.4, height / 1.8);
+      ctx.drawImage(img, width - width / 2, height / 3, width / 2, height / 2);
     };
+  }
+
+  setupGiantStormyCloud() {
+    let width = this.state.width;
+    let height = this.state.height;
+    var url = "./cloud1.png";
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    var img = new Image();
+    img.src = url;
+    img.onload = function () {
+      canvas.width = width;
+      canvas.height = height;
+      ctx.drawImage(img, -200, -100, width * 1.3, height * 1.3);
+    };
+  }
+
+  setupGiantStormyCloud() {
+    let width = this.state.width;
+    let height = this.state.height;
+    var url = "./cloud1.png";
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    var img = new Image();
+    img.src = url;
+    img.onload = function () {
+      canvas.width = width;
+      canvas.height = height;
+      ctx.drawImage(img, -200, -100, width * 1.3, height * 1.3);
+    };
+  }
+
+  setupSchleierWolke() {
+    let width = this.state.width;
+    let height = this.state.height;
+    var url = "./cloud2.png";
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    var img = new Image();
+    img.src = url;
+    img.onload = function () {
+      canvas.width = width;
+      canvas.height = height;
+      ctx.drawImage(img, 0, 0, width, height);
+    };
+  }
+
+  setupLongCloud() {
+    let width = this.state.width;
+    let height = this.state.height;
+    var url = "./cloud3.png";
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    var img = new Image();
+    img.src = url;
+    img.onload = function () {
+      canvas.width = width;
+      canvas.height = height;
+      ctx.drawImage(img, 0, 0, width, height);
+    };
+  }
+
+  componentDidMount() {
+    console.log(this.props.round, "Current round for cloud canvas")
+    // if (this.props.round == -1) return
+    console.log(this.state, "HERRREEE q id not null");
+    //   let width = this.state.width
+    //   let height = this.state.height
+    // var url =
+    //   "https://gallery.yopriceville.com/var/albums/Free-Clipart-Pictures/Cloud-PNG/Soft_Cloud_PNG_Clip_Art_Image.png?m=1537570070";
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    // var img = new Image();
+    // img.src = url;
+    // img.onload = function () {
+    //   //   var width = Math.min(500, img.width);
+    //   //   var height = img.height * (width / img.width);
+
+    //   canvas.width = width;
+    //   canvas.height = height-50;
+    //   ctx.drawImage(img, 0, 0, width/2, height/2);
+    //   ctx.drawImage(img, width/2, 50, width/2, height/1.5);
+    //   ctx.drawImage(img, 500,300, width/2, height/1.5);
+    // };
+    console.log(this.props.questionId, this.props
+      .questionId%5, "Cloud for Question")
+    switch (this.props.questionId % 5) {
+      case 0:
+        this.setup5Dice();
+        break;
+      case 1:
+        this.setupGiantStormyCloud();
+        break;
+      case 2:
+        this.setupSchleierWolke();
+        break;
+      case 3:
+        this.setup5Dice();
+        break;
+      case 4:
+        this.setupLongCloud();
+        break;
+      default:
+        alert("no cloud for this");
+        break;
+    }
+
+    // this.setup5Dice();
+    // this.setupGiantStormyCloud()
+    // this.setupSchleierWolke()
 
     var isPress = false;
     var old = null;
@@ -137,6 +246,7 @@ class CloudCanvas extends React.Component {
   //     // };
   //   }
 
+
   onMouseDown(e) {
     console.log("down");
     let isPress = true;
@@ -144,10 +254,7 @@ class CloudCanvas extends React.Component {
     let old = { x: e.offsetX, y: e.offsetY };
     this.setState({ old: old });
   }
-  //   canvas.addEventListener('mousedown', function (e){
-  //     isPress = true;
-  //     old = {x: e.offsetX, y: e.offsetY};
-  //   });
+
   onMouseMove(e) {
     console.log("moving");
     const canvas = document.getElementById("canvas");
@@ -207,11 +314,40 @@ class CloudCanvas extends React.Component {
     return (
       <canvas style={{ background: "transparent" }} id="canvas"></canvas>
 
-      //   onMouseUp={this.onMouseUp} onMouseDown={this.onMouseDown} onMouseMove={this.onMouseMove}
-      //   <div>
-      //     <canvas style={{background:"transparent"}} ref="canvas" width={640} height={425} />
-      //     {/* <img ref="image" src={cheese} className="hidden" /> */}
-      //   </div>
+      // {/* <CloudCanvas
+      //   url={this.state.currentQuestionImage}
+      //   gameMode={this.state.gameMode}
+      //   timer={this.state.timer}>
+
+      // </CloudCanvas>
+
+      // <div  style={{ width:"100%", width:"100%", position: "fixed", top: "50px", left: "0px" }}>
+      //   <CloudSVGFilter
+      //     scaleVal={221}
+      //     numOctavesVal={8}
+      //     baseFrequencyVal={0.01}
+      //     seedVal={633}
+      //   ></CloudSVGFilter>
+      //   <CloudDisplay blurVal={100} spreadVal={50} />
+      // </div>
+      //  <div style={{ width:"100%", width:"100%", position: "absolute", bottom: "0px", right: "0px" }}>
+      //   <CloudSVGFilter
+      //     scaleVal={221}
+      //     numOctavesVal={8}
+      //     baseFrequencyVal={0.01}
+      //     seedVal={633}
+      //   ></CloudSVGFilter>
+      //   <CloudDisplay blurVal={100} spreadVal={50} />
+
+      // </div>  <div style={{ minWidth:"500px", minHeight:"500px", position: "absolute", top: "100px", left: "100px" }}>
+      //    <CloudSVGFilter
+      //     scaleVal={221}
+      //     numOctavesVal={8}
+      //     baseFrequencyVal={0.01}
+      //     seedVal={633}
+      //   ></CloudSVGFilter>
+      //   <CloudDisplay blurVal={100} spreadVal={50} />
+      // </div> */}
     );
   }
 }

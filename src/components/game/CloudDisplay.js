@@ -30,12 +30,8 @@ const StyledCloudDisplay = styled.section`
 `;
 
 class CloudDisplay extends Component {
-  state = {
-    skyVal: 25
-  };
-  skySliderValUpdate = input => {
-    this.setState({ skyVal: input });
-  };
+ 
+
   render() {
     const { blurVal, spreadVal } = this.props;
     return (
