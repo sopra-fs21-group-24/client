@@ -31,7 +31,7 @@ const Leaderboard = (props) => {
   };
 
 
-  const modes = ["Time", "Pixelation", "Clouds"];
+  const modes = [{mode:"Time",icon:"clock outline"},{mode: "Pixelation", icon:"chess board"}, {mode:"Clouds", icon:"cloud"}];
 
   return (
     <div>
@@ -43,8 +43,10 @@ const Leaderboard = (props) => {
         <Segment>
           <Menu widths={3} fluid tabular color="black" compact>
             {modes.map((mode) => (
-              <Menu.Item name={mode} onClick={() => setDisplay(mode)} active={display===mode}>
-                {mode}
+              <Menu.Item  name={mode} onClick={() => setDisplay(mode)} active={display===mode}>
+                <Icon size="big" name={mode.icon}/>
+                {mode.mode}
+
               </Menu.Item>
             ))}
           </Menu>

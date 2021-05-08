@@ -71,7 +71,7 @@ export const MapElem = withGoogleMap((props) => (
         // gestureHandling: 'none'
       }}
     >
-      {props.results.length > 0&& props.showResults
+      {props.results.length > 0 && props.showResults
         ? 
         props.results.map((value, index, array) => {
           return (
