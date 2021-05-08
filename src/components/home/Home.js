@@ -179,9 +179,9 @@ class Home extends React.Component {
       };
       this.setState({ user: response.data, userScore: userScore });
     } catch (error) {
-      alert(
-        `Something went wrong while fetching the users: \n${handleError(error)}`
-      );
+
+      alert("While getting your user data we came across an error, you will be logged out and navigate to the landing page!");
+      this.logout()
     }
   }
 
@@ -241,6 +241,7 @@ class Home extends React.Component {
   logout() {
     localStorage.removeItem("token");
     localStorage.removeItem("currentUserId");
+    localStorage.removeItem("username");
     this.props.history.push("/");
   }
 

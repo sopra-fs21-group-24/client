@@ -4,6 +4,7 @@ import { Button, Modal } from "semantic-ui-react";
 import styled from "styled-components";
 import Login from "../login/Login";
 import Register from "../register/Register";
+import { getWindowDimensions } from "../shared/models/WindowSize";
 
 const Title = styled.h1`
   font-weight: bold;
@@ -79,8 +80,10 @@ class Launch extends React.Component {
   componentDidMount() {}
 
   render() {
+    
+    const { height, width } = getWindowDimensions();
     return (
-      <div style={{ backgroundColor: "black" }}>
+      <div style={{ backgroundColor: "black" , height:'100%'}}>
         <center >
           <VideoBox>
             <VideoOverlays>
