@@ -1,5 +1,6 @@
 import React from "react";
 // import ReactGlobe from "react-globe";
+import { ComponentTransition, AnimationTypes } from "react-component-transition";
 import { withRouter, useHistory } from "react-router-dom";
 import { Advertisement, Grid, Segment, Image, Header } from "semantic-ui-react";
 import { api, getAuthConfig, handleError } from "../../helpers/api";
@@ -106,6 +107,11 @@ class Home extends React.Component {
         backgroundSize: "cover",
         overflow:'hidden',
         }}>
+          <ComponentTransition
+            animateOnMount={true}
+            enterAnimation={AnimationTypes.slideUp.enter}
+            exitAnimation={AnimationTypes.slideUp.exit}
+        >
         <HomeHeader
           logout={this.logout}
           updateUser={this.updateUser}
@@ -113,6 +119,7 @@ class Home extends React.Component {
           user={this.state.user}
           height={"50"}
         />
+        </ComponentTransition>
         <div
           style={{
             marginLeft: "50px",
@@ -121,9 +128,15 @@ class Home extends React.Component {
           }}
         >
           {/* <Segment placeholder raised> */}
-
+          <ComponentTransition
+            animateOnMount={true}
+            enterAnimation={AnimationTypes.slideDown.enter}
+            exitAnimation={AnimationTypes.fade.exit}
+        >
           <Grid columns={2} centered >
             {/* <Grid.Row></Grid.Row> */}
+          
+       
 
             <Grid.Column style={{minWidth:"300px"}}>
               <Segment raised>
@@ -168,6 +181,7 @@ class Home extends React.Component {
               </Segment>
             </Grid.Column>
           </Grid>
+            </ComponentTransition>
         </div>
       </div>
     );

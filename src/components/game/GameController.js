@@ -1,9 +1,16 @@
 import React from "react";
+import {
+  ComponentTransition,
+  AnimationTypes,
+} from "react-component-transition";
 import { withRouter } from "react-router";
 import { Modal, Transition } from "semantic-ui-react";
 import styled from "styled-components";
 import { api, getAuthConfig, handleError } from "../../helpers/api";
-import {getWindowDimensions, useWindowDimensions} from "../shared/models/WindowSize";
+import {
+  getWindowDimensions,
+  useWindowDimensions,
+} from "../shared/models/WindowSize";
 import GameHeader from "./GameHeader";
 // import { key } from "./key";
 import MiniMap from "./MiniMap";
@@ -20,7 +27,7 @@ class GameController extends React.Component {
     this.state = {
       gameId: localStorage.getItem("gameId"),
       gameOngoing: true,
-      showCloud:true,
+      showCloud: true,
       currentRound: -1,
       questions: null,
       currentQuestionId: null,
@@ -73,9 +80,6 @@ class GameController extends React.Component {
     let questionIndex = currentRound - 1;
     let currentQuestionId = this.state.questions[questionIndex];
     console.log(questionIndex, currentQuestionId, "DATAAA");
-   
-
-    
 
     // Fetch Question Image
     await this.getQuestion(currentQuestionId);
@@ -137,17 +141,16 @@ class GameController extends React.Component {
     }
   }
   async getQuestion(questionId) {
-
     //TODO: get the correct sizes of the user's screen
     const { height, width } = getWindowDimensions();
     // const height = 300;
     // const width = width;
-    console.log("SIIIIZZZZZE", width, height)
+    console.log("SIIIIZZZZZE", width, height);
 
-    let scaleFactor = width /640;
-    let actualWidth = width/ scaleFactor;
-    let actualHeight = height/ scaleFactor - 20;
-    console.log("new scalefactor", actualWidth, actualHeight)
+    let scaleFactor = width / 640;
+    let actualWidth = width / scaleFactor;
+    let actualHeight = height / scaleFactor - 20;
+    console.log("new scalefactor", actualWidth, actualHeight);
 
     try {
       const response = await api
@@ -402,16 +405,22 @@ class GameController extends React.Component {
   }
 
   render() {
-   
     return (
       <div>
-        <GameHeader
-          fixed="top"
-          timer={this.state.timer}
-          playerScore={this.state.playerScore}
-          currentRound={this.state.currentRound}
-          exitGame={this.exitGame}
-        />
+        <ComponentTransition
+          animateOnMount={true}
+          enterAnimation={AnimationTypes.slideUp.enter}
+          exitAnimation={AnimationTypes.slideUp.exit}
+        >
+          <GameHeader
+            fixed="top"
+            timer={this.state.timer}
+            playerScore={this.state.playerScore}
+            currentRound={this.state.currentRound}
+            exitGame={this.exitGame}
+          />
+        </ComponentTransition>
+        
         <Component
           questionId={this.state.currentQuestionId}
           round={this.state.currentRound}
@@ -419,7 +428,7 @@ class GameController extends React.Component {
           gameMode={this.state.gameMode}
           timer={this.state.timer}
         />
-      
+
         {this.state.showScoreModal ? (
           <Modal basic open={true} size="small" trigger={null}>
             <ScoreBox
@@ -438,21 +447,23 @@ class GameController extends React.Component {
             />
           </Modal>
         ) : null}
-        <MiniMap
-          state={{
-            center: {
-              lat: 20.907646,
-              lng: -0.848103,
-            },
-            answer: this.state.solution,
-            pin: this.state.pin,
-            answers: this.state.solutions,
-            pins: this.state.pins,
-            zoom: 2,
-          }}
-          handleGuessSubmit={this.handleGuessSubmit}
-          pinMarkerOnClick={this.handlePinPlacedOnMap}
-        />
+
+          <MiniMap
+            state={{
+              center: {
+                lat: 20.907646,
+                lng: -0.848103,
+              },
+              answer: this.state.solution,
+              pin: this.state.pin,
+
+              answers: this.state.solutions,
+              pins: this.state.pins,
+              zoom: 2,
+            }}
+            handleGuessSubmit={this.handleGuessSubmit}
+            pinMarkerOnClick={this.handlePinPlacedOnMap}
+          />
       </div>
     );
   }
@@ -461,27 +472,31 @@ class GameController extends React.Component {
 const Component = (props) => {
   const { height, width } = useWindowDimensions();
   let filter = props.gameMode == "Pixelation" ? 10 - props.timer * 0.4 : 0;
-  console.log(props.round,props.questionId,  "ROUND IN COMPONENT COMPONENT")
+  console.log(props.round, props.questionId, "ROUND IN COMPONENT COMPONENT");
   return (
     <div
       style={{
-        width:width,
-        height:height-50,
+        width: width,
+        height: height - 50,
         filter: `blur(${filter}px)`,
         backgroundImage: `url(${props.url})`,
-        backgroundRepeat: 'no-repeat',
+        backgroundRepeat: "no-repeat",
         backgroundSize: "contain",
-        overflow:'hidden',
-  
+        overflow: "hidden",
       }}
     >
-       {(props.gameMode == "Clouds" && props.round != -1 && props.questionId != null) ? 
-       <Transition visible={true} animation='fade' duration={5000}>
-
-         <CloudCanvas key={props.questionId} questionId={props.questionId} round={props.round} height={height} width={width}></CloudCanvas>
-        </Transition>
-       
-       :null}
+      {props.gameMode == "Clouds" &&
+      props.round != -1 &&
+      props.questionId != null ? (
+   
+          <CloudCanvas
+            key={props.questionId}
+            questionId={props.questionId}
+            round={props.round}
+            height={height}
+            width={width}
+          ></CloudCanvas>
+      ) : null}
     </div>
   );
 };

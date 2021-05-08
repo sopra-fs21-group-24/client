@@ -1,6 +1,7 @@
 import React from "react";
 import { api, handleError } from "../../helpers/api";
 import { withRouter } from "react-router-dom";
+import { ComponentTransition, AnimationTypes } from "react-component-transition";
 import {
   Input,
   Grid,
@@ -11,6 +12,7 @@ import {
   Icon,
   Table,
 } from "semantic-ui-react";
+import { getWindowDimensions } from "../shared/models/WindowSize";
 
 class JoinLobby extends React.Component {
   constructor() {
@@ -90,10 +92,24 @@ class JoinLobby extends React.Component {
     });
   }
   render() {
+    const { height, width } = getWindowDimensions();
     return (
-      <div style={{height:'100vh'}}>
-        <Segment placeholder raised size="big" style={{height:'100vh', backgroundImage:`url(https://wallpaperaccess.com/full/199469.jpg)`}}>
-        <Segment raised>
+      <div style={{
+        backgroundImage: `url(../wallpaper.jpeg)`,
+        height:height,
+        backgroundPosition:'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: "cover",
+        overflow:'hidden',
+        }}>
+          <ComponentTransition
+            animateOnMount={true}
+            enterAnimation={AnimationTypes.slideDown.enter}
+            exitAnimation={AnimationTypes.fade.exit}
+        >
+
+        
+        <Segment placeholder raised size="big" style={{marginLeft:"50px", marginRight:"50px", marginTop:"100px"}}>
           <Grid columns={2} stackable textAlign="center">
             <Divider vertical>Or</Divider>
             <Grid.Row verticalAlign="middle">
@@ -158,8 +174,13 @@ class JoinLobby extends React.Component {
           </Grid>
           
         </Segment>
-        <Button color='teal' onClick={()=>{this.props.history.push(`/home`);}}>Go back</Button>
-        </Segment>
+     
+        <center>
+
+
+        <Button style={{marginTop:"50px"}}color='teal' onClick={()=>{this.props.history.push(`/home`);}}>Go back</Button>
+        </center>
+        </ComponentTransition>
       </div>
     );
   }

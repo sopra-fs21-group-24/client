@@ -1,6 +1,12 @@
 import React from "react";
+import {
+  ComponentTransition,
+  AnimationTypes,
+} from "react-component-transition";
+import { fadeIn } from "react-animations";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { withRouter } from "react-router-dom";
+import styled, { keyframes } from "styled-components";
 import {
   Button,
   Checkbox,
@@ -15,11 +21,13 @@ import {
   Menu,
   Dimmer,
   Loader,
+  Transition,
 } from "semantic-ui-react";
 import Crown from "../../assets/Crown.png";
 import { handleError, api, getAuthConfig } from "../../helpers/api";
 import HomeHeader from "../../views/Header";
 import UpdateAnimation from "../../views/design/UpdateAnimation";
+import { getWindowDimensions } from "../shared/models/WindowSize";
 
 class Lobby extends React.Component {
   constructor() {
@@ -203,135 +211,161 @@ class Lobby extends React.Component {
   }
   // TODO: Display highscore according to gamemode
   render() {
+    const { height, width } = getWindowDimensions();
     return (
-      <div style={{height:'100vh'}}>
-        <Segment placeholder raised size="big" style={{height:'100vh', backgroundImage:`url(https://wallpaperaccess.com/full/199469.jpg)`}}>
-          <Segment>
-          <Grid columns={3} stackable textAlign="center">
-            <Grid.Row verticalAlign="middle">
-              <Grid.Column>
-                <Header>Lobby Configuration</Header>
-                {this.state.isUpdating ? (
-                  <UpdateAnimation />
-                ) : (
-                  <div>
-                    <Menu color="blue" compact secondary>
-                      <Menu.Item
-                        name="Time"
-                        active={this.state.selectedGamemode === "Time"}
-                        onClick={this.handleItemClick}
-                      >
-                        Time
-                      </Menu.Item>
-                      <Menu.Item
-                        name="Pixelation"
-                        active={this.state.selectedGamemode === "Pixelation"}
-                        onClick={this.handleItemClick}
-                      >
-                        Pixelation
-                      </Menu.Item>
-                      <Menu.Item
-                        name="Clouds"
-                        active={this.state.selectedGamemode === "Clouds"}
-                        onClick={this.handleItemClick}
-                      >
-                        Clouds
-                      </Menu.Item>
-                    </Menu>
-                    <p></p>
-                    <Checkbox
-                      toggle
-                      checked={this.state.isLobbyPublic}
-                      label="Public Lobby"
-                      onChange={() => {
-                        this.setState({
-                          isLobbyPublic: !this.state.isLobbyPublic,
-                        });
-                        this.setState({ isUpdating: true });
-                        setTimeout(this.updateLobbyConfiguration, 1500);
+      <div
+        style={{
+          backgroundImage: `url(../wallpaper.jpeg)`,
+          height: height,
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          overflow: "hidden",
+        }}
+      >
+        <ComponentTransition
+          animateOnMount={true}
+          enterAnimation={AnimationTypes.slideDown.enter}
+          exitAnimation={AnimationTypes.fade.exit}
+        >
+          <Segment
+            placeholder
+            raised
+            size="big"
+            style={{
+              marginLeft: "50px",
+              marginRight: "50px",
+              marginTop: "100px",
+            }}
+          >
+            <Grid columns={3} stackable textAlign="center">
+              <Grid.Row verticalAlign="middle">
+                <Grid.Column>
+                  <Header>Lobby Configuration</Header>
+                  {this.state.isUpdating ? (
+                    <UpdateAnimation />
+                  ) : (
+                    <div>
+                      <Menu color="blue" compact secondary>
+                        <Menu.Item
+                          name="Time"
+                          active={this.state.selectedGamemode === "Time"}
+                          onClick={this.handleItemClick}
+                        >
+                          Time
+                        </Menu.Item>
+                        <Menu.Item
+                          name="Pixelation"
+                          active={this.state.selectedGamemode === "Pixelation"}
+                          onClick={this.handleItemClick}
+                        >
+                          Pixelation
+                        </Menu.Item>
+                        <Menu.Item
+                          name="Clouds"
+                          active={this.state.selectedGamemode === "Clouds"}
+                          onClick={this.handleItemClick}
+                        >
+                          Clouds
+                        </Menu.Item>
+                      </Menu>
+                      <p></p>
+                      <Checkbox
+                        toggle
+                        checked={this.state.isLobbyPublic}
+                        label="Public Lobby"
+                        onChange={() => {
+                          this.setState({
+                            isLobbyPublic: !this.state.isLobbyPublic,
+                          });
+                          this.setState({ isUpdating: true });
+                          setTimeout(this.updateLobbyConfiguration, 1500);
+                        }}
+                      />
+                    </div>
+                  )}
+                </Grid.Column>
+                <Grid.Column>
+                  <Header as="h1">
+                    Multiplayer -{" "}
+                    {this.state.isLobbyPublic === true ? "Public" : "Private"}{" "}
+                    Lobby
+                  </Header>
+                  <Header as="h2">
+                    Gamemode: {this.state.selectedGamemode}
+                  </Header>
+                  <Header as="h3">
+                    Status: Waiting for the host to start the game
+                  </Header>
+                  <Table singleLine size="big">
+                    <TableHeader>
+                      <Table.Row>
+                        <Table.HeaderCell>Player</Table.HeaderCell>
+                        <Table.HeaderCell>Personal Best</Table.HeaderCell>
+                        <Table.HeaderCell>Host</Table.HeaderCell>
+                      </Table.Row>
+                    </TableHeader>
+                    <Table.Body>
+                      {this.state.users.map((user) => {
+                        return (
+                          <Table.Row>
+                            <Table.Cell>{user.username}</Table.Cell>
+                            <Table.Cell>
+                              {this.state.selectedGamemode === "Time" &&
+                                user.highscores.Time}
+                              {this.state.selectedGamemode === "Pixelation" &&
+                                user.highscores.Pixelation}
+                              {this.state.selectedGamemode === "Clouds" &&
+                                user.highscores.Clouds}
+                            </Table.Cell>
+                            <Table.Cell>
+                              {" "}
+                              {this.state.creator == user.id ? (
+                                <Image src={Crown} rounded size="mini" />
+                              ) : null}{" "}
+                            </Table.Cell>
+                          </Table.Row>
+                        );
+                      })}
+                    </Table.Body>
+                  </Table>
+                  &nbsp;&nbsp;&nbsp;
+                  {this.state.creator ==
+                  localStorage.getItem("currentUserId") ? (
+                    <Button
+                      size="big"
+                      color="green"
+                      onClick={() => {
+                        this.startGame();
                       }}
-                    />
-                  </div>
-                )}
-              </Grid.Column>
-              <Grid.Column>
-                <Header as="h1">
-                  Multiplayer -{" "}
-                  {this.state.isLobbyPublic === true ? "Public" : "Private"}{" "}
-                  Lobby
-                </Header>
-                <Header as="h2">Gamemode: {this.state.selectedGamemode}</Header>
-                <Header as="h3">
-                  Status: Waiting for the host to start the game
-                </Header>
-                <Table singleLine size="big">
-                  <TableHeader>
-                    <Table.Row>
-                      <Table.HeaderCell>Player</Table.HeaderCell>
-                      <Table.HeaderCell>Personal Best</Table.HeaderCell>
-                      <Table.HeaderCell>Host</Table.HeaderCell>
-                    </Table.Row>
-                  </TableHeader>
-                  <Table.Body>
-                    {this.state.users.map((user) => {
-                      return (
-                        <Table.Row>
-                          <Table.Cell>{user.username}</Table.Cell>
-                          <Table.Cell>
-                            {this.state.selectedGamemode === "Time" &&
-                              user.highscores.Time}
-                            {this.state.selectedGamemode === "Pixelation" &&
-                              user.highscores.Pixelation}
-                            {this.state.selectedGamemode === "Clouds" &&
-                              user.highscores.Clouds}
-                          </Table.Cell>
-                          <Table.Cell>
-                            {" "}
-                            {this.state.creator == user.id ? (
-                              <Image src={Crown} rounded size="mini" />
-                            ) : null}{" "}
-                          </Table.Cell>
-                        </Table.Row>
-                      );
-                    })}
-                  </Table.Body>
-                </Table>
-                &nbsp;&nbsp;&nbsp;
-                {this.state.creator == localStorage.getItem("currentUserId") ? (
+                    >
+                      Start Game
+                    </Button>
+                  ) : null}
+                  &nbsp;&nbsp;&nbsp;
                   <Button
                     size="big"
-                    color="green"
+                    color="red"
                     onClick={() => {
-                      this.startGame();
+                      this.leaveLobby();
                     }}
                   >
-                    Start Game
+                    Leave Lobby
                   </Button>
-                ) : null}
-                &nbsp;&nbsp;&nbsp;
-                <Button
-                  size="big"
-                  color="red"
-                  onClick={() => {
-                    this.leaveLobby();
-                  }}
-                >
-                  Leave Lobby
-                </Button>
-              </Grid.Column>
-              <Grid.Column>
-                <Header>Invite Key</Header>
-                <Input type="text" value={this.state.roomKey} />
-                <CopyToClipboard text={this.state.roomKey}>
-                  <Button icon attached>
-                    <Icon name="copy" />
-                  </Button>
-                </CopyToClipboard>
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
+                </Grid.Column>
+                <Grid.Column>
+                  <Header>Invite Key</Header>
+                  <Input type="text" value={this.state.roomKey} />
+                  <CopyToClipboard text={this.state.roomKey}>
+                    <Button icon attached>
+                      <Icon name="copy" />
+                    </Button>
+                  </CopyToClipboard>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
           </Segment>
-        </Segment>
+        </ComponentTransition>
       </div>
     );
   }

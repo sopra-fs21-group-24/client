@@ -3,6 +3,10 @@ import { GoogleMap, Marker, Polyline, withGoogleMap } from "react-google-maps";
 import { Button, Header, Icon, Segment } from "semantic-ui-react";
 import { AnimateHeight } from "react-anim-kit";
 import styled from "styled-components";
+import {
+  ComponentTransition,
+  AnimationTypes,
+} from "react-component-transition";
 const style = {
   // maxWidth: "450px",
   // height: "350px",
@@ -202,6 +206,13 @@ class MiniMap extends Component {
     return (
       <MiniMapContainer style={{right:r, width:w}}>
 
+      
+<ComponentTransition
+          animateOnMount={true}
+          enterAnimation={AnimationTypes.slideDown.enter}
+          exitAnimation={AnimationTypes.fade.exit}
+        >
+      
   
       <Segment style={{ maxHeight: "700px"  }}>
         <Header as="h4" textAlign="center">
@@ -242,6 +253,7 @@ class MiniMap extends Component {
         </Button>
         {/* </AnimateHeight> */}
       </Segment>
+      </ComponentTransition>
       </MiniMapContainer>
     );
   }
