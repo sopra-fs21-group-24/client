@@ -16,7 +16,7 @@ import {
 
 const Leaderboard = (props) => {
   const [loading, setLoading] = useState(false);
-  const [display, setDisplay] = useState();
+  const [display, setDisplay] = useState("Time");
   const users = {
     Guesr: 1000,
     Dude: 990,
