@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { api } from "../../helpers/api";
 import {
   Button,
   Divider,
@@ -17,19 +18,17 @@ import {
 const Leaderboard = (props) => {
   const [loading, setLoading] = useState(false);
   const [display, setDisplay] = useState("Time");
-  const users = {
-    Guesr: 1000,
-    Dude: 990,
-    Lu: 980,
-    CH: 800,
-    eyer: 800,
-    FR: 730,
-    DE: 330,
-    Ratnu: 300,
-    MapKing: 30,
-    Madguess: 20,
-  };
+  let users = []
 
+  useEffect(() => {
+    setLoading(true);
+    try{
+      users = api.get("/leaderboard/" + display);
+    }catch{
+      alert("Something went wrong fetching the leaderboard")
+    }
+    setLoading(false);
+  })
 
   const modes = ["Time", "Pixelation", "Clouds"];
 
@@ -49,13 +48,13 @@ const Leaderboard = (props) => {
             ))}
           </Menu>
           <List divided verticalAlign="middle">
-            {Object.keys(users).map(function (key, index) {
+            {users.map((user)=>{
               return (
                 <List.Item>
                   <List.Content floated="right">
-                    <Header as="h2" color = "grey">{users[key]}</Header>
+                    <Header as="h2" color = "grey">{user.score}</Header>
                   </List.Content>
-                  <List.Content><Header color="grey" as="h2">{key}</Header></List.Content>
+                  <List.Content><Header color="grey" as="h2">{user.username}</Header></List.Content>
                 </List.Item>
               );
             })}
