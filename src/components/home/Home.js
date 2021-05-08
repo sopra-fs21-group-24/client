@@ -8,6 +8,7 @@ import GameModeSelection from "./GameModeSelection";
 import LobbySelection from "./LobbySelection";
 import UserModeSelection from "./UserModeSelection";
 import LeaderboardLoader from "./Leaderboard";
+import { getWindowDimensions, useWindowDimensions } from "../shared/models/WindowSize";
 
 const adsEnabled = false;
 class Home extends React.Component {
@@ -97,8 +98,23 @@ class Home extends React.Component {
   }
 
   render() {
+    const { height, width } = getWindowDimensions();
     return (
-      <div style={{backgroundImage:`url(./wallpaper.jpeg)`,'background-size': 'cover'}}>
+      <div style={{
+        backgroundImage:`url(./wallpaper.jpeg)`,
+        // 'background-size': 'cover', 
+        // 'height':'100%',
+        // minWidth:width,
+        // minHeight:height,
+        height:height,
+        // filter: `blur(${filter}px)`,
+        // backgroundImage: `url(${props.url})`,
+        backgroundPosition:'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: "cover",
+        overflow:'hidden',
+        
+        }}>
         <HomeHeader
           logout={this.logout}
           updateUser={this.updateUser}
@@ -234,9 +250,7 @@ class Home extends React.Component {
     }
   }
 
-  // async componentDidMount() {
 
-  // }
 
   logout() {
     localStorage.removeItem("token");
@@ -245,14 +259,7 @@ class Home extends React.Component {
     this.props.history.push("/");
   }
 
-  // render() {
-  //   return (
-  //     <Container>
-  //      <HomeHeader logout={this.logout} updateUser={this.updateUser} user={this.state.user} height = {"50"}/>
-  //       <Label>Let's guess them coordinates:</Label>
-  //     </Container>
-  //   );
-  // }
+
 }
 
 export default withRouter(Home);
