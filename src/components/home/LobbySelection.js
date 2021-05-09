@@ -38,10 +38,10 @@ const LobbySelection = ({
             size="big"
             fluid
             color="blue"
-            onClick={() => {
-              toggleCreateJoinLobbyDisplay();
+            onClick={async() => {
+              await createLobby();
               LoaderExampleActive();
-              createLobby();
+              toggleCreateJoinLobbyDisplay();
             }}
             >
             Create Lobby
