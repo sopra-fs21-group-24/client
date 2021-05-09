@@ -16,33 +16,39 @@ import {
 } from "semantic-ui-react";
 
 const Leaderboard = (props) => {
-  const [loading, setLoading] = useState(false);
   const [display, setDisplay] = useState("Time");
-  let users = []
-
+  const [users, setUsers] = useState([]);
+  const [stopp, setStopp] = useState(false)
+  
   useEffect(() => {
-    setLoading(true);
-    try{
-      users = api.get("/leaderboard/" + display);
-    }catch{
-      alert("Something went wrong fetching the leaderboard")
+    if(!stopp){
+      fetch();
+      setStopp(true);
     }
-    setLoading(false);
-  })
+    async function fetch(){
+      try{
+        const response = await api.get("/leaderboard/" + display);
+        setUsers(response.data)
+        
+      }catch{
+        alert("Something went wrong fetching the leaderboard")
+      }
+    }
+
+    
+    })
 
   const modes = [{mode:"Time",icon:"clock outline"},{mode: "Pixelation", icon:"chess board"}, {mode:"Clouds", icon:"cloud"}];
-
+  const changer = (mode)=>{
+    setDisplay(mode);
+    setStopp(false);
+  }
   return (
     <div>
-      {loading ? (
-        <Dimmer active inverted>
-          <Loader indeterminate>Loading Leaderboard</Loader>
-        </Dimmer>
-      ) : (
         <Segment>
           <Menu widths={3} fluid tabular color="black" compact>
             {modes.map((mode) => (
-              <Menu.Item  name={mode} onClick={() => setDisplay(mode.mode)} active={display===mode.mode}>
+              <Menu.Item  name={mode} onClick={() => changer(mode.mode)} active={display===mode.mode}>
                 <Icon size="big" name={mode.icon}/>
                 {mode.mode}
 
@@ -62,7 +68,7 @@ const Leaderboard = (props) => {
             })}
           </List>
         </Segment>
-      )}
+      
     </div>
   );
 };
