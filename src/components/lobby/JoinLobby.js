@@ -28,17 +28,13 @@ class JoinLobby extends React.Component {
 
   async componentDidMount() {
     this.mounted = true;
+    let init = true;
 
-    await api.get(`/lobby`, {
-      headers: {
-        initial: true,
-      },
-    });
     while (true && this.mounted) {
       try {
         const response = await api.get(`/lobby`, {
           headers: {
-            initial: false,
+            initial: init,
           },
         });
         this.setState({ lobbies: response.data });
@@ -51,6 +47,7 @@ class JoinLobby extends React.Component {
         );
       }
       await new Promise((resolve) => setTimeout(resolve, 2000));
+      init = false;
     }
   }
 
