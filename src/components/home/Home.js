@@ -1,6 +1,9 @@
 import React from "react";
 // import ReactGlobe from "react-globe";
-import { ComponentTransition, AnimationTypes } from "react-component-transition";
+import {
+  ComponentTransition,
+  AnimationTypes,
+} from "react-component-transition";
 import { withRouter, useHistory } from "react-router-dom";
 import { Advertisement, Grid, Segment, Image, Header } from "semantic-ui-react";
 import { api, getAuthConfig, handleError } from "../../helpers/api";
@@ -9,7 +12,10 @@ import GameModeSelection from "./GameModeSelection";
 import LobbySelection from "./LobbySelection";
 import UserModeSelection from "./UserModeSelection";
 import LeaderboardLoader from "./Leaderboard";
-import { getWindowDimensions, useWindowDimensions } from "../shared/models/WindowSize";
+import {
+  getWindowDimensions,
+  useWindowDimensions,
+} from "../shared/models/WindowSize";
 
 const adsEnabled = false;
 class Home extends React.Component {
@@ -52,21 +58,25 @@ class Home extends React.Component {
       publicStatus: false,
     });
 
-      await api.post(`/games`, requestBody, getAuthConfig())
+    await api
+      .post(`/games`, requestBody, getAuthConfig())
       .then(async (response) => {
         localStorage.setItem("gameId", response.data.gameId);
-        await api.get(`/games/${response.data.gameId}/start`, getAuthConfig()).then(()=>{          
-          this.props.history.push(`/game`);
-        })
+        await api
+          .get(`/games/${response.data.gameId}/start`, getAuthConfig())
+          .then(() => {
+            this.props.history.push(`/game`);
+          });
       })
       .catch((err) => {
-        alert(`Something went wrong when creating a singleplayer game\n${handleError(err)}`)
-      })
- 
-
-      
+        alert(
+          `Something went wrong when creating a singleplayer game\n${handleError(
+            err
+          )}`
+        );
+      });
   };
-  
+
   // API Call to create a new multiplayer game/lobby
   createLobby = async () => {
     const requestBody = JSON.stringify({
@@ -75,50 +85,53 @@ class Home extends React.Component {
       gamemode: "Time",
       publicStatus: true,
     });
-    try {
-      const response = await api.post(`/games`, requestBody, {
-        headers: {
-          token: localStorage.getItem("token"),
-        },
+
+    await api
+      .post(`/games`, requestBody, getAuthConfig())
+      .then(async (response) => {
+        localStorage.setItem("lobbyId", response.data.lobbyId);
+        localStorage.setItem("gameId", response.data.gameId);
+        this.props.history.push(`/lobby`);
+      })
+      .catch((error) => {
+        this.toggleCreateJoinLobbyDisplay()
+        alert(
+          `Something went wrong when creating a multiplayer lobby\n${handleError(
+            error
+          )}`
+        );
       });
-      localStorage.setItem("lobbyId", response.data.lobbyId);
-      localStorage.setItem("gameId", response.data.gameId);
-      this.props.history.push(`/lobby`);
-    } catch (error) {
-      alert(
-        `Something went wrong when creating a multiplayer lobby\n${handleError(error)}`
-      );
-    }
   };
 
   async componentDidMount() {
-
     this.getUser();
   }
 
   render() {
     const { height, width } = getWindowDimensions();
     return (
-      <div style={{
-        backgroundImage:`url(./wallpaper.jpeg)`,
-        height:height,
-        backgroundPosition:'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: "cover",
-        overflow:'hidden',
-        }}>
-          <ComponentTransition
-            animateOnMount={true}
-            enterAnimation={AnimationTypes.slideUp.enter}
-            exitAnimation={AnimationTypes.slideUp.exit}
+      <div
+        style={{
+          backgroundImage: `url(./wallpaper.jpeg)`,
+          height: height,
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          overflow: "hidden",
+        }}
+      >
+        <ComponentTransition
+          animateOnMount={true}
+          enterAnimation={AnimationTypes.slideUp.enter}
+          exitAnimation={AnimationTypes.slideUp.exit}
         >
-        <HomeHeader
-          logout={this.logout}
-          updateUser={this.updateUser}
-          userScore={this.state.userScore}
-          user={this.state.user}
-          height={"50"}
-        />
+          <HomeHeader
+            logout={this.logout}
+            updateUser={this.updateUser}
+            userScore={this.state.userScore}
+            user={this.state.user}
+            height={"50"}
+          />
         </ComponentTransition>
         <div
           style={{
@@ -132,56 +145,56 @@ class Home extends React.Component {
             animateOnMount={true}
             enterAnimation={AnimationTypes.slideDown.enter}
             exitAnimation={AnimationTypes.fade.exit}
-        >
-          <Grid columns={2} centered >
-            {/* <Grid.Row></Grid.Row> */}
-          
-       
+          >
+            <Grid columns={2} centered>
+              {/* <Grid.Row></Grid.Row> */}
 
-            <Grid.Column style={{minWidth:"300px"}}>
-              <Segment raised>
-                {this.state.isUsermodeDisplayed === true ? (
-                  <UserModeSelection
-                    toggleUsermodeDisplay={this.toggleUsermodeDisplay}
-                    toggleGamemodeDisplay={this.toggleGamemodeDisplay}
-                    toggleCreateJoinLobbyDisplay={
-                      this.toggleCreateJoinLobbyDisplay
-                    }
-                    setUsermode={this.setUsermode}
-                  />
-                ) : null}
-                {this.state.isGamemodeDisplayed === true ? (
-                  <GameModeSelection
-                    toggleUsermodeDisplay={this.toggleUsermodeDisplay}
-                    toggleGamemodeDisplay={this.toggleGamemodeDisplay}
-                    toggleCreateJoinLobbyDisplay={
-                      this.toggleCreateJoinLobbyDisplay
-                    }
-                    usermode={this.state.selectedUsermode}
-                    setGamemode={this.setGamemode}
-                    createSingleplayerGame={this.createSingleplayerGame}
-                  />
-                ) : null}
-                {this.state.isCreateJoinLobbyDisplayed === true ? (
-                  <LobbySelection
-                    toggleUsermodeDisplay={this.toggleUsermodeDisplay}
-                    toggleCreateJoinLobbyDisplay={
-                      this.toggleCreateJoinLobbyDisplay
-                    }
-                    toggleGamemodeDisplay={this.toggleGamemodeDisplay}
-                    createLobby={this.createLobby}
-                  />
-                ) : null}
-              </Segment>
-            </Grid.Column>
-            <Grid.Column style={{minWidth:"300px"}}>
-              <Segment raised>
-                <Header as='h1' textAlign='center'>Leaderboard</Header>
-                <LeaderboardLoader/>
-              </Segment>
-            </Grid.Column>
-          </Grid>
-            </ComponentTransition>
+              <Grid.Column style={{ minWidth: "300px" }}>
+                <Segment raised>
+                  {this.state.isUsermodeDisplayed === true ? (
+                    <UserModeSelection
+                      toggleUsermodeDisplay={this.toggleUsermodeDisplay}
+                      toggleGamemodeDisplay={this.toggleGamemodeDisplay}
+                      toggleCreateJoinLobbyDisplay={
+                        this.toggleCreateJoinLobbyDisplay
+                      }
+                      setUsermode={this.setUsermode}
+                    />
+                  ) : null}
+                  {this.state.isGamemodeDisplayed === true ? (
+                    <GameModeSelection
+                      toggleUsermodeDisplay={this.toggleUsermodeDisplay}
+                      toggleGamemodeDisplay={this.toggleGamemodeDisplay}
+                      toggleCreateJoinLobbyDisplay={
+                        this.toggleCreateJoinLobbyDisplay
+                      }
+                      usermode={this.state.selectedUsermode}
+                      setGamemode={this.setGamemode}
+                      createSingleplayerGame={this.createSingleplayerGame}
+                    />
+                  ) : null}
+                  {this.state.isCreateJoinLobbyDisplayed === true ? (
+                    <LobbySelection
+                      toggleUsermodeDisplay={this.toggleUsermodeDisplay}
+                      toggleCreateJoinLobbyDisplay={
+                        this.toggleCreateJoinLobbyDisplay
+                      }
+                      toggleGamemodeDisplay={this.toggleGamemodeDisplay}
+                      createLobby={this.createLobby}
+                    />
+                  ) : null}
+                </Segment>
+              </Grid.Column>
+              <Grid.Column style={{ minWidth: "300px" }}>
+                <Segment raised>
+                  <Header as="h1" textAlign="center">
+                    Leaderboard
+                  </Header>
+                  <LeaderboardLoader />
+                </Segment>
+              </Grid.Column>
+            </Grid>
+          </ComponentTransition>
         </div>
       </div>
     );
@@ -198,9 +211,10 @@ class Home extends React.Component {
       };
       this.setState({ user: response.data, userScore: userScore });
     } catch (error) {
-
-      alert("While getting your user data we came across an error, you will be logged out and navigate to the landing page!");
-      this.logout()
+      alert(
+        "While getting your user data we came across an error, you will be logged out and navigate to the landing page!"
+      );
+      this.logout();
     }
   }
 
@@ -234,7 +248,6 @@ class Home extends React.Component {
     localStorage.removeItem("username");
     this.props.history.push("/");
   }
-
 }
 
 export default withRouter(Home);
