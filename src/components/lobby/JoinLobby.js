@@ -115,7 +115,7 @@ class JoinLobby extends React.Component {
         >
 
         
-        <Segment placeholder raised size="big" style={{marginLeft:"50px", marginRight:"50px", marginTop:"100px"}}>
+        <Segment placeholder raised padded='very' size="big" style={{marginLeft:"50px", marginRight:"50px", marginTop:"100px"}}>
           <Grid columns={2} stackable textAlign="center">
             <Divider vertical>Or</Divider>
             <Grid.Row verticalAlign="middle">
@@ -124,7 +124,7 @@ class JoinLobby extends React.Component {
                   <Icon name="search" />
                   Join a public lobby
                 </Header>
-                <Table>
+                <Table selectable>
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Lobby name</Table.HeaderCell>
@@ -134,18 +134,17 @@ class JoinLobby extends React.Component {
                   </Table.Header>
                   <Table.Body>
                     {this.state.lobbies.length === 0
-                      ? "Sorry, there are no public lobbies at the moment!"
+                      ? "No public lobby available"
                       : this.state.lobbies.map((lobby) => {
                           return (
                             <Table.Row
-                              positive
                               onClick={() => {
                                 this.joinPublicLobby(lobby.id);
                               }}
                             >
                               <Table.Cell>{lobby.username}'s Lobby</Table.Cell>
                               <Table.Cell>{lobby.username}</Table.Cell>
-                              <Table.Cell>[{lobby.users}/3]</Table.Cell>
+                              <Table.Cell>{lobby.users}/3</Table.Cell>
                               
                             </Table.Row>
                           );
@@ -168,6 +167,8 @@ class JoinLobby extends React.Component {
                   />
                   <Button
                     primary
+                    size="big"
+                    style={{marginTop:'20px'}}
                     onClick={() => {
                       this.joinLobbyWithKey();
                     }}
@@ -184,7 +185,7 @@ class JoinLobby extends React.Component {
         <center>
 
 
-        <Button style={{marginTop:"50px"}}color='teal' onClick={()=>{this.props.history.push(`/home`);}}>Go back</Button>
+        <Button size='big' style={{marginTop:"50px"}}color='teal' onClick={()=>{this.props.history.push(`/home`);}}>Go back</Button>
         </center>
         </ComponentTransition>
       </div>

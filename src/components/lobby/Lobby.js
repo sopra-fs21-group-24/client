@@ -230,6 +230,7 @@ class Lobby extends React.Component {
           <Segment
             placeholder
             raised
+            padded='very'
             size="big"
             style={{
               marginLeft: "50px",
