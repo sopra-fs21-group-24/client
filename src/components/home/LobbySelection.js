@@ -70,9 +70,10 @@ const LobbySelection = ({
       </Grid.Row>
       <Grid.Row>
         <Grid.Column centered width="7">
+          <center>
           <Button
             size="big"
-            fluid
+            // fluid
             color="black"
             onClick={() => {
               toggleCreateJoinLobbyDisplay();
@@ -81,6 +82,7 @@ const LobbySelection = ({
           >
             Go back
           </Button>
+        </center>
         </Grid.Column>
       </Grid.Row>
     </Grid>

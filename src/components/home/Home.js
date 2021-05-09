@@ -18,6 +18,7 @@ import {
 } from "../shared/models/WindowSize";
 
 const adsEnabled = false;
+
 class Home extends React.Component {
   _;
   constructor() {
@@ -33,6 +34,7 @@ class Home extends React.Component {
     this.updateUser = this.updateUser.bind(this);
     this.logout = this.logout.bind(this);
   }
+
 
   toggleUsermodeDisplay = () => {
     this.setState({ isUsermodeDisplayed: !this.state.isUsermodeDisplayed });

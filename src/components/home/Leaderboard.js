@@ -42,7 +42,7 @@ const Leaderboard = (props) => {
         <Segment>
           <Menu widths={3} fluid tabular color="black" compact>
             {modes.map((mode) => (
-              <Menu.Item  name={mode} onClick={() => setDisplay(mode)} active={display===mode}>
+              <Menu.Item  name={mode} onClick={() => setDisplay(mode.mode)} active={display===mode.mode}>
                 <Icon size="big" name={mode.icon}/>
                 {mode.mode}
 
