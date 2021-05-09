@@ -32,6 +32,7 @@ class Home extends React.Component {
 
     this.updateUser = this.updateUser.bind(this);
     this.logout = this.logout.bind(this);
+    // this.subsub = this.subsub.bind(this);
   }
 
   toggleUsermodeDisplay = () => {
@@ -50,8 +51,7 @@ class Home extends React.Component {
 
   // API Call to create a new singleplayer game
   // /games/{gameId}/start endpoint returns a game, what to do with it?
-  createSingleplayerGame = async (gamemode) => {
-    let oldGameId = localStorage.getItem("gameId")
+  async createSingleplayerGame(gamemode) {
     const requestBody = JSON.stringify({
       userId: localStorage.getItem("currentUserId"),
       usermode: "Singleplayer",
@@ -59,42 +59,79 @@ class Home extends React.Component {
       publicStatus: false,
     });
 
-    await api
-      .post(`/games`, requestBody, getAuthConfig())
-      .then(async (response) => {
+    let oldGameId = localStorage.getItem("gameId");
+
+    // try {
+      let response =  await api.post(`/games`, requestBody, getAuthConfig())
+      if (response.status == 412){
+        alert("error")
+      }  else {
+        console.log(response);
         localStorage.setItem("gameId", response.data.gameId);
         await api
           .get(`/games/${response.data.gameId}/start`, getAuthConfig())
           .then(() => {
             this.props.history.push(`/game`);
-          });
-      })
-      .catch(async (err) => {
-        console.log(err.response)
-        if (err.response.status == 412  && oldGameId != null){
-          let conf = window.confirm
-          ("Want us to cancel your ongoing game?")
-          if (conf == true){
+          })
 
-            await api
-              .get("/games/" + oldGameId + "/exit", getAuthConfig())
-              .then(() => {
-                console.log("ending cancelled game");
-                this.createSingleplayerGame(gamemode) //TODO: possible recursion trap
-              });
-          }
-        } else {
+      }
 
-          alert(
-            `Something went wrong when creating a singleplayer game\n${handleError(
-              err
-            )}`
-            );
-          }
-      });
-  };
+    // } 
+    // catch(err){
+
+      // console.log("big outer error", err.response);
+      // console.log(err.response);
+      // if (
+      //  err.response.data.error == "Precondition Failed" &&
+      //   err.response.data.status == 412 &&
+      //   oldGameId != null
+      // ) {
+      //   var conf = window.confirm(
+      //     "You have an ongoing game, should it be cancelled and this one started?"
+      //   );
+      //   if (conf == true) {
+      //     if (oldGameId != null) {
+      //       await api
+      //         .get("/games/" + oldGameId + "/exit", getAuthConfig())
+      //         .then(() => {
+      //           console.log("ending cancelled game");
+      //         });
+      //         await this.createSingleplayerGame(gamemode)
+      //     }
+      //   }
+      // } else {
+      //   alert(
+      //     `Something went wrong when creating a singleplayer game\n${handleError(
+      //       err.response
+      //     )}`
+      //   );
+      // }
+    // }
+
+    
+  }
+
+
+  async subsub(oldGameId){
+    await this.exitGame(oldGameId);
+    await this.createSingleplayerGame(); //TODO: could be a mad recursion trap
+  
+  }
+
+
 
   // API Call to create a new multiplayer game/lobby
+
+  async exitGame(oldGameId) {
+    if (oldGameId != null) {
+      await api
+        .get("/games/" + oldGameId + "/exit", getAuthConfig())
+        .then(() => {
+          console.log("ending cancelled game");
+          // localStorage.removeItem("gameId");
+        });
+    }
+  }
   createLobby = async () => {
     const requestBody = JSON.stringify({
       userId: localStorage.getItem("currentUserId"),
@@ -111,7 +148,7 @@ class Home extends React.Component {
         this.props.history.push(`/lobby`);
       })
       .catch((error) => {
-        this.toggleCreateJoinLobbyDisplay()
+        this.toggleCreateJoinLobbyDisplay();
         alert(
           `Something went wrong when creating a multiplayer lobby\n${handleError(
             error
@@ -263,6 +300,8 @@ class Home extends React.Component {
     localStorage.removeItem("token");
     localStorage.removeItem("currentUserId");
     localStorage.removeItem("username");
+    localStorage.removeItem("gameId");
+    localStorage.removeItem("lobbyId");
     this.props.history.push("/");
   }
 }

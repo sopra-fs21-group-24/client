@@ -388,9 +388,7 @@ class GameController extends React.Component {
 
   async exitGame() {
     try {
-      await api.get("/games/" + this.state.gameId + "/exit", {
-        headers: { token: localStorage.getItem("token") },
-      });
+      await api.get("/games/" + this.state.gameId + "/exit", getAuthConfig());
     } catch (error) {
       this.props.history.push("/home");
     }
