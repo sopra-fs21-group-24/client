@@ -24,7 +24,8 @@ class JoinLobby extends React.Component {
   }
 
   async componentDidMount() {
-    while (true) {
+    this.mounted = true;
+    while (true && this.mounted) {
       try {
         const response = await api.get(`/lobby`);
         this.setState({ lobbies: response.data });
@@ -38,6 +39,11 @@ class JoinLobby extends React.Component {
       }
       await new Promise((resolve) => setTimeout(resolve, 2000));
     }
+  }
+
+  componentWillUnmount(){
+    console.log("unmounting");
+    this.mounted = false;
   }
 
   joinLobbyWithKey = async () => {
