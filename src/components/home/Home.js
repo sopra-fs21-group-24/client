@@ -75,7 +75,7 @@ class Home extends React.Component {
         console.log(err.response)
         if (err.response.status == 412  && oldGameId != null){
           let conf = window.confirm
-          ("Want us to cancel your ongoing game?")
+          ("Want us to cancel your ongoing game and start this new one?")
           if (conf == true){
 
             await api
