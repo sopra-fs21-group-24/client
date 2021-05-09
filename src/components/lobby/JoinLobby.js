@@ -1,7 +1,10 @@
 import React from "react";
 import { api, handleError } from "../../helpers/api";
 import { withRouter } from "react-router-dom";
-import { ComponentTransition, AnimationTypes } from "react-component-transition";
+import {
+  ComponentTransition,
+  AnimationTypes,
+} from "react-component-transition";
 import {
   Input,
   Grid,
@@ -25,9 +28,19 @@ class JoinLobby extends React.Component {
 
   async componentDidMount() {
     this.mounted = true;
+
+    await api.get(`/lobby`, {
+      headers: {
+        initial: true,
+      },
+    });
     while (true && this.mounted) {
       try {
-        const response = await api.get(`/lobby`);
+        const response = await api.get(`/lobby`, {
+          headers: {
+            initial: false,
+          },
+        });
         this.setState({ lobbies: response.data });
         console.log(this.state.lobbies);
       } catch (error) {
@@ -41,7 +54,7 @@ class JoinLobby extends React.Component {
     }
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     console.log("unmounting");
     this.mounted = false;
   }
@@ -100,93 +113,110 @@ class JoinLobby extends React.Component {
   render() {
     const { height, width } = getWindowDimensions();
     return (
-      <div style={{
-        backgroundImage: `url(../wallpaper.jpeg)`,
-        height:height,
-        backgroundPosition:'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: "cover",
-        overflow:'hidden',
-        }}>
-          <ComponentTransition
-            animateOnMount={true}
-            enterAnimation={AnimationTypes.slideDown.enter}
-            exitAnimation={AnimationTypes.fade.exit}
+      <div
+        style={{
+          backgroundImage: `url(../wallpaper.jpeg)`,
+          height: height,
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          overflow: "hidden",
+        }}
+      >
+        <ComponentTransition
+          animateOnMount={true}
+          enterAnimation={AnimationTypes.slideDown.enter}
+          exitAnimation={AnimationTypes.fade.exit}
         >
+          <Segment
+            placeholder
+            raised
+            padded="very"
+            size="big"
+            style={{
+              marginLeft: "50px",
+              marginRight: "50px",
+              marginTop: "100px",
+            }}
+          >
+            <Grid columns={2} stackable textAlign="center">
+              <Divider vertical>Or</Divider>
+              <Grid.Row verticalAlign="middle">
+                <Grid.Column>
+                  <Header icon>
+                    <Icon name="search" />
+                    Join a public lobby
+                  </Header>
+                  <Table selectable>
+                    <Table.Header>
+                      <Table.Row>
+                        <Table.HeaderCell>Lobby name</Table.HeaderCell>
+                        <Table.HeaderCell>Host</Table.HeaderCell>
+                        <Table.HeaderCell># Players</Table.HeaderCell>
+                      </Table.Row>
+                    </Table.Header>
+                    <Table.Body>
+                      {this.state.lobbies.length === 0
+                        ? "No public lobby available"
+                        : this.state.lobbies.map((lobby) => {
+                            return (
+                              <Table.Row
+                                onClick={() => {
+                                  this.joinPublicLobby(lobby.id);
+                                }}
+                              >
+                                <Table.Cell>
+                                  {lobby.username}'s Lobby
+                                </Table.Cell>
+                                <Table.Cell>{lobby.username}</Table.Cell>
+                                <Table.Cell>{lobby.users}/3</Table.Cell>
+                              </Table.Row>
+                            );
+                          })}
+                    </Table.Body>
+                  </Table>
+                </Grid.Column>
+                <Grid.Column>
+                  <Header icon>
+                    <Icon name="key" />
+                    Join a lobby with invite key
+                  </Header>
+                  <div>
+                    <Input
+                      icon="key"
+                      placeholder="Enter key"
+                      onChange={(e) => {
+                        this.handleInputChange("roomKey", e.target.value);
+                      }}
+                    />
+                    <Button
+                      primary
+                      size="big"
+                      style={{ marginTop: "20px" }}
+                      onClick={() => {
+                        this.joinLobbyWithKey();
+                      }}
+                    >
+                      Join
+                    </Button>
+                  </div>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+          </Segment>
 
-        
-        <Segment placeholder raised padded='very' size="big" style={{marginLeft:"50px", marginRight:"50px", marginTop:"100px"}}>
-          <Grid columns={2} stackable textAlign="center">
-            <Divider vertical>Or</Divider>
-            <Grid.Row verticalAlign="middle">
-              <Grid.Column>
-                <Header icon>
-                  <Icon name="search" />
-                  Join a public lobby
-                </Header>
-                <Table selectable>
-                  <Table.Header>
-                    <Table.Row>
-                      <Table.HeaderCell>Lobby name</Table.HeaderCell>
-                      <Table.HeaderCell>Host</Table.HeaderCell>
-                      <Table.HeaderCell># Players</Table.HeaderCell>
-                    </Table.Row>
-                  </Table.Header>
-                  <Table.Body>
-                    {this.state.lobbies.length === 0
-                      ? "No public lobby available"
-                      : this.state.lobbies.map((lobby) => {
-                          return (
-                            <Table.Row
-                              onClick={() => {
-                                this.joinPublicLobby(lobby.id);
-                              }}
-                            >
-                              <Table.Cell>{lobby.username}'s Lobby</Table.Cell>
-                              <Table.Cell>{lobby.username}</Table.Cell>
-                              <Table.Cell>{lobby.users}/3</Table.Cell>
-                              
-                            </Table.Row>
-                          );
-                        })}
-                  </Table.Body>
-                </Table>
-              </Grid.Column>
-              <Grid.Column>
-                <Header icon>
-                  <Icon name="key" />
-                  Join a lobby with invite key
-                </Header>
-                <div>
-                  <Input
-                    icon="key"
-                    placeholder="Enter key"
-                    onChange={(e) => {
-                      this.handleInputChange("roomKey", e.target.value);
-                    }}
-                  />
-                  <Button
-                    primary
-                    size="big"
-                    style={{marginTop:'20px'}}
-                    onClick={() => {
-                      this.joinLobbyWithKey();
-                    }}
-                  >
-                    Join
-                  </Button>
-                </div>
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-          
-        </Segment>
-     
-        <center>
-
-
-        <Button size='big' style={{marginTop:"50px"}}color='teal' onClick={()=>{this.props.history.push(`/home`);}}>Go back</Button>
-        </center>
+          <center>
+            <Button
+              size="big"
+              style={{ marginTop: "50px" }}
+              color="teal"
+              onClick={() => {
+                this.props.history.push(`/home`);
+              }}
+            >
+              Go back
+            </Button>
+          </center>
         </ComponentTransition>
       </div>
     );

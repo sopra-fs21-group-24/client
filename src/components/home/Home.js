@@ -16,8 +16,17 @@ import {
   getWindowDimensions,
   useWindowDimensions,
 } from "../shared/models/WindowSize";
+import styled from "styled-components";
 
 const adsEnabled = false;
+
+const Footer = styled.footer`
+  text-align: center;
+  font-size: 20px;
+  color: white;
+  bottom: 10px;
+  position: fixed;
+`;
 
 class Home extends React.Component {
   _;
@@ -34,7 +43,6 @@ class Home extends React.Component {
     this.updateUser = this.updateUser.bind(this);
     this.logout = this.logout.bind(this);
   }
-
 
   toggleUsermodeDisplay = () => {
     this.setState({ isUsermodeDisplayed: !this.state.isUsermodeDisplayed });
@@ -113,7 +121,7 @@ class Home extends React.Component {
         this.props.history.push(`/lobby`);
       })
       .catch((error) => {
-        this.toggleCreateJoinLobbyDisplay()
+        this.toggleCreateJoinLobbyDisplay();
         alert(
           `Something went wrong when creating a multiplayer lobby\n${handleError(
             error
@@ -213,6 +221,7 @@ class Home extends React.Component {
                 </Segment>
               </Grid.Column>
             </Grid>
+            <Footer>&hearts; Made by UZH students</Footer>
           </ComponentTransition>
         </div>
       </div>
@@ -265,6 +274,8 @@ class Home extends React.Component {
     localStorage.removeItem("token");
     localStorage.removeItem("currentUserId");
     localStorage.removeItem("username");
+    localStorage.removeItem("gameId");
+    localStorage.removeItem("lobbyId");
     this.props.history.push("/");
   }
 }

@@ -13,11 +13,12 @@ const GameModeSelection = ({
     <Grid centered>
       <Grid.Row centered>
         <motion.h1
-        transition={{
-          type: 'spring',
-          stiffness: 300
-        }}
-        >Choose which gamemode you want to play!
+          transition={{
+            type: "spring",
+            stiffness: 300,
+          }}
+        >
+          Choose which gamemode you want to play!
         </motion.h1>
       </Grid.Row>
       <Grid.Row centered>
@@ -32,7 +33,7 @@ const GameModeSelection = ({
                 x: -300,
                 backgroundColor: "#c3dcff",
                 scale: 1,
-                borderRadius: '8px'
+                borderRadius: "8px",
               }}
               animate={{
                 x: 0,
@@ -76,7 +77,7 @@ const GameModeSelection = ({
                 x: 300,
                 backgroundColor: "#d8d3ff",
                 scale: 1,
-                borderRadius: '8px'
+                borderRadius: "8px",
               }}
               animate={{
                 x: 0,
@@ -123,7 +124,7 @@ const GameModeSelection = ({
                 x: -300,
                 backgroundColor: "#cfcfe1",
                 scale: 1,
-                borderRadius: '8px'
+                borderRadius: "8px",
               }}
               animate={{
                 x: 0,
@@ -170,7 +171,7 @@ const GameModeSelection = ({
                 x: -300,
                 backgroundColor: "#323232",
                 scale: 1,
-                borderRadius: '8px'
+                borderRadius: "8px",
               }}
               whileHover={{
                 scale: 1.1,
