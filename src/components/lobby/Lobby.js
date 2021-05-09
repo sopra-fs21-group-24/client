@@ -23,7 +23,6 @@ import {
   Loader,
   Transition,
 } from "semantic-ui-react";
-import Crown from "../../assets/Crown.png";
 import { handleError, api, getAuthConfig } from "../../helpers/api";
 import HomeHeader from "../../views/Header";
 import UpdateAnimation from "../../views/design/UpdateAnimation";
