@@ -12,6 +12,7 @@ import {
   Segment,
 } from "semantic-ui-react";
 import { MapElem } from "./MiniMap";
+import Countdown from "./Countdown";
 
 const ScoreBox = (props) => {
   const PlayerList = () => (
@@ -44,9 +45,8 @@ const ScoreBox = (props) => {
     );
   };
 
-
   const NextRound = (props) => {
-    console.log(props.everyOneGuessed, "EVERYONEGUESSED?")
+    console.log(props.everyOneGuessed, "EVERYONEGUESSED?");
     let button = "Next round";
     return (
       <Button
@@ -57,14 +57,13 @@ const ScoreBox = (props) => {
           props.nextRound();
         }}
       >
-        {props.everyOneGuessed ? "NEXT ROUND":"WATING FOR GUESSES"}
+        {props.everyOneGuessed ? "NEXT ROUND" : "WAITING FOR GUESSES"}
       </Button>
     );
   };
 
   const ExitGame = () => {
-
-    return (   
+    return (
       <Button
         animated="fade"
         color="red"
@@ -74,10 +73,10 @@ const ScoreBox = (props) => {
           props.endGame();
         }}
       >
-        <Button.Content visible>FINAL SCORE: {props.playerScore.totalScore}</Button.Content>
-        <Button.Content hidden>
-          EXIT GAME
+        <Button.Content visible>
+          FINAL SCORE: {props.playerScore.totalScore}
         </Button.Content>
+        <Button.Content hidden>EXIT GAME</Button.Content>
       </Button>
     );
   };
@@ -104,16 +103,28 @@ const ScoreBox = (props) => {
 
   const LowerPart = () => {
     if (props.lastRound) {
-      return (
-        props.everyOneGuessed ? 
+      return props.everyOneGuessed ? (
         <Grid columns={2} stackable textAlign="center">
           <Grid.Column style={{ maxWidth: 450 }}>
             <ExitGame />
           </Grid.Column>
-        </Grid>:<h4 style={{color:"black"}}>Please wait till everyone made their guess</h4>
+        </Grid>
+      ) : (
+        <h4 style={{ color: "black" }}>
+          Please wait till everyone took their guess
+        </h4>
       );
     } else {
-      return props.everyOneGuessed ? <NextRound nextRound={props.nextRound} everyOneGuessed={props.everyOneGuessed} />:<h4 style={{color:"black"}}>Please wait till everyone made their guess</h4> ;
+      return props.everyOneGuessed ? (
+        <Countdown
+          nextRound={props.nextRound}
+         />
+      ) : (
+        <h4 style={{ color: "black" }}>
+          Please wait till everyone took their guess
+        </h4>
+      );
+      //return props.everyOneGuessed ? <NextRound nextRound={props.nextRound} everyOneGuessed={props.everyOneGuessed} />:<h4 style={{color:"black"}}>Please wait till everyone made their guess</h4> ;
     }
   };
   //SCORE = NULL
