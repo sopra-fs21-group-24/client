@@ -44,6 +44,7 @@ const GameModeSelection = ({
                 scale: 1.1,
                 textShadow: "0px 0px 8px rgb(255, 255, 255)",
                 boxShadow: "0px 0px 8px rgb(255, 255, 255)",
+                cursor: "pointer",
               }}
               onClick={() => {
                 createSingleplayerGame("Time");
@@ -91,6 +92,7 @@ const GameModeSelection = ({
                 scale: 1.1,
                 textShadow: "0px 0px 8px rgb(255, 255, 255)",
                 boxShadow: "0px 0px 8px rgb(255, 255, 255)",
+                cursor: "pointer",
               }}
               onClick={() => {
                 createSingleplayerGame("Pixelation");
@@ -138,6 +140,7 @@ const GameModeSelection = ({
                 scale: 1.1,
                 textShadow: "0px 0px 8px rgb(255, 255, 255)",
                 boxShadow: "0px 0px 8px rgb(255, 255, 255)",
+                cursor: "pointer",
               }}
               onClick={() => {
                 createSingleplayerGame("Clouds");
@@ -179,6 +182,7 @@ const GameModeSelection = ({
                 scale: 1.1,
                 textShadow: "0px 0px 8px rgb(255, 255, 255)",
                 boxShadow: "0px 0px 8px rgb(255, 255, 255)",
+                cursor: "pointer",
               }}
               onClick={() => {
                 if (usermode === "multiplayer") {

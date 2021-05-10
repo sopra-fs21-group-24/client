@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.21.1",
+    "confetti-js": "0.0.18",
     "eslint-plugin-unused-imports": "^1.1.1",
     "framer-motion": "^4.1.13",
     "json-server": "^0.16.3",
@@ -20,7 +21,8 @@
     "react-static-google-map": "^0.8.0",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^2.0.3",
-    "styled-components": "^5.2.1"
+    "styled-components": "^5.2.1",
+    "use-sound": "^3.0.1"
   },
   "scripts": {
     "dev": "react-scripts start",

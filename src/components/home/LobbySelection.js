@@ -61,6 +61,7 @@ const LobbySelection = ({
                 scale: 1.1,
                 textShadow: "0px 0px 8px rgb(255, 255, 255)",
                 boxShadow: "0px 0px 8px rgb(255, 255, 255)",
+                cursor: "pointer",
               }}
               onClick={async () => {
                 await createLobby();
@@ -106,6 +107,7 @@ const LobbySelection = ({
                 scale: 1.1,
                 textShadow: "0px 0px 8px rgb(255, 255, 255)",
                 boxShadow: "0px 0px 8px rgb(255, 255, 255)",
+                cursor: "pointer",
               }}
               onClick={() => {
                 history.push({
@@ -149,6 +151,7 @@ const LobbySelection = ({
                 scale: 1.1,
                 textShadow: "0px 0px 8px rgb(255, 255, 255)",
                 boxShadow: "0px 0px 8px rgb(255, 255, 255)",
+                cursor: "pointer",
               }}
               onClick={() => {
                 toggleCreateJoinLobbyDisplay();
