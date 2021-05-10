@@ -19,7 +19,7 @@ const Leaderboard = (props) => {
   const [display, setDisplay] = useState("Time");
   const [users, setUsers] = useState([]);
   const [stopp, setStopp] = useState(false)
-  
+  const [encounteredError, setEncounteredError] = useState(false)
   useEffect(() => {
     if(!stopp){
       fetch();
@@ -31,11 +31,10 @@ const Leaderboard = (props) => {
         setUsers(response.data)
         
       }catch{
-        alert("Something went wrong fetching the leaderboard")
+        setEncounteredError(true);
+        // alert("Something went wrong fetching the leaderboard")
       }
-    }
-
-    
+    }    
     })
 
   const modes = [{mode:"Time",icon:"clock outline"},{mode: "Pixelation", icon:"chess board"}, {mode:"Clouds", icon:"cloud"}];
@@ -45,6 +44,8 @@ const Leaderboard = (props) => {
   }
   return (
     <div>
+      {encounteredError && <h3 style={{color:"red"}}>Encountered Error fetching the Leaderboard. Please refresh the screen.</h3>}
+       
         <Segment>
           <Menu widths={3} fluid tabular color="black" compact>
             {modes.map((mode) => (
