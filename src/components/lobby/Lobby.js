@@ -57,6 +57,9 @@ class Lobby extends React.Component {
       this.setState({ hasGameStarted: true });
       this.props.history.push("/game");
     } catch (error) {
+      if (error.response.status == 412){
+        alert("yooo")
+      }
       alert(
         `Something went wrong when starting the game: \n${handleError(error)}`
       );
@@ -291,7 +294,8 @@ class Lobby extends React.Component {
                     Gamemode: {this.state.selectedGamemode}
                   </Header>
                   <Header as="h3">
-                    Status: Waiting for the host to start the game
+                    {this.state.users.length>1 ? 
+                    "Status: Waiting for the host to start the game" : "Status: Waiting for more players to join"}
                   </Header>
                   <Table singleLine size="big">
                     <TableHeader>
@@ -329,6 +333,8 @@ class Lobby extends React.Component {
                   {this.state.creator ==
                   localStorage.getItem("currentUserId") ? (
                     <Button
+
+                      disabled={this.state.users.length < 2}
                       size="big"
                       color="green"
                       onClick={() => {

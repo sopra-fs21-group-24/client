@@ -258,7 +258,7 @@ class Home extends React.Component {
                 </Segment>
               </Grid.Column>
             </Grid>
-            <Footer>&hearts; Made by UZH students</Footer>
+            <Footer>Made with &hearts; by UZH students</Footer>
           </ComponentTransition>
         </div>
       </div>
