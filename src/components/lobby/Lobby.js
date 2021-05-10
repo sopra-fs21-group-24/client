@@ -128,11 +128,7 @@ class Lobby extends React.Component {
       await api.put(
         `/lobby/${this.state.lobbyId}`,
         {},
-        {
-          headers: {
-            token: localStorage.getItem("token"),
-          },
-        }
+        getAuthConfig()
       );
 
       localStorage.removeItem("lobbyId");

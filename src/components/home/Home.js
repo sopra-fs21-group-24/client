@@ -106,6 +106,8 @@ class Home extends React.Component {
 
   // API Call to create a new multiplayer game/lobby
   createLobby = async () => {
+    let oldLobbyId = localStorage.getItem("lobbyId")
+
     const requestBody = JSON.stringify({
       userId: localStorage.getItem("currentUserId"),
       usermode: "Multiplayer",
@@ -120,13 +122,48 @@ class Home extends React.Component {
         localStorage.setItem("gameId", response.data.gameId);
         this.props.history.push(`/lobby`);
       })
-      .catch((error) => {
+      .catch(async (err) => {
+
+        console.log(err.response)
         this.toggleCreateJoinLobbyDisplay();
-        alert(
-          `Something went wrong when creating a multiplayer lobby\n${handleError(
-            error
-          )}`
-        );
+       
+        if (err.response.status == 412  && oldLobbyId != null){
+          let conf = window.confirm
+          ("Want us to cancel your ongoing lobby and create a new one?")
+          if (conf == true){
+            await api.put(
+              `/lobby/${oldLobbyId}`,
+              {},
+              getAuthConfig()
+            ).then(()=>{
+              console.log("CANCELLED OLD LOBBY")
+              localStorage.removeItem("lobbyId");
+              this.createLobby()
+              
+            })
+
+            // await aspi
+            //   .get("/games/" + oldGameId + "/exit", getAuthConfig())
+            //   .then(() => {
+            //     console.log("cancelled old lobby");
+            //     this.createLobby() //TODO: possible recursion trap
+            //   });
+          }
+        } else {
+
+          alert(
+            `Something went wrong when creating a multiplayer lobby\n${handleError(
+                  err
+            )}`
+            );
+          }
+
+
+        // alert(
+        //   `Something went wrong when creating a multiplayer lobby\n${handleError(
+        //     error
+        //   )}`
+        // );
       });
   };
 
