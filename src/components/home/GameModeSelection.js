@@ -1,6 +1,15 @@
 import React from "react";
 import { Button, Icon, Grid } from "semantic-ui-react";
 import { motion } from "framer-motion";
+import styled from "styled-components";
+
+const Header = styled.h1`
+  text-align: center;
+  text-shadow: 2px 2px #006699;
+  font-size: 30px;
+  color: white;
+  width: 100%;
+`;
 
 const GameModeSelection = ({
   toggleGamemodeDisplay,
@@ -12,14 +21,7 @@ const GameModeSelection = ({
   return (
     <Grid centered>
       <Grid.Row centered>
-        <motion.h1
-          transition={{
-            type: "spring",
-            stiffness: 300,
-          }}
-        >
-          Choose which gamemode you want to play!
-        </motion.h1>
+        <Header>Choose which gamemode you want to play!</Header>
       </Grid.Row>
       <Grid.Row centered>
         <Grid.Column centered width={7}>

@@ -45,7 +45,6 @@ class Lobby extends React.Component {
     };
   }
 
-  // TODO: Check what needs to be done with the response of GameGetDTO
   startGame = async () => {
     const gameId = localStorage.getItem("gameId");
     try {
@@ -150,6 +149,8 @@ class Lobby extends React.Component {
     setTimeout(this.updateLobbyConfiguration, 1500);
   };
 
+  
+
   // API Call to fetch the lobby all four seconds for changes
   async componentDidMount() {
     this.mounted = true;
@@ -203,13 +204,16 @@ class Lobby extends React.Component {
     }
   }
 
+
   componentWillUnmount() {
     console.log("unmounting");
     this.mounted = false;
+
   }
   // TODO: Display highscore according to gamemode
   render() {
     const { height, width } = getWindowDimensions();
+    
     return (
       <div
         style={{
@@ -218,7 +222,7 @@ class Lobby extends React.Component {
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
-          overflow: "hidden",
+          // overflow: "hidden",
         }}
       >
         <ComponentTransition

@@ -4,6 +4,13 @@ import { motion } from "framer-motion";
 import { scale } from "react-component-transition/build/cjs/animations";
 import styled from "styled-components";
 
+const Header = styled.h1`
+  text-align: center;
+  text-shadow: 2px 2px #006699;
+  font-size: 30px;
+  color: white;
+  width: 100%;
+`;
 
 const UserModeSelection = ({
   toggleUsermodeDisplay,
@@ -15,9 +22,7 @@ const UserModeSelection = ({
     <div>
       <Grid centered>
         <Grid.Row>
-          <h1>
-            Start a singleplayer game or play with friends!
-          </h1>
+          <Header>Start a singleplayer game or play with friends!</Header>
         </Grid.Row>
         <Grid.Row centered>
           <Grid.Column centered>

@@ -22,6 +22,7 @@ const adsEnabled = false;
 
 const Footer = styled.footer`
   text-align: center;
+  text-shadow: 2px 2px black;
   font-size: 20px;
   color: white;
   bottom: 10px;
@@ -214,7 +215,6 @@ class Home extends React.Component {
               {/* <Grid.Row></Grid.Row> */}
 
               <Grid.Column style={{ minWidth: "300px" }}>
-                <Segment raised>
                   {this.state.isUsermodeDisplayed === true ? (
                     <UserModeSelection
                       toggleUsermodeDisplay={this.toggleUsermodeDisplay}
@@ -247,7 +247,6 @@ class Home extends React.Component {
                       createLobby={this.createLobby}
                     />
                   ) : null}
-                </Segment>
               </Grid.Column>
               <Grid.Column style={{ minWidth: "300px" }}>
                 <Segment raised>

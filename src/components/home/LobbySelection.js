@@ -10,6 +10,15 @@ import {
 } from "semantic-ui-react";
 import { handleError, api } from "../../helpers/api";
 import { motion } from "framer-motion";
+import styled from "styled-components";
+
+const Header = styled.h1`
+  text-align: center;
+  text-shadow: 2px 2px #006699;
+  font-size: 30px;
+  color: white;
+  width: 100%;
+`;
 
 const LobbySelection = ({
   toggleUsermodeDisplay,
@@ -29,7 +38,7 @@ const LobbySelection = ({
   return (
     <Grid centered>
       <Grid.Row centered>
-        <h1>Create a new lobby or join an existing lobby!</h1>
+        <Header>Create a new lobby or join an existing lobby!</Header>
       </Grid.Row>
       <Grid.Row centered>
         <Grid.Column centered width="7">
@@ -40,14 +49,13 @@ const LobbySelection = ({
                 width: "200px",
                 height: "60px",
                 opacity: 1,
-                y: -200,
+                x: -300,
                 backgroundColor: "#fffce0",
                 scale: 1,
                 borderRadius: "8px",
               }}
               animate={{
                 x: 0,
-                y: 0,
               }}
               whileHover={{
                 scale: 1.1,
@@ -86,14 +94,13 @@ const LobbySelection = ({
                 width: "200px",
                 height: "60px",
                 opacity: 1,
-                y: -100,
+                x: -300,
                 backgroundColor: "#c3dcff",
                 scale: 1,
                 borderRadius: "8px",
               }}
               animate={{
                 x: 0,
-                y: 0,
               }}
               whileHover={{
                 scale: 1.1,
