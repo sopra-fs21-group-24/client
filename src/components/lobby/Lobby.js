@@ -155,10 +155,15 @@ class Lobby extends React.Component {
   async componentDidMount() {
     this.mounted = true;
     const lobbyId = localStorage.getItem("lobbyId");
+    let init = true;
 
     if (!this.state.hasGameStarted && !this.state.isUpdating && this.mounted) {
       try {
-        const response = await api.get(`/lobby/${lobbyId}`);
+        const response = await api.get(`/lobby/${lobbyId}`, {
+          headers: {
+            initial: init,
+          }
+        });
         this.setState({ lobbyId: response.data.id });
         this.setState({ creator: response.data.creator });
         this.setState({ users: response.data.users });
@@ -176,6 +181,7 @@ class Lobby extends React.Component {
       }
     }
 
+    init = false;
     this.listenForGameStart();
 
     while (
@@ -184,7 +190,11 @@ class Lobby extends React.Component {
       this.mounted
     ) {
       try {
-        const response = await api.get(`/lobby/${lobbyId}`);
+        const response = await api.get(`/lobby/${lobbyId}`, {
+          headers: {
+            initial: init,
+          }
+        });
         this.setState({ lobbyId: response.data.id });
         this.setState({ creator: response.data.creator });
         this.setState({ users: response.data.users });
@@ -200,7 +210,7 @@ class Lobby extends React.Component {
           `Something went wrong when fetching the lobby \n${handleError(error)}`
         );
       }
-      await new Promise((resolve) => setTimeout(resolve, 4000));
+      await new Promise((resolve) => setTimeout(resolve, 100));
     }
   }
 
