@@ -1,8 +1,8 @@
 <h1 align="center">MAPGUESSЯ</h1>
 
-<center>
-<img width=30%"  src="public/logo.png"/>
-</center>
+<p align="center">
+<img width=30%" src="https://github.com/sopra-fs21-group-24/client/blob/master/public/logo.png" />
+</p>
 
 ## Introduction
 We created a game similair to [GeoGuessr](https://www.geoguessr.com/). The players will be randomly placed somewhere on Google maps (for example: a country, a city or a monumental place like the eiffel tower). At the beginning of the game the map won't be visible and there are some clouds over the map. The goal of the player is to brush away as little as possible of the clouds to recognize the place he is located in. The player will give his answer by placing a pin on a map that is displayed on the lower left side of the screen. The scoring will be based on points. Depending on the game mode points are computed by time, accuracy of guess and amount of clouds brushed away.
