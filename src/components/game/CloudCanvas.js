@@ -3,6 +3,7 @@ import styled from "styled-components";
 import CloudDisplay from "./CloudDisplay";
 import CloudModel from "./CloudModel";
 import CloudSVGFilter from "./CloudSVGFilter";
+
 // const sliderThumbStyles = props => props;
 const StyledCloudDisplay = styled.section`
   grid-column: 1;
@@ -45,19 +46,28 @@ class CloudCanvas extends React.Component {
       old: null,
       width: props.width,
       height: props.height,
+      oldTrans:0
     };
 
-    this.onMouseMove = this.onMouseMove.bind(this);
-    this.onMouseUp = this.onMouseUp.bind(this);
-    this.onMouseDown = this.onMouseDown.bind(this);
+    this.getTransparencyCount = this.getTransparencyCount.bind(this)
     //this.componentDidMount = this.componentDidMount.bind(this);
+   
+  }
+
+  async startAnlysis(){
+    console.log("CHEEECK:" , this.mounted, this.props.isPlaying)
+    while(this.mounted && this.props.isPlaying){
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      this.getTransparencyCount()
+      console.log("still checking transperancy")
+    }
   }
 
   setup5Dice() {
     let width = this.state.width;
     let height = this.state.height;
     var url =
-      "https://gallery.yopriceville.com/var/albums/Free-Clipart-Pictures/Cloud-PNG/Soft_Cloud_PNG_Clip_Art_Image.png?m=1537570070";
+      "./cloud4.png";
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
     var img = new Image();
@@ -81,6 +91,7 @@ class CloudCanvas extends React.Component {
     var ctx = canvas.getContext("2d");
     var img = new Image();
     img.src = url;
+    img.setAttribute('crossOrigin', '');
     img.onload = function () {
       canvas.width = width;
       canvas.height = height;
@@ -96,6 +107,7 @@ class CloudCanvas extends React.Component {
     var ctx = canvas.getContext("2d");
     var img = new Image();
     img.src = url;
+    img.setAttribute('crossOrigin', '');
     img.onload = function () {
       canvas.width = width;
       canvas.height = height;
@@ -111,6 +123,7 @@ class CloudCanvas extends React.Component {
     var ctx = canvas.getContext("2d");
     var img = new Image();
     img.src = url;
+    img.setAttribute('crossOrigin', '');
     img.onload = function () {
       canvas.width = width;
       canvas.height = height;
@@ -126,37 +139,21 @@ class CloudCanvas extends React.Component {
     var ctx = canvas.getContext("2d");
     var img = new Image();
     img.src = url;
+    img.setAttribute('crossOrigin', '');
     img.onload = function () {
       canvas.width = width;
       canvas.height = height;
       ctx.drawImage(img, 0, 0, width, height);
     };
   }
-
-  componentDidMount() {
-    console.log(this.props.round, "Current round for cloud canvas")
-    // if (this.props.round == -1) return
-    console.log(this.state, "HERRREEE q id not null");
-    //   let width = this.state.width
-    //   let height = this.state.height
-    // var url =
-    //   "https://gallery.yopriceville.com/var/albums/Free-Clipart-Pictures/Cloud-PNG/Soft_Cloud_PNG_Clip_Art_Image.png?m=1537570070";
+  componentWillUnmount(){
+    this.mounted = false
+  }
+  async componentDidMount() {
+    this.mounted = true;
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
-    // var img = new Image();
-    // img.src = url;
-    // img.onload = function () {
-    //   //   var width = Math.min(500, img.width);
-    //   //   var height = img.height * (width / img.width);
 
-    //   canvas.width = width;
-    //   canvas.height = height-50;
-    //   ctx.drawImage(img, 0, 0, width/2, height/2);
-    //   ctx.drawImage(img, width/2, 50, width/2, height/1.5);
-    //   ctx.drawImage(img, 500,300, width/2, height/1.5);
-    // };
-    console.log(this.props.questionId, this.props
-      .questionId%5, "Cloud for Question")
     switch (this.props.questionId % 5) {
       case 0:
         this.setup5Dice();
@@ -178,9 +175,6 @@ class CloudCanvas extends React.Component {
         break;
     }
 
-    // this.setup5Dice();
-    // this.setupGiantStormyCloud()
-    // this.setupSchleierWolke()
 
     var isPress = false;
     var old = null;
@@ -189,10 +183,12 @@ class CloudCanvas extends React.Component {
       isPress = true;
       old = { x: e.offsetX, y: e.offsetY };
     });
+
     canvas.addEventListener("mousemove", function (e) {
       if (isPress) {
         var x = e.offsetX;
         var y = e.offsetY;
+        // console.log("Drawing from: ", old.x, old.y, "To:", x, y);
         ctx.globalCompositeOperation = "destination-out";
 
         ctx.beginPath();
@@ -208,146 +204,44 @@ class CloudCanvas extends React.Component {
         old = { x: x, y: y };
       }
     });
+
     canvas.addEventListener("mouseup", function (e) {
       isPress = false;
     });
-  }
-  //   componentDidMount() {
-  //     console.log("mount")
-  //     var url =
-  //       "https://cloud.githubusercontent.com/assets/4652816/12771961/5341c3c4-ca68-11e5-844c-f659831d9c00.jpg";
-  //     const canvas = document.getElementById("canvas");
-  //     const ctx = canvas.getContext("2d");
-  //     const img = new Image();
 
-  //     img.src = url;
-
-  //     img.onload = function () {
-  //       var width = Math.min(500, img.width);
-  //       var height = img.height * (width / img.width);
-
-  //       canvas.width = width;
-  //       canvas.height = height;
-  //       ctx.drawImage(img, 0, 0, width, height);
-  //     };
-
-  //     var isPress = false;
-  //     this.setState({isPress:isPress})
-  //     var old = null;
-  //     this.setState({old:old})
-
-  //     // const canvas = this.refs.canvas;
-  //     // const ctx = canvas.getContext("2d");
-  //     // const img = this.refs.image;
-  //     // img.onload = () => {
-  //     //   ctx.drawImage(img, 0, 0);
-  //     //   ctx.font = "40px Courier";
-  //     //   ctx.fillText(this.props.text, 210, 75);
-  //     // };
-  //   }
-
-
-  onMouseDown(e) {
-    console.log("down");
-    let isPress = true;
-    this.setState({ isPress: isPress });
-    let old = { x: e.offsetX, y: e.offsetY };
-    this.setState({ old: old });
+    this.getTransparencyCount()
+    this.startAnlysis()
   }
 
-  onMouseMove(e) {
-    console.log("moving");
-    const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
-    let old = this.state.old;
+  getTransparencyCount() {
+    if(!this.mounted) return
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-    if (this.state.isPress) {
-      var x = e.offsetX;
-      var y = e.offsetY;
-
-      ctx.globalCompositeOperation = "destination-out";
-
-      ctx.beginPath();
-      ctx.arc(x, y, 20, 0, 2 * Math.PI);
-      ctx.fill();
-
-      ctx.lineWidth = 20;
-      ctx.beginPath();
-      ctx.moveTo(old.x, old.y);
-      ctx.lineTo(x, y);
-      ctx.stroke();
-
-      old = { x: x, y: y };
-      this.setState({ old: old });
+    var pixelCount = canvas.width * canvas.height;
+    // console.log("PIXELCOUNT: ", pixelCount)
+    var arrayElemsCount = pixelCount * 4; // for components (rgba) per pixel.
+    var dataArray = imageData.data;
+    // 0 is completely transparent, set to 0.5 to
+    // allow for instance semi transparent pixels to be accounted for
+    var threshold = 0;
+    var transparentPixelCount = 0;
+    // remember fourth (index = 3) byte is alpha
+    for (var i = 3; i < arrayElemsCount; i += 4) {
+      var alphaValue = dataArray[i];
+      if (alphaValue <= threshold) {
+        transparentPixelCount++;
+      }
     }
+    var transparencyPercentage = (transparentPixelCount / pixelCount) * 100;
+    // console.log("TRANSP: ", transparencyPercentage)
+    this.props.onHandleDifficulty(transparencyPercentage/100);    
   }
-  //   canvas.addEventListener('mousemove', function (e){
-  //     if (isPress) {
-  //       var x = e.offsetX;
-  //       var y = e.offsetY;
-  //       ctx.globalCompositeOperation = 'destination-out';
-
-  //       ctx.beginPath();
-  //       ctx.arc(x, y, 20, 0, 2 * Math.PI);
-  //       ctx.fill();
-
-  //       ctx.lineWidth = 20;
-  //       ctx.beginPath();
-  //       ctx.moveTo(old.x, old.y);
-  //       ctx.lineTo(x, y);
-  //       ctx.stroke();
-
-  //       old = {x: x, y: y};
-
-  //     }
-  //   });
-  onMouseUp(e) {
-    console.log("up");
-    let isPress = false;
-    this.setState({ isPress: isPress });
-  }
-  //   canvas.addEventListener('mouseup', function (e){
-  //     isPress = false;
-  //   });
 
   render() {
     return (
       <canvas style={{ background: "transparent" }} id="canvas"></canvas>
-
-      // {/* <CloudCanvas
-      //   url={this.state.currentQuestionImage}
-      //   gameMode={this.state.gameMode}
-      //   timer={this.state.timer}>
-
-      // </CloudCanvas>
-
-      // <div  style={{ width:"100%", width:"100%", position: "fixed", top: "50px", left: "0px" }}>
-      //   <CloudSVGFilter
-      //     scaleVal={221}
-      //     numOctavesVal={8}
-      //     baseFrequencyVal={0.01}
-      //     seedVal={633}
-      //   ></CloudSVGFilter>
-      //   <CloudDisplay blurVal={100} spreadVal={50} />
-      // </div>
-      //  <div style={{ width:"100%", width:"100%", position: "absolute", bottom: "0px", right: "0px" }}>
-      //   <CloudSVGFilter
-      //     scaleVal={221}
-      //     numOctavesVal={8}
-      //     baseFrequencyVal={0.01}
-      //     seedVal={633}
-      //   ></CloudSVGFilter>
-      //   <CloudDisplay blurVal={100} spreadVal={50} />
-
-      // </div>  <div style={{ minWidth:"500px", minHeight:"500px", position: "absolute", top: "100px", left: "100px" }}>
-      //    <CloudSVGFilter
-      //     scaleVal={221}
-      //     numOctavesVal={8}
-      //     baseFrequencyVal={0.01}
-      //     seedVal={633}
-      //   ></CloudSVGFilter>
-      //   <CloudDisplay blurVal={100} spreadVal={50} />
-      // </div> */}
     );
   }
 }

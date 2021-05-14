@@ -13,54 +13,64 @@ import {
 } from "semantic-ui-react";
 import { MapElem } from "./MiniMap";
 import Countdown from "./Countdown";
+import { useState, useEffect } from "react";
 
 const ScoreBox = (props) => {
-  const PlayerList = () => (
-    <List divided verticalAlign="middle">
-      {props.scores.map((user) => (
+
+  const [users, setUsers] = useState(props.scores.sort((a,b)=>(a.totalScore>b.totalScore)?-1:1));
+  const avatars=["lena.png","stevie.jpg","mark.png","helen.jpg","christian.jpg", "daniel.jpg","elliot.jpg","matthew.png"];
+
+  useEffect(()=>{
+    setUsers(props.scores.sort((a,b)=>(a.score>b.score)?-1:1))
+    return()=>{
+      setUsers([])
+    }
+  })
+
+  const PlayerList = () => {
+
+    return(
+      <List divided verticalAlign="middle">
+      {users.map((user) => (
         <List.Item>
           <Image
             avatar
             floated="left"
-            src="https://react.semantic-ui.com/images/avatar/small/matthew.png"
-          />
+            src={"https://react.semantic-ui.com/images/avatar/small/"+avatars[1]}
+            />
           <List.Content floated="left">
-            <List.Header>{user.username}</List.Header>
-            <List.Description>Total: {user.totalScore}</List.Description>
+            <List.Header as="h2">{user.username}</List.Header>
+            <List.Description><Header as="h4">Round: {user.score}</Header></List.Description>
           </List.Content>
           <Button floated="right">
-            <List.Description> {user.score}</List.Description>
+            <List.Description> <Header as="h3">Total: {user.totalScore}</Header></List.Description>
           </Button>
         </List.Item>
       ))}
     </List>
-  );
-
+  )
+}
+  
   const ProgressBar = () => {
     let color = props.playerScore.score > 250 ? "green" : "red";
     return (
-      <Progress percent={(props.playerScore.score / 500) * 100} color={color}>
-        <h3>{props.playerScore.score}/500</h3>
-      </Progress>
+      <div>
+        <Header disabled as='h2'>Your Score This Round</Header>
+        <Progress inverted active value= {props.playerScore.score} total = {500} progress='ratio' size ='large' color={color}/>
+      </div>
     );
   };
 
-  const NextRound = (props) => {
-    console.log(props.everyOneGuessed, "EVERYONEGUESSED?");
-    let button = "Next round";
+  const EndProgressBar = () => {
+    let color = props.playerScore.totalScore > 750 ? "blue" : "black";
     return (
-      <Button
-        color="teal"
-        fluid
-        size="large"
-        onClick={() => {
-          props.nextRound();
-        }}
-      >
-        {props.everyOneGuessed ? "NEXT ROUND" : "WAITING FOR GUESSES"}
-      </Button>
+      <div>
+        <Header disabled textAlign="center" as='h2'>Your Final Score</Header>
+        <Progress active value= {props.playerScore.totalScore} total = {1500} progress='ratio' size ='large' color={color}/>
+      </div>
     );
   };
+
 
   const ExitGame = () => {
     return (
@@ -74,29 +84,9 @@ const ScoreBox = (props) => {
         }}
       >
         <Button.Content visible>
-          FINAL SCORE: {props.playerScore.totalScore}
+          EXIT GAME
         </Button.Content>
-        <Button.Content hidden>EXIT GAME</Button.Content>
-      </Button>
-    );
-  };
-
-  const PlayAgain = () => {
-    let button = "Play Again";
-    return (
-      <Button
-        animated="fade"
-        color="green"
-        fluid
-        size="large"
-        onClick={() => {
-          /*PlayAgain*/
-        }}
-      >
-        <Button.Content visible>{button}</Button.Content>
-        <Button.Content hidden>
-          <Icon name="redo" />
-        </Button.Content>
+        <Button.Content hidden><Icon name='sign-out'/></Button.Content>
       </Button>
     );
   };
@@ -104,11 +94,12 @@ const ScoreBox = (props) => {
   const LowerPart = () => {
     if (props.lastRound) {
       return props.everyOneGuessed ? (
-        <Grid columns={2} stackable textAlign="center">
-          <Grid.Column style={{ maxWidth: 450 }}>
-            <ExitGame />
-          </Grid.Column>
-        </Grid>
+        <div>
+          <Divider horizontal></Divider>
+          <EndProgressBar/>
+          <ExitGame />
+        </div>
+
       ) : (
         <h4 style={{ color: "black" }}>
           Please wait till everyone took their guess
@@ -118,7 +109,7 @@ const ScoreBox = (props) => {
       return props.everyOneGuessed ? (
         <Countdown
           nextRound={props.nextRound}
-         />
+          />
       ) : (
         <h4 style={{ color: "black" }}>
           Please wait till everyone took their guess
@@ -131,9 +122,9 @@ const ScoreBox = (props) => {
   return (
     <Segment placeholder raised>
       <Header as="h2" color="teal" textAlign="center">
-        <text>Your Score</text>
-        <ProgressBar />
+
         <Divider horizontal></Divider>
+        <ProgressBar />
       </Header>
 
       <Grid columns={2} stackable textAlign="center">
@@ -167,7 +158,7 @@ const ScoreBox = (props) => {
         </Grid.Row>
       </Grid>
       <Divider horizontal> </Divider>
-      <LowerPart />
+      <LowerPart/>
     </Segment>
   );
 };

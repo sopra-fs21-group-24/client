@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Button } from "semantic-ui-react";
+import { Button, Divider } from "semantic-ui-react";
 import useSound from "use-sound";
 import boop from "../../sounds/boop.mp3";
 import roundstart from "../../sounds/roundstart.mp3";
@@ -36,6 +36,7 @@ const Countdown = (props) => {
 
   return (
     <div>
+      <Divider horizontal> next round</Divider>
       {minutes === 0 && seconds === 0 ? null : (
         <Button color="teal" fluid size="large">
           {minutes}:{seconds < 10 ? `0${seconds}` : seconds}

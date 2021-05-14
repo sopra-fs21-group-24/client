@@ -10,16 +10,17 @@ We created a game similair to [GeoGuessr](https://www.geoguessr.com/). The playe
 
 Check out a deployed instance of the game here: [sopra-fs21-group-24-client.herokuapp.com](https://sopra-fs21-group-24-client.herokuapp.com/)
 
-Associated BackEnd repository can be found here: [Server Repository](https://github.com/sopra-fs21-group-24/server)
+Associated Back End repository can be found here: [Server Repository](https://github.com/sopra-fs21-group-24/server)
 
 Data & Reports regarding the project: [Data Repository](https://github.com/sopra-fs21-group-24/data)
 
 ## Technologies
 
 _used (short)_
-<img height="30px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/react/react.png"></img>
 
-<img height="30px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/javascript/javascript.png"></img>
+<img height="100px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/react/react.png"></img>
+
+<img height="100px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/javascript/javascript.png"></img>
 
 ## High-level components
 
