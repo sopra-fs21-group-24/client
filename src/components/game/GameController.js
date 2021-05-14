@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import {
   ComponentTransition,
   AnimationTypes,
@@ -19,6 +19,7 @@ import { useState } from "react";
 import CloudSVGFilter from "./CloudSVGFilter";
 import CloudDisplay from "./CloudDisplay";
 import CloudCanvas from "./CloudCanvas";
+import useSound from "use-sound";
 // import {useWindowDimensions} from '../shared/models/GeoMath';
 
 class GameController extends React.Component {
@@ -29,6 +30,7 @@ class GameController extends React.Component {
       gameOngoing: true,
       showCloud: true,
       currentRound: -1,
+      isPlaying:true,
       questions: null,
       currentQuestionId: null,
       currentQuestionImage: null,
@@ -40,6 +42,7 @@ class GameController extends React.Component {
       everyOneGuessed: false,
       solution: null,
       solutions: [],
+      difficultyFactor:null,
 
       pin: null,
       pins: [],
@@ -61,6 +64,7 @@ class GameController extends React.Component {
     this.nextRound = this.nextRound.bind(this);
     this.exitGame = this.exitGame.bind(this);
     this.endGame = this.endGame.bind(this);
+    this.handleDifficultyFactor = this.handleDifficultyFactor.bind(this);
   }
   componentDidMount() {
     this.mounted = true;
@@ -76,6 +80,7 @@ class GameController extends React.Component {
   async startRound(currentRound) {
     console.log("Starting Game Round ", currentRound);
 
+    this.setState({isPlaying:true})
     // Setting our current Question Id
     let questionIndex = currentRound - 1;
     let currentQuestionId = this.state.questions[questionIndex];
@@ -143,9 +148,6 @@ class GameController extends React.Component {
   async getQuestion(questionId) {
     //TODO: get the correct sizes of the user's screen
     const { height, width } = getWindowDimensions();
-    // const height = 300;
-    // const width = width;
-    console.log("SIIIIZZZZZE", width, height);
 
     let scaleFactor = width / 640;
     let actualWidth = width / scaleFactor;
@@ -171,16 +173,23 @@ class GameController extends React.Component {
       alert(`Couldn't fetch image: \n${handleError(error)}`);
     }
   }
+
+  handleDifficultyFactor = (difficulty) => {
+    this.setState({difficultyFactor: difficulty});
+}
   async sendGuess(guess, questionId) {
     try {
+
       let guessData = {
         questionId: questionId,
         coordGuess: {
           lon: guess.lng,
           lat: guess.lat,
         },
-        difficultyFactor: 1,
+        difficultyFactor: this.state.difficultyFactor,
       };
+
+      this.setState({isPlaying:false})
 
       let response;
       try {
@@ -214,6 +223,7 @@ class GameController extends React.Component {
       let solutions = this.state.solutions;
       solutions.push(solution);
 
+      
       this.setState({
         playerScore: {
           score: responseData.tempScore,
@@ -260,6 +270,8 @@ class GameController extends React.Component {
           },
         };
       });
+
+     
       console.log(different, responseData);
       this.setState({
         scores: different,
@@ -416,10 +428,12 @@ class GameController extends React.Component {
             playerScore={this.state.playerScore}
             currentRound={this.state.currentRound}
             exitGame={this.exitGame}
-          />
+            />
         </ComponentTransition>
         
         <Component
+            isPlaying={this.state.isPlaying}
+          onHandleDifficulty={this.handleDifficultyFactor}
           questionId={this.state.currentQuestionId}
           round={this.state.currentRound}
           url={this.state.currentQuestionImage}
@@ -493,6 +507,8 @@ const Component = (props) => {
             round={props.round}
             height={height}
             width={width}
+            isPlaying={props.isPlaying}
+            onHandleDifficulty={props.onHandleDifficulty}
           ></CloudCanvas>
       ) : null}
     </div>
