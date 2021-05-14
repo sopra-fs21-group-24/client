@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 import {
   ComponentTransition,
   AnimationTypes,
@@ -30,7 +30,7 @@ class GameController extends React.Component {
       gameOngoing: true,
       showCloud: true,
       currentRound: -1,
-      isPlaying:true,
+      isPlaying: true,
       questions: null,
       currentQuestionId: null,
       currentQuestionImage: null,
@@ -42,7 +42,7 @@ class GameController extends React.Component {
       everyOneGuessed: false,
       solution: null,
       solutions: [],
-      difficultyFactor:null,
+      difficultyFactor: null,
 
       pin: null,
       pins: [],
@@ -80,7 +80,7 @@ class GameController extends React.Component {
   async startRound(currentRound) {
     console.log("Starting Game Round ", currentRound);
 
-    this.setState({isPlaying:true})
+    this.setState({ isPlaying: true });
     // Setting our current Question Id
     let questionIndex = currentRound - 1;
     let currentQuestionId = this.state.questions[questionIndex];
@@ -111,19 +111,30 @@ class GameController extends React.Component {
 
   //#region API Calls
   async getGame(gameId) {
-    try {
-      const response = await api.get("/games/" + gameId, getAuthConfig());
-      this.setState({
-        currentRound: response.data.round,
-        gameMode: response.data.gameMode.name,
-      });
-      console.log("Fetched this game round from BE: ", response.data.round);
-    } catch (error) {
-      alert(
-        `Something went wrong while fetching the game with gameId: ${gameId}: \n${handleError(
-          error
-        )}`
-      );
+    let init = true;
+
+    while (this.state.gameOngoing && this.mounted) {
+      try {
+        const response = await api.get("/games/" + gameId, {
+          headers: {
+            token: localStorage.getItem("token"),
+            initial: init,
+          },
+        });
+        this.setState({
+          currentRound: response.data.round,
+          gameMode: response.data.gameMode.name,
+        });
+        console.log("Fetched this game round from BE: ", response.data.round);
+      } catch (error) {
+        alert(
+          `Something went wrong while fetching the game with gameId: ${gameId}: \n${handleError(
+            error
+          )}`
+        );
+      }
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      init = false;
     }
   }
 
@@ -175,11 +186,10 @@ class GameController extends React.Component {
   }
 
   handleDifficultyFactor = (difficulty) => {
-    this.setState({difficultyFactor: difficulty});
-}
+    this.setState({ difficultyFactor: difficulty });
+  };
   async sendGuess(guess, questionId) {
     try {
-
       let guessData = {
         questionId: questionId,
         coordGuess: {
@@ -189,7 +199,7 @@ class GameController extends React.Component {
         difficultyFactor: this.state.difficultyFactor,
       };
 
-      this.setState({isPlaying:false})
+      this.setState({ isPlaying: false });
 
       let response;
       try {
@@ -223,7 +233,6 @@ class GameController extends React.Component {
       let solutions = this.state.solutions;
       solutions.push(solution);
 
-      
       this.setState({
         playerScore: {
           score: responseData.tempScore,
@@ -246,40 +255,53 @@ class GameController extends React.Component {
   }
 
   async fetchScore() {
-    try {
-      const response = await api.get(
-        "games/" + this.state.gameId + "/scores/",
-        getAuthConfig()
-      );
-      // console.log(response.data);
-      let responseData = response.data;
-      // TODO: Comment this once BE works
+    let init = true;
 
-      let filtered = response.data.filter((value, index, array) => {
-        return value.lastCoordinate != null;
-      });
-      let different = filtered.map((value, index, array) => {
-        return {
-          name: value.userId,
-          score: value.tempScore,
-          totalScore: value.totalScore,
-          username: value.username,
-          guess: {
-            lat: value.lastCoordinate ? value.lastCoordinate.lat : null,
-            lng: value.lastCoordinate.lon ? value.lastCoordinate.lon : null,
-          },
-        };
-      });
+    while (this.state.gameOngoing && this.mounted) {
+      try {
+        const response = await api.get(
+          "games/" + this.state.gameId + "/scores/",
+          {
+            headers: {
+              token: localStorage.getItem("token"),
+              initial: init,
+            },
+          }
+        );
+        // console.log(response.data);
+        let responseData = response.data;
+        // TODO: Comment this once BE works
 
-     
-      console.log(different, responseData);
-      this.setState({
-        scores: different,
-      });
-    } catch (error) {
-      alert(
-        `Something went wrong while fetching the users: \n${handleError(error)}`
-      );
+        let filtered = response.data.filter((value, index, array) => {
+          return value.lastCoordinate != null;
+        });
+        let different = filtered.map((value, index, array) => {
+          return {
+            name: value.userId,
+            score: value.tempScore,
+            totalScore: value.totalScore,
+            username: value.username,
+            guess: {
+              lat: value.lastCoordinate ? value.lastCoordinate.lat : null,
+              lng: value.lastCoordinate.lon ? value.lastCoordinate.lon : null,
+            },
+          };
+        });
+
+        console.log(different, responseData);
+        this.setState({
+          scores: different,
+        });
+      } catch (error) {
+        alert(
+          `Something went wrong while fetching the users: \n${handleError(
+            error
+          )}`
+        );
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      init = false;
     }
   }
   //#endregion API Calls
@@ -428,11 +450,11 @@ class GameController extends React.Component {
             playerScore={this.state.playerScore}
             currentRound={this.state.currentRound}
             exitGame={this.exitGame}
-            />
+          />
         </ComponentTransition>
-        
+
         <Component
-            isPlaying={this.state.isPlaying}
+          isPlaying={this.state.isPlaying}
           onHandleDifficulty={this.handleDifficultyFactor}
           questionId={this.state.currentQuestionId}
           round={this.state.currentRound}
@@ -444,7 +466,7 @@ class GameController extends React.Component {
         {this.state.showScoreModal ? (
           <Modal inverted basic open={true} size="small" trigger={null}>
             <ScoreBox
-              color='black'
+              color="black"
               everyOneGuessed={this.state.everyOneGuessed}
               playerScore={this.state.playerScore}
               scores={this.state.scores}
@@ -461,22 +483,22 @@ class GameController extends React.Component {
           </Modal>
         ) : null}
 
-          <MiniMap
-            state={{
-              center: {
-                lat: 20.907646,
-                lng: -0.848103,
-              },
-              answer: this.state.solution,
-              pin: this.state.pin,
+        <MiniMap
+          state={{
+            center: {
+              lat: 20.907646,
+              lng: -0.848103,
+            },
+            answer: this.state.solution,
+            pin: this.state.pin,
 
-              answers: this.state.solutions,
-              pins: this.state.pins,
-              zoom: 2,
-            }}
-            handleGuessSubmit={this.handleGuessSubmit}
-            pinMarkerOnClick={this.handlePinPlacedOnMap}
-          />
+            answers: this.state.solutions,
+            pins: this.state.pins,
+            zoom: 2,
+          }}
+          handleGuessSubmit={this.handleGuessSubmit}
+          pinMarkerOnClick={this.handlePinPlacedOnMap}
+        />
       </div>
     );
   }
@@ -501,16 +523,15 @@ const Component = (props) => {
       {props.gameMode == "Clouds" &&
       props.round != -1 &&
       props.questionId != null ? (
-   
-          <CloudCanvas
-            key={props.questionId}
-            questionId={props.questionId}
-            round={props.round}
-            height={height}
-            width={width}
-            isPlaying={props.isPlaying}
-            onHandleDifficulty={props.onHandleDifficulty}
-          ></CloudCanvas>
+        <CloudCanvas
+          key={props.questionId}
+          questionId={props.questionId}
+          round={props.round}
+          height={height}
+          width={width}
+          isPlaying={props.isPlaying}
+          onHandleDifficulty={props.onHandleDifficulty}
+        ></CloudCanvas>
       ) : null}
     </div>
   );
