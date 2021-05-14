@@ -111,14 +111,15 @@ class GameController extends React.Component {
 
   //#region API Calls
   async getGame(gameId) {
+    let token = localStorage.getItem("token")
     let init = true;
 
     while (this.state.gameOngoing && this.mounted) {
       try {
         const response = await api.get("/games/" + gameId, {
           headers: {
-            token: localStorage.getItem("token"),
-            initial: init,
+            'token': token,
+            'initial': init,
           },
         });
         this.setState({
@@ -255,7 +256,9 @@ class GameController extends React.Component {
   }
 
   async fetchScore() {
+    let token = localStorage.getItem("token");
     let init = true;
+    
 
     while (this.state.gameOngoing && this.mounted) {
       try {
@@ -263,8 +266,8 @@ class GameController extends React.Component {
           "games/" + this.state.gameId + "/scores/",
           {
             headers: {
-              token: localStorage.getItem("token"),
-              initial: init,
+              'token': token,
+              'initial': init,
             },
           }
         );
