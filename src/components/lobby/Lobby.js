@@ -65,10 +65,17 @@ class Lobby extends React.Component {
     }
   };
 
-  fetchGame = async () => {
+  fetchGame = async (init) => {
+
+    const token = localStorage.getItem("token");
     const gameId = localStorage.getItem("gameId");
     try {
-      const response = await api.get(`/games/${gameId}/`, getAuthConfig());
+      const response = await api.get(`/games/${gameId}/`, {
+        headers: {
+          token: token,
+          initial: init
+        }
+      });
       this.setState({ round: response.data.round });
       console.log("Fetched this round: ", this.state.round);
     } catch (error) {
@@ -80,17 +87,19 @@ class Lobby extends React.Component {
 
   listenForGameStart = async () => {
     let userId = localStorage.getItem("currentUserId");
+    let init = true;
     console.log("start listening for games");
     console.log(this.state.round, this.mounted);
     while (this.state.round == 0 && this.mounted) {
-      await this.fetchGame();
+      await this.fetchGame(init);
       console.log("Fetched Game and round is ", this.state.round);
       // wait for 1 s and fetch scores again
       if (this.state.round == 1 && this.state.creator !== userId) {
         this.setState({ hasGameStarted: true });
         this.props.history.push("/game");
       }
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      init = false;
       // if (!this.state.mounted) return;
     }
   };
