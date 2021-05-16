@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { api } from "../../helpers/api";
+import { RiVipCrownLine } from 'react-icons/ri';
 import {
   Button,
   Divider,
@@ -36,7 +37,7 @@ const Leaderboard = (props) => {
       }
     }    
     })
-
+  let count = 0;
   const modes = [{mode:"Time",icon:"clock outline"},{mode: "Pixelation", icon:"chess board"}, {mode:"Clouds", icon:"cloud"}];
   const changer = (mode)=>{
     setDisplay(mode);
@@ -46,8 +47,8 @@ const Leaderboard = (props) => {
     <div>
       {encounteredError && <h3 style={{color:"red"}}>Encountered Error fetching the Leaderboard. Please refresh the screen.</h3>}
        
-        <Segment>
-          <Menu widths={3} fluid tabular color="black" compact>
+
+          <Menu widths={3} fluid tabular compact inverted>
             {modes.map((mode) => (
               <Menu.Item  name={mode} onClick={() => changer(mode.mode)} active={display===mode.mode}>
                 <Icon size="big" name={mode.icon}/>
@@ -56,19 +57,20 @@ const Leaderboard = (props) => {
               </Menu.Item>
             ))}
           </Menu>
-          <List divided verticalAlign="middle">
+          <List animated divided verticalAlign="middle">
             {users.map((user)=>{
+              count++;
               return (
                 <List.Item>
                   <List.Content floated="right">
-                    <Header as="h2" color = "grey">{user.score}</Header>
+                    <Header as="h2" block>{user.score}</Header>
                   </List.Content>
-                  <List.Content><Header color="grey" as="h2">{user.username}</Header></List.Content>
+                  <List.Content><Header block color="black" as="h2">{count}. {user.username} {count===1?<RiVipCrownLine/>:<p></p>}</Header></List.Content>
                 </List.Item>
               );
             })}
           </List>
-        </Segment>
+
       
     </div>
   );
