@@ -24,7 +24,7 @@ import {
 import { handleError, api, getAuthConfig } from "../../helpers/api";
 import { getWindowDimensions } from "../shared/models/WindowSize";
 import Loader from "react-loader-spinner";
-import "../../views/design/modal.css";
+import "../../views/design/lobby.css";
 
 class Lobby extends React.Component {
   constructor() {
@@ -239,7 +239,7 @@ class Lobby extends React.Component {
             >
               <Grid centered columns={3} verticalAlign="top">
                 <Grid.Row>
-                  <Grid.Column centered textAlign="center">
+                  <Grid.Column centered textAlign="center" width="4">
                     <Segment raised padded="very" size="big">
                       <Header>Lobby Configuration</Header>
                       {this.state.isUpdating ? (
@@ -251,12 +251,14 @@ class Lobby extends React.Component {
                         />
                       ) : (
                         <div>
-                          <Menu color="blue" compact secondary>
+                          <Menu color="teal" compact secondary fluid>
                             <Menu.Item
                               name="Time"
                               active={this.state.selectedGamemode === "Time"}
+                              position="left"
                               onClick={this.handleItemClick}
                             >
+                              <Icon name="clock outline"/>
                               Time
                             </Menu.Item>
                             <Menu.Item
@@ -266,13 +268,16 @@ class Lobby extends React.Component {
                               }
                               onClick={this.handleItemClick}
                             >
+                              <Icon name="chess board"/>
                               Pixelation
                             </Menu.Item>
                             <Menu.Item
                               name="Clouds"
                               active={this.state.selectedGamemode === "Clouds"}
+                              position="right"
                               onClick={this.handleItemClick}
                             >
+                              <Icon name="cloud"/>
                               Clouds
                             </Menu.Item>
                           </Menu>
@@ -280,6 +285,7 @@ class Lobby extends React.Component {
                           <Checkbox
                             toggle
                             checked={this.state.isLobbyPublic}
+                            fitted
                             label="Public Lobby"
                             onChange={() => {
                               this.setState({
@@ -293,7 +299,7 @@ class Lobby extends React.Component {
                       )}
                     </Segment>
                   </Grid.Column>
-                  <Grid.Column centered textAlign="center">
+                  <Grid.Column centered textAlign="center" width="7">
                     <Segment raised padded="very" size="big">
                       <Header as="h1">
                         Multiplayer -{" "}
@@ -396,12 +402,12 @@ class Lobby extends React.Component {
                       </Button.Content>
                     </Button>
                   </Grid.Column>
-                  <Grid.Column centered textAlign="center">
+                  <Grid.Column centered textAlign="center" width="4">
                     <Segment raised padded="very" size="big">
                       <Header>Invite Key</Header>
-                      <Input type="text" value={this.state.roomKey} />
+                      <Input type="text" fluid value={this.state.roomKey}/>
                       <CopyToClipboard text={this.state.roomKey}>
-                        <Button icon color="teal" size="big">
+                        <Button icon color="teal" size="big" fluid>
                           <Icon name="copy" />
                         </Button>
                       </CopyToClipboard>
