@@ -28,15 +28,16 @@ const ScoreBox = (props) => {
   })
 
   const PlayerList = () => {
-
+    
     return(
       <List divided verticalAlign="middle">
-      {users.map((user) => (
+      {users.map((user) => {
+        return(
         <List.Item>
           <Image
             avatar
             floated="left"
-            src={"https://react.semantic-ui.com/images/avatar/small/"+avatars[1]}
+            src={"https://react.semantic-ui.com/images/avatar/small/"+avatars[user.name%7]}
             />
           <List.Content floated="left">
             <List.Header as="h2">{user.username}</List.Header>
@@ -46,7 +47,7 @@ const ScoreBox = (props) => {
             <List.Description> <Header as="h3">Total: {user.totalScore}</Header></List.Description>
           </Button>
         </List.Item>
-      ))}
+      )})}
     </List>
   )
 }
