@@ -186,7 +186,7 @@ class GameController extends React.Component {
           lon: guess.lng,
           lat: guess.lat,
         },
-        difficultyFactor: this.state.difficultyFactor,
+        difficultyFactor: this.state.gameMode == "Clouds" ? this.state.difficultyFactor:1,
       };
 
       this.setState({isPlaying:false})
@@ -498,7 +498,7 @@ const Component = (props) => {
         overflow: "hidden",
       }}
     >
-      {props.gameMode == "Clouds" &&
+      {props.gameMode == "c" &&
       props.round != -1 &&
       props.questionId != null ? (
    
