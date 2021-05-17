@@ -54,21 +54,6 @@ const UserModeSelection = ({
               >
                 Singleplayer
               </motion.button>
-              {/* <Button
-                size="big"
-                // fluid
-                animated="fade"
-                color="green"
-                onClick={() => {
-                  toggleUsermodeDisplay();
-                  toggleGamemodeDisplay();
-                }}
-              >
-                <Button.Content visible>Singleplayer</Button.Content>
-                <Button.Content hidden>
-                  <Icon name="user" />
-                </Button.Content>
-              </Button> */}
             </center>
           </Grid.Column>
         </Grid.Row>
@@ -101,21 +86,6 @@ const UserModeSelection = ({
               >
                 Multiplayer
               </motion.button>
-              {/* <Button
-                size="big"
-                // fluid
-                animated="fade"
-                color="red"
-                onClick={() => {
-                  toggleUsermodeDisplay();
-                  toggleCreateJoinLobbyDisplay();
-                }}
-              >
-                <Button.Content visible>Multiplayer</Button.Content>
-                <Button.Content hidden>
-                  <Icon name="users" />
-                </Button.Content>
-              </Button> */}
             </center>
           </Grid.Column>
         </Grid.Row>

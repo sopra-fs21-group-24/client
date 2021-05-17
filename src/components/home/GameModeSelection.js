@@ -52,19 +52,6 @@ const GameModeSelection = ({
             >
               Time
             </motion.button>
-            {/* <Button
-            size="big"
-            animated ='fade'
-            fluid
-            color="blue"
-            onClick={() => {
-              createSingleplayerGame("Time");
-            }}
-          >
-            <Button.Content visible>Time</Button.Content>
-            <Button.Content hidden><Icon name="clock outline" /></Button.Content>
-
-          </Button> */}
           </center>
         </Grid.Column>
       </Grid.Row>
@@ -100,19 +87,6 @@ const GameModeSelection = ({
             >
               Pixelation
             </motion.button>
-            {/* <Button
-            size="big"
-            animated ='fade'
-            fluid
-            color="blue"
-            onClick={() => {
-              createSingleplayerGame("Pixelation");
-            }}
-          >
-            <Button.Content visible>Pixelation</Button.Content>
-            <Button.Content hidden><Icon name="chess board" /></Button.Content>
-            
-          </Button> */}
           </center>
         </Grid.Column>
       </Grid.Row>
@@ -148,18 +122,6 @@ const GameModeSelection = ({
             >
               Clouds
             </motion.button>
-            {/* <Button
-            size="big"
-            animated ='fade'
-            fluid
-            color="blue"
-            onClick={() => {
-              createSingleplayerGame("Clouds");
-            }}
-          >
-            <Button.Content visible>Clouds</Button.Content>
-            <Button.Content hidden><Icon name="cloud"/></Button.Content>
-          </Button> */}
           </center>
         </Grid.Column>
       </Grid.Row>
@@ -196,23 +158,6 @@ const GameModeSelection = ({
             >
               Go Back
             </motion.button>
-
-            {/* <Button
-            size="big"
-            // fluid
-            color="black"
-            onClick={() => {
-              if (usermode === "multiplayer") {
-                toggleGamemodeDisplay();
-                toggleCreateJoinLobbyDisplay();
-              } else {
-                toggleGamemodeDisplay();
-                toggleUsermodeDisplay();
-              }
-            }}
-          >
-            Go back
-          </Button> */}
           </center>
         </Grid.Column>
       </Grid.Row>

@@ -5,13 +5,13 @@ import {
   AnimationTypes,
 } from "react-component-transition";
 import { withRouter, useHistory } from "react-router-dom";
-import { Advertisement, Grid, Segment, Image, Header } from "semantic-ui-react";
+import { Advertisement, Grid, Segment, Image } from "semantic-ui-react";
 import { api, getAuthConfig, handleError } from "../../helpers/api";
 import HomeHeader from "../../views/Header";
 import GameModeSelection from "./GameModeSelection";
 import LobbySelection from "./LobbySelection";
 import UserModeSelection from "./UserModeSelection";
-import LeaderboardLoader from "./Leaderboard";
+import Leaderboard from "./Leaderboard";
 import {
   getWindowDimensions,
   useWindowDimensions,
@@ -27,6 +27,14 @@ const Footer = styled.footer`
   color: white;
   bottom: 10px;
   position: fixed;
+`;
+
+const Header = styled.h1`
+  text-align: center;
+  text-shadow: 2px 2px #006699;
+  font-size: 30px;
+  color: white;
+  width: 100%;
 `;
 
 class Home extends React.Component {
@@ -248,13 +256,11 @@ class Home extends React.Component {
                     />
                   ) : null}
               </Grid.Column>
-              <Grid.Column style={{ minWidth: "300px" }}>
-                <Segment raised>
+              <Grid.Column style={{ minWidth: "300px" }}>  
                   <Header as="h1" textAlign="center">
-                    Leaderboard
+                    Leaderboards
                   </Header>
-                  <LeaderboardLoader />
-                </Segment>
+                  <Leaderboard />
               </Grid.Column>
             </Grid>
           </ComponentTransition>
