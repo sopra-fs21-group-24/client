@@ -147,8 +147,8 @@ class JoinLobby extends React.Component {
                   <Table selectable>
                     <Table.Header>
                       <Table.Row>
-                        <Table.HeaderCell>Lobby name</Table.HeaderCell>
                         <Table.HeaderCell>Host</Table.HeaderCell>
+                        <Table.HeaderCell>Gamemode</Table.HeaderCell>
                         <Table.HeaderCell># Players</Table.HeaderCell>
                       </Table.Row>
                     </Table.Header>
@@ -163,9 +163,9 @@ class JoinLobby extends React.Component {
                                 }}
                               >
                                 <Table.Cell>
-                                  {lobby.username}'s Lobby
+                                  {lobby.username}
                                 </Table.Cell>
-                                <Table.Cell>{lobby.username}</Table.Cell>
+                                <Table.Cell>{lobby.gameMode}</Table.Cell>
                                 <Table.Cell>{lobby.users}/3</Table.Cell>
                               </Table.Row>
                             );
