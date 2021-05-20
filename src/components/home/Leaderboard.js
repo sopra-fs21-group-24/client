@@ -2,18 +2,10 @@ import React, { useState, useEffect } from "react";
 import { api } from "../../helpers/api";
 import { RiVipCrownLine } from 'react-icons/ri';
 import {
-  Button,
-  Divider,
-  Form,
-  Grid,
   Header,
   Icon,
-  Image,
   List,
   Menu,
-  Segment,
-  Dimmer,
-  Loader,
 } from "semantic-ui-react";
 
 const Leaderboard = (props) => {

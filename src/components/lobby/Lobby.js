@@ -40,6 +40,7 @@ class Lobby extends React.Component {
       isUpdating: false,
       hasGameStarted: false,
       gameId: null,
+      isInLobby: true,
     };
   }
 
@@ -94,7 +95,7 @@ class Lobby extends React.Component {
   };
 
   // API Call to update lobby visibility & gamemode
-  updateLobbyConfiguration = async () => {
+  updateLobbyConfiguration = () => {
     const gameId = localStorage.getItem("gameId");
     this.setState({ hasGameStarted: true });
 
@@ -106,7 +107,7 @@ class Lobby extends React.Component {
     });
 
     try {
-      await api.put(`/games/${gameId}`, requestBody, {
+      api.put(`/games/${gameId}`, requestBody, {
         headers: {
           token: localStorage.getItem("token"),
         },
@@ -123,9 +124,9 @@ class Lobby extends React.Component {
   };
 
   // API Call to remove the user from the lobby list
-  leaveLobby = async () => {
+  leaveLobby = () => {
     try {
-      await api.put(`/lobby/${this.state.lobbyId}`, {}, getAuthConfig());
+      api.put(`/lobby/${this.state.lobbyId}`, {}, getAuthConfig());
 
       localStorage.removeItem("lobbyId");
       localStorage.removeItem("gameId");
