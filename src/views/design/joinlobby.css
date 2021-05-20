@@ -1,0 +1,11 @@
+.ui.fullscreen.modal {
+    left: 0% !important;
+    right: 0% !important;
+  }
+
+.table {
+    table-layout: fixed 
+  }
+.table td {
+    word-wrap: break-word;
+}

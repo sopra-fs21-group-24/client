@@ -40,7 +40,7 @@ class Lobby extends React.Component {
       isUpdating: false,
       hasGameStarted: false,
       gameId: null,
-      isInLobby: true,
+      init: true,
     };
   }
 
@@ -130,7 +130,7 @@ class Lobby extends React.Component {
 
       localStorage.removeItem("lobbyId");
       localStorage.removeItem("gameId");
-      this.props.history.push("/lobby/join");
+      this.props.history.push('/lobby/join');
     } catch (error) {
       alert(
         `Something went wrong when leaving the lobby \n${handleError(error)}`
@@ -148,13 +148,12 @@ class Lobby extends React.Component {
   async componentDidMount() {
     this.mounted = true;
     const lobbyId = localStorage.getItem("lobbyId");
-    let init = true;
 
     if (!this.state.hasGameStarted && !this.state.isUpdating && this.mounted) {
       try {
         const response = await api.get(`/lobby/${lobbyId}`, {
           headers: {
-            initial: init,
+            initial: this.state.init,
           },
         });
         this.setState({ lobbyId: response.data.id });
@@ -174,7 +173,7 @@ class Lobby extends React.Component {
       }
     }
 
-    init = false;
+    this.setState({init: false});
     this.listenForGameStart();
 
     while (
@@ -185,7 +184,7 @@ class Lobby extends React.Component {
       try {
         const response = await api.get(`/lobby/${lobbyId}`, {
           headers: {
-            initial: init,
+            initial: this.state.init,
           },
         });
         this.setState({ lobbyId: response.data.id });
@@ -209,6 +208,7 @@ class Lobby extends React.Component {
 
   componentWillUnmount() {
     console.log("unmounting");
+    this.setState({init: true});
     this.mounted = false;
   }
 

@@ -142,7 +142,6 @@ const LobbySelection = ({
                 width: "100px",
                 height: "40px",
                 opacity: 1,
-                x: -300,
                 backgroundColor: "#323232",
                 scale: 1,
                 borderRadius: "8px",
