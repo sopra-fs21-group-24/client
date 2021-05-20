@@ -18,19 +18,6 @@ const Label = styled.label`
   text-transform: uppercase;
 `;
 
-const Video = styled.video`
-  height: 100%;
-  width: 100%;
-  float: left;
-  top: 0;
-  padding: none;
-  // position: fixed;
-`;
-
-const VideoBox = styled.div`
-  float: left;
-`;
-
 const VideoOverlays = styled.div`
   position: absolute;
   float: left;
@@ -60,79 +47,111 @@ class Launch extends React.Component {
     this.setState({ showRegister: true });
   }
   goToLogin() {
-    if(localStorage.getItem("token")!==null){
+    if (localStorage.getItem("token") !== null) {
       this.props.history.push("/home");
-    }
-    else{
-    this.setState({ showRegister: false });
-    this.setState({ showLogin: true });
+    } else {
+      this.setState({ showRegister: false });
+      this.setState({ showLogin: true });
     }
   }
   goToGame() {
-    if(localStorage.getItem("token")!==null){
+    if (localStorage.getItem("token") !== null) {
       this.props.history.push("/home");
-    }
-    else{
-    this.setState({ showRegister: true });
+    } else {
+      this.setState({ showRegister: true });
     }
   }
-  
+
   componentDidMount() {}
 
   render() {
-    
     const { height, width } = getWindowDimensions();
     return (
-      <div style={{ backgroundColor: "black" , height:'100%'}}>
-        <center >
-          <VideoBox>
-            <VideoOverlays>
-              <TopRightButton
-                inverted="top"
+      <div style={{ backgroundColor: "black", height: "100%" }}>
+        <center>
+          <VideoOverlays>
+            <TopRightButton
+              inverted="top"
+              onClick={() => {
+                this.goToLogin();
+              }}
+            >
+              Login{" "}
+            </TopRightButton>
+
+            <center style={{ "margin-top": "250px" }}>
+              <img alt="" width="50" height="50" src="logo.png" />
+              <Title> MAPGUESSЯ </Title>
+              <Label> Group 24 </Label> <br />
+              <Label> David Diener </Label> <br />
+              <Label> Hoàng Ben Lê Giang </Label> <br />
+              <Label> Claudio Gebbia </Label> <br />
+              <Label> Jerome Hadorn </Label> <br />
+              <Label> Philip Giryes </Label> <br />
+              <br />
+              <Button
                 onClick={() => {
-                  this.goToLogin();
+                  this.goToGame();
                 }}
               >
-                Login{" "}
-              </TopRightButton>
-
-              <center style={{"margin-top":"250px"}}>
-                
-                <img alt="" width="50" height="50" src="logo.png" />
-                <Title> MAPGUESSЯ </Title>
-                <Label> Group 24 </Label> <br />
-                <Label> David Diener </Label> <br />
-                <Label> Hoàng Ben Lê Giang </Label> <br />
-                <Label> Claudio Gebbia </Label> <br />
-                <Label> Jerome Hadorn </Label> <br />
-                <Label> Philip Giryes </Label> <br />
-                <br />
-                <Button
-                  onClick={() => {
-                    this.goToGame();
-                  }}
-                >
-                  Start Playing
-                </Button>
-
-              </center>
-            </VideoOverlays>
-            <Video className="videoTag" autoPlay loop muted>
-              <source src={window.location + "/video.mp4"} type="video/mp4" />
-            </Video>{" "}
-            {this.state.showLogin ? (
-                <Modal basic open={true} size="small" trigger={null}>
-                  <Button position="right" size = "mini" color="red" onClick={() => {this.setState({showLogin: false, showRegister: false})}}>X</Button>
-                  <Login change = {()=>{this.goToRegister()}}/>
-                </Modal>
-              ) : null}
-              {this.state.showRegister ? (
-                <Modal basic open={true} size="small" trigger={null}>
-                  <Button size = "mini" color="red" onClick={() => {this.setState({showLogin: false, showRegister: false})}}>X</Button>
-                  <Register change = {()=>{this.goToLogin()}}/>
-                </Modal>
-              ) : null}
-          </VideoBox>
+                Start Playing
+              </Button>
+            </center>
+          </VideoOverlays>
+          <video
+            autoPlay
+            loop
+            muted
+            style={{
+              position: "absolute",
+              width: "100%",
+              left: "50%",
+              top: "50%",
+              height: "100%",
+              objectFit: "cover",
+              transform: "translate(-50%,-50%)",
+              zIndex: "-1",
+            }}
+          >
+            <source src={window.location + "/video.mp4"} type="video/mp4" />
+          </video>
+          {this.state.showLogin ? (
+            <Modal basic open={true} size="small" trigger={null}>
+              <Button
+                position="right"
+                size="mini"
+                color="red"
+                onClick={() => {
+                  this.setState({ showLogin: false, showRegister: false });
+                }}
+              >
+                X
+              </Button>
+              <Login
+                change={() => {
+                  this.goToRegister();
+                }}
+              />
+            </Modal>
+          ) : null}
+          {this.state.showRegister ? (
+            <Modal basic open={true} size="small" trigger={null}>
+              <Button
+                size="mini"
+                color="red"
+                onClick={() => {
+                  this.setState({ showLogin: false, showRegister: false });
+                }}
+              >
+                X
+              </Button>
+              <Register
+                change={() => {
+                  this.goToLogin();
+                }}
+              />
+            </Modal>
+          ) : null}
         </center>
       </div>
     );

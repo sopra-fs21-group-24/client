@@ -17,6 +17,7 @@ import {
   useWindowDimensions,
 } from "../shared/models/WindowSize";
 import styled from "styled-components";
+import earth from "./Video/Earth3.mp4"
 
 const adsEnabled = false;
 
@@ -166,13 +167,6 @@ class Home extends React.Component {
             )}`
             );
           }
-
-
-        // alert(
-        //   `Something went wrong when creating a multiplayer lobby\n${handleError(
-        //     error
-        //   )}`
-        // );
       });
   };
 
@@ -183,16 +177,23 @@ class Home extends React.Component {
   render() {
     const { height, width } = getWindowDimensions();
     return (
-      <div
-        style={{
-          backgroundImage: `url(./wallpaper.jpeg)`,
-          height: height,
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          overflow: "hidden",
+      <div>
+        <video 
+        autoPlay 
+        loop 
+        muted
+        style={{position:"absolute",
+                width:"100%",
+                left: "50%",
+                top:"50%",
+                height:"100%",
+                objectFit:"cover",
+                transform:"translate(-50%,-50%)",
+                zIndex:"-1"
         }}
-      >
+         >
+           <source src={earth} type="video/mp4"/>
+        </video>
         <ComponentTransition
           animateOnMount={true}
           enterAnimation={AnimationTypes.slideUp.enter}
