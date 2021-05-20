@@ -17,7 +17,6 @@ import {
   useWindowDimensions,
 } from "../shared/models/WindowSize";
 import styled from "styled-components";
-import earth from "./Video/Earth3.mp4"
 
 const adsEnabled = false;
 
@@ -192,7 +191,7 @@ class Home extends React.Component {
                 zIndex:"-1"
         }}
          >
-           <source src={earth} type="video/mp4"/>
+           <source src={window.location.origin + "/Earth3.mp4"} type="video/mp4"/>
         </video>
         <ComponentTransition
           animateOnMount={true}
