@@ -1,5 +1,6 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
+import { api, getAuthConfig, handleError } from "../../../helpers/api";
 
 /**
  * routeProtectors interfaces can tell the router whether or not it should allow navigation to a requested route.
@@ -10,9 +11,24 @@ import { Redirect } from "react-router-dom";
  * @Guard
  * @param props
  */
-export const HomeGuard = props => {
-  if (localStorage.getItem("token")) {
-    return props.children;
+export const HomeGuard = (props) => {
+
+
+
+  
+  try {
+    let userId = localStorage.getItem("currentUserId");
+    const response =  api.get("/users/" + userId);
+  } catch (error) {
+    return <Redirect to={"/"} />
   }
-  return <Redirect to={"/"} />;
+
+  return props.children;
+
+
+  
+  // if (localStorage.getItem("token")) {
+  //   return props.children;
+  // }
+  // return <Redirect to={"/"} />;
 };

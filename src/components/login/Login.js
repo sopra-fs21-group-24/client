@@ -58,7 +58,9 @@ class Login extends React.Component {
 
       this.navigateToHomePage()
     } catch (error) {
-      alert(`Something went wrong during the login process: \n${handleUserFriendlyError(error)}`);
+      if (window.confirm("Something went wrong during the login process. Would you like to know more about the error?")){
+        alert(`Error Details: ${handleUserFriendlyError(error)}`)
+      }
     }
   }
 

@@ -14,8 +14,11 @@ import {
   Header,
   Icon,
   Table,
+  Modal,
 } from "semantic-ui-react";
 import { getWindowDimensions } from "../shared/models/WindowSize";
+import "../../views/design/joinlobby.css";
+import { motion } from "framer-motion";
 
 class JoinLobby extends React.Component {
   constructor() {
@@ -23,31 +26,34 @@ class JoinLobby extends React.Component {
     this.state = {
       roomKey: null,
       lobbies: [],
+      init: true,
     };
   }
 
   async componentDidMount() {
     this.mounted = true;
-    let init = true;
 
     while (true && this.mounted) {
       try {
         const response = await api.get(`/lobby`, {
           headers: {
-            initial: init,
+            initial: this.state.init,
           },
         });
         this.setState({ lobbies: response.data });
         console.log(this.state.lobbies);
       } catch (error) {
-        alert(
-          `Something went wrong when fetching all public lobbies: \n${handleError(
-            error
-          )}`
-        );
+        if (window.confirm("Something went wrong when fetching all public lobbies. Would you like to know more about the error?")){
+          
+          if(window.confirm(`Would you like to go back to the homescreen? Error Details: ${handleError(error)}.`)){
+            return this.props.history.push(`/home`);
+          }
+          
+        }
+        
       }
       await new Promise((resolve) => setTimeout(resolve, 100));
-      init = false;
+      this.setState({ init: false });
     }
   }
 
@@ -73,9 +79,9 @@ class JoinLobby extends React.Component {
 
       this.props.history.push(`/lobby`);
     } catch (error) {
-      alert(
-        `Something went wrong when joining this lobby: \n${handleError(error)}`
-      );
+      if (window.confirm("Something went wrong when joining this lobby with your roomkey. Would you like to know more about the error?")){
+        alert(`Error Details: ${handleError(error)}`)
+      }
     }
   };
 
@@ -96,9 +102,9 @@ class JoinLobby extends React.Component {
 
       this.props.history.push(`/lobby`);
     } catch (error) {
-      alert(
-        `Something went wrong when joining this lobby: \n${handleError(error)}`
-      );
+      if (window.confirm("Something went wrong when joining this lobby. Would you like to know more about the error?")){
+        alert(`Error Details: ${handleError(error)}`)
+      }
     }
   };
 
@@ -107,6 +113,21 @@ class JoinLobby extends React.Component {
       [key]: value,
     });
   }
+
+  displayGamemode = (lobby) => {
+    switch (lobby.gameMode) {
+      case "Time":
+        return <Icon name="clock outline"></Icon>;
+        break;
+      case "Pixelation":
+        return <Icon name="chess board"></Icon>;
+        break;
+      case "Clouds":
+        return <Icon name="cloud"></Icon>;
+        break;
+    }
+  };
+
   render() {
     const { height, width } = getWindowDimensions();
     return (
@@ -117,104 +138,137 @@ class JoinLobby extends React.Component {
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
-          overflow: "hidden",
+          //soverflow: "hidden",
         }}
       >
-        <ComponentTransition
-          animateOnMount={true}
-          enterAnimation={AnimationTypes.slideDown.enter}
-          exitAnimation={AnimationTypes.fade.exit}
+        <Modal
+          className="ui fullscreen modal"
+          basic
+          dimmer="blurring"
+          open={true}
         >
-          <Segment
-            placeholder
-            raised
-            padded="very"
-            size="big"
-            style={{
-              marginLeft: "50px",
-              marginRight: "50px",
-              marginTop: "100px",
-            }}
-          >
-            <Grid columns={2} stackable textAlign="center">
-              <Divider vertical>Or</Divider>
-              <Grid.Row verticalAlign="middle">
-                <Grid.Column>
-                  <Header icon>
-                    <Icon name="search" />
-                    Join a public lobby
-                  </Header>
-                  <Table selectable>
-                    <Table.Header>
-                      <Table.Row>
-                        <Table.HeaderCell>Host</Table.HeaderCell>
-                        <Table.HeaderCell>Gamemode</Table.HeaderCell>
-                        <Table.HeaderCell># Players</Table.HeaderCell>
-                      </Table.Row>
-                    </Table.Header>
-                    <Table.Body>
-                      {this.state.lobbies.length === 0
-                        ? "No public lobby available"
-                        : this.state.lobbies.map((lobby) => {
-                            return (
-                              <Table.Row
-                                onClick={() => {
-                                  this.joinPublicLobby(lobby.id);
-                                }}
-                              >
-                                <Table.Cell>
-                                  {lobby.username}
-                                </Table.Cell>
-                                <Table.Cell>{lobby.gameMode}</Table.Cell>
-                                <Table.Cell>{lobby.users}/3</Table.Cell>
-                              </Table.Row>
-                            );
-                          })}
-                    </Table.Body>
-                  </Table>
-                </Grid.Column>
-                <Grid.Column>
-                  <Header icon>
-                    <Icon name="key" />
-                    Join a lobby with invite key
-                  </Header>
-                  <div>
-                    <Input
-                      icon="key"
-                      placeholder="Enter key"
-                      onChange={(e) => {
-                        this.handleInputChange("roomKey", e.target.value);
-                      }}
-                    />
-                    <Button
-                      primary
-                      size="big"
-                      style={{ marginTop: "20px" }}
-                      onClick={() => {
-                        this.joinLobbyWithKey();
-                      }}
-                    >
-                      Join
-                    </Button>
-                  </div>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-          </Segment>
-
-          <center>
-            <Button
-              size="big"
-              style={{ marginTop: "50px" }}
-              color="teal"
-              onClick={() => {
-                this.props.history.push(`/home`);
-              }}
+          <Modal.Content>
+            <ComponentTransition
+              animateOnMount={true}
+              enterAnimation={AnimationTypes.slideDown.enter}
+              exitAnimation={AnimationTypes.fade.exit}
             >
-              Go back
-            </Button>
-          </center>
-        </ComponentTransition>
+              <Segment
+                placeholder
+                raised
+                padded="very"
+                size="big"
+                style={{
+                  marginLeft: "70px",
+                  marginRight: "70px",
+                }}
+              >
+                <Grid columns={2} stackable textAlign="center">
+                  <Divider vertical>Or</Divider>
+                  <Grid.Row verticalAlign="top">
+                    <Grid.Column centered>
+                      <Header icon>
+                        <Icon name="search" />
+                        Join a public lobby
+                      </Header>
+                      <Table selectable>
+                        <Table.Header>
+                          <Table.Row>
+                            <Table.HeaderCell>Host</Table.HeaderCell>
+                            <Table.HeaderCell>Gamemode</Table.HeaderCell>
+                            <Table.HeaderCell># Players</Table.HeaderCell>
+                          </Table.Row>
+                        </Table.Header>
+                        <Table.Body>
+                          {this.state.lobbies.length === 0
+                            ? "There are currently no public lobbies available"
+                            : this.state.lobbies.map((lobby) => {
+                                return (
+                                  <Table.Row
+                                    onClick={() => {
+                                      this.joinPublicLobby(lobby.id);
+                                    }}
+                                  >
+                                    <Table.Cell>{lobby.username}</Table.Cell>
+                                    <Table.Cell>
+                                      {this.displayGamemode(lobby)}
+                                      {lobby.gameMode}
+                                    </Table.Cell>
+                                    <Table.Cell>{lobby.users}/3</Table.Cell>
+                                  </Table.Row>
+                                );
+                              })}
+                        </Table.Body>
+                      </Table>
+                    </Grid.Column>
+                    <Grid.Column centered>
+                      <Grid.Row>
+                        <Header icon>
+                          <Icon name="key" />
+                          Join a lobby with invite key
+                        </Header>
+                      </Grid.Row>
+                      <Grid.Row>
+                        <Input
+                          icon="key"
+                          placeholder="Enter key"
+                          onChange={(e) => {
+                            this.handleInputChange("roomKey", e.target.value);
+                          }}
+                        />
+                        <motion.button
+                          initial={{
+                            fontSize: "18px",
+                            color: "white",
+                            width: "100px",
+                            height: "50px",
+                            opacity: 1,
+                            backgroundColor: "#323232",
+                            scale: 1,
+                            borderRadius: "8px",
+                          }}
+                          whileHover={{
+                            cursor: "pointer",
+                          }}
+                          onClick={() => {
+                            this.joinLobbyWithKey();
+                          }}
+                        >
+                          Join
+                        </motion.button>
+                      </Grid.Row>
+                    </Grid.Column>
+                  </Grid.Row>
+                </Grid>
+              </Segment>
+              <center>
+                <motion.button
+                  initial={{
+                    fontSize: "18px",
+                    color: "white",
+                    width: "150px",
+                    height: "50px",
+                    opacity: 1,
+                    backgroundColor: "#323232",
+                    scale: 1,
+                    borderRadius: "8px",
+                  }}
+                  whileHover={{
+                    scale: 1.1,
+                    textShadow: "0px 0px 8px rgb(255, 255, 255)",
+                    boxShadow: "0px 0px 8px rgb(255, 255, 255)",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => {
+                    this.props.history.push(`/home`);
+                  }}
+                >
+                  Go Back
+                </motion.button>
+              </center>
+            </ComponentTransition>
+          </Modal.Content>
+        </Modal>
       </div>
     );
   }

@@ -40,7 +40,7 @@ class Lobby extends React.Component {
       isUpdating: false,
       hasGameStarted: false,
       gameId: null,
-      isInLobby: true,
+      init: true,
     };
   }
 
@@ -55,12 +55,12 @@ class Lobby extends React.Component {
       this.setState({ hasGameStarted: true });
       this.props.history.push("/game");
     } catch (error) {
-      if (error.response.status == 412) {
-        alert("yooo");
+      // if (error.response.status == 412) {
+      //   alert("yooo");
+      // }
+      if (window.confirm("Something went wrong when trying to start your game. Would you like to know more about the error?")){
+        alert(`Error Details: ${handleError(error)}`)
       }
-      alert(
-        `Something went wrong when starting the game: \n${handleError(error)}`
-      );
     }
   };
 
@@ -71,9 +71,9 @@ class Lobby extends React.Component {
       this.setState({ round: response.data.round });
       console.log("Fetched this round: ", this.state.round);
     } catch (error) {
-      alert(
-        `Something went wrong when starting the game: \n${handleError(error)}`
-      );
+      if (window.confirm("Something went wrong when trying to fetch your game. Would you like to know more about the error?")){
+        alert(`Error Details: ${handleError(error)}`)
+      }
     }
   };
 
@@ -115,11 +115,9 @@ class Lobby extends React.Component {
       this.setState({ isUpdating: false });
       this.setState({ hasGameStarted: false });
     } catch (error) {
-      alert(
-        `Something went wrong when updating the lobby configuration: \n${handleError(
-          error
-        )}`
-      );
+      if (window.confirm("Something went wrong when trying to update the lobby configuration. Would you like to know more about the error?")){
+        alert(`Error Details: ${handleError(error)}`)
+      }
     }
   };
 
@@ -130,11 +128,11 @@ class Lobby extends React.Component {
 
       localStorage.removeItem("lobbyId");
       localStorage.removeItem("gameId");
-      this.props.history.push("/lobby/join");
+      this.props.history.push('/lobby/join');
     } catch (error) {
-      alert(
-        `Something went wrong when leaving the lobby \n${handleError(error)}`
-      );
+      if (window.confirm("Something went wrong when trying to leave the lobby. Would you like to know more about the error?")){
+        alert(`Error Details: ${handleError(error)}`)
+      }
     }
   };
 
@@ -148,13 +146,12 @@ class Lobby extends React.Component {
   async componentDidMount() {
     this.mounted = true;
     const lobbyId = localStorage.getItem("lobbyId");
-    let init = true;
 
     if (!this.state.hasGameStarted && !this.state.isUpdating && this.mounted) {
       try {
         const response = await api.get(`/lobby/${lobbyId}`, {
           headers: {
-            initial: init,
+            initial: this.state.init,
           },
         });
         this.setState({ lobbyId: response.data.id });
@@ -168,13 +165,13 @@ class Lobby extends React.Component {
         localStorage.removeItem("gameId");
         localStorage.setItem("gameId", this.state.gameId);
       } catch (error) {
-        alert(
-          `Something went wrong when fetching the lobby \n${handleError(error)}`
-        );
+        if (window.confirm("Something went wrong when trying to fetch your lobby. Would you like to know more about the error?")){
+          alert(`Error Details: ${handleError(error)}`)
+        }
       }
     }
 
-    init = false;
+    this.setState({init: false});
     this.listenForGameStart();
 
     while (
@@ -185,7 +182,7 @@ class Lobby extends React.Component {
       try {
         const response = await api.get(`/lobby/${lobbyId}`, {
           headers: {
-            initial: init,
+            initial: this.state.init,
           },
         });
         this.setState({ lobbyId: response.data.id });
@@ -199,9 +196,10 @@ class Lobby extends React.Component {
         localStorage.removeItem("gameId");
         localStorage.setItem("gameId", this.state.gameId);
       } catch (error) {
-        alert(
-          `Something went wrong when fetching the lobby \n${handleError(error)}`
-        );
+        if (window.confirm("Something went wrong when trying to fetch your lobby. Would you like to know more about the error?")){
+          alert(`Error Details: ${handleError(error)}`)
+        }
+      
       }
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
@@ -209,6 +207,7 @@ class Lobby extends React.Component {
 
   componentWillUnmount() {
     console.log("unmounting");
+    this.setState({init: true});
     this.mounted = false;
   }
 

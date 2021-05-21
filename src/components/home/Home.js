@@ -159,12 +159,9 @@ class Home extends React.Component {
             //   });
           }
         } else {
-
-          alert(
-            `Something went wrong when creating a multiplayer lobby\n${handleError(
-                  err
-            )}`
-            );
+          if (window.confirm("Something went wrong when creating a multiplayer lobby. Would you like to know more about the error?")){
+            alert(`Error Details: ${handleError(err)}`)
+          }
           }
       });
   };
@@ -281,9 +278,9 @@ class Home extends React.Component {
       };
       this.setState({ user: response.data, userScore: userScore });
     } catch (error) {
-      alert(
-        "While getting your user data we came across an error, you will be logged out and navigate to the landing page!"
-      );
+      // alert(
+      //   "While getting your user data we came across an error, you will be logged out and navigate to the landing page!"
+      // );
       this.logout();
     }
   }
@@ -307,9 +304,11 @@ class Home extends React.Component {
 
       this.getUser();
     } catch (error) {
-      alert(
-        `Something went wrong while fetching the users: \n${handleError(error)}`
-      );
+      
+      if (window.confirm("Something went wrong while updating your user. Would you like to know more about the error?")){
+        alert(`Error Details: ${handleError(error)}`)
+      }
+    
     }
   }
   logout() {
