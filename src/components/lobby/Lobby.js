@@ -206,7 +206,6 @@ class Lobby extends React.Component {
   }
 
   componentWillUnmount() {
-    this.setState({init: true});
     this.mounted = false;
   }
 
