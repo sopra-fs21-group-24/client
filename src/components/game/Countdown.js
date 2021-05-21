@@ -8,7 +8,6 @@ import sheesh from "../../sounds/sheesh.mp3";
 
 const Countdown = (props) => {
   const { initialMinute = 0, initialSeconds = 5 } = props;
-  console.log(props.score)
   const [minutes, setMinutes] = useState(initialMinute);
   const [seconds, setSeconds] = useState(initialSeconds);
   const [playCountdown] = useSound(boop);

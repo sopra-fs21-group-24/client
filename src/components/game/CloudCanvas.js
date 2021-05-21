@@ -55,11 +55,11 @@ class CloudCanvas extends React.Component {
   }
 
   async startAnlysis(){
-    console.log("CHEEECK:" , this.mounted, this.props.isPlaying)
+    // console.log("CHEEECK:" , this.mounted, this.props.isPlaying)
     while(this.mounted && this.props.isPlaying){
       await new Promise((resolve) => setTimeout(resolve, 2000));
       this.getTransparencyCount()
-      console.log("still checking transperancy")
+      // console.log("still checking transperancy")
     }
   }
 

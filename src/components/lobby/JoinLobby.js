@@ -41,7 +41,7 @@ class JoinLobby extends React.Component {
           },
         });
         this.setState({ lobbies: response.data });
-        console.log(this.state.lobbies);
+        // console.log(this.state.lobbies);
       } catch (error) {
         if (window.confirm("Something went wrong when fetching all public lobbies. Would you like to know more about the error?")){
           
@@ -58,7 +58,7 @@ class JoinLobby extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log("unmounting");
+    // console.log("unmounting");
     this.mounted = false;
   }
 

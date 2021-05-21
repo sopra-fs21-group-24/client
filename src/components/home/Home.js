@@ -89,7 +89,6 @@ class Home extends React.Component {
           });
       })
       .catch(async (err) => {
-        console.log(err.response)
         if (err.response.status == 412  && oldGameId != null){
           let conf = window.confirm
           ("Want us to cancel your ongoing game and start this new one?")
@@ -98,7 +97,7 @@ class Home extends React.Component {
             await api
               .get("/games/" + oldGameId + "/exit", getAuthConfig())
               .then(() => {
-                console.log("ending cancelled game");
+                // console.log("ending cancelled game");
                 this.createSingleplayerGame(gamemode) //TODO: possible recursion trap
               });
           }
@@ -133,7 +132,6 @@ class Home extends React.Component {
       })
       .catch(async (err) => {
 
-        console.log(err.response)
         this.toggleCreateJoinLobbyDisplay();
        
         if (err.response.status == 412  && oldLobbyId != null){
@@ -145,7 +143,7 @@ class Home extends React.Component {
               {},
               getAuthConfig()
             ).then(()=>{
-              console.log("CANCELLED OLD LOBBY")
+              // console.log("CANCELLED OLD LOBBY")
               localStorage.removeItem("lobbyId");
               this.createLobby()
               
@@ -286,7 +284,6 @@ class Home extends React.Component {
   }
 
   async updateUser(username, password) {
-    console.log(username, password);
     try {
       let userId = localStorage.getItem("currentUserId");
       let token = localStorage.getItem("token");

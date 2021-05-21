@@ -55,8 +55,8 @@ class GameController extends React.Component {
     let id = localStorage.getItem("gameId");
     this.setState({ gameId: id });
 
-    console.log("Starting up Game with GameId", id);
-    console.log(this.state.gameId);
+    // console.log("Starting up Game with GameId", id);
+    // console.log(this.state.gameId);
 
     // Mini Map Method Binding
     this.handleGuessSubmit = this.handleGuessSubmit.bind(this);
@@ -76,18 +76,33 @@ class GameController extends React.Component {
     await this.getQuestionsForGame(this.state.gameId);
     await this.startRound(this.state.currentRound);
   }
+  async startPrefetch(currentRound){
+    // console.log("Prefetching for round" + (currentRound+1) + " currently" + currentRound)
+    let upcomingRound = currentRound + 1
 
+    let questionIndex = upcomingRound - 1;
+    let currentQuestionId = this.state.questions[questionIndex];
+    // console.log(questionIndex, currentQuestionId, "DATAAA");
+    let imagedata = await this.getQuestion(currentQuestionId);
+    this.setState({
+      nextImageData:imagedata,
+      nextQuestionId: currentQuestionId
+    });
+  }
   async startRound(currentRound) {
-    console.log("Starting Game Round ", currentRound);
+    // console.log("Starting Game Round ", currentRound);
 
     this.setState({isPlaying:true})
     // Setting our current Question Id
     let questionIndex = currentRound - 1;
     let currentQuestionId = this.state.questions[questionIndex];
-    console.log(questionIndex, currentQuestionId, "DATAAA");
+    // console.log(questionIndex, currentQuestionId, "DATAAA");
 
     // Fetch Question Image
-    await this.getQuestion(currentQuestionId);
+    let imagedata = await this.getQuestion(currentQuestionId);
+    this.setState({
+      currentQuestionImage: "data:;base64," + imagedata,
+    });
     // Start Timer
     this.setState({ currentQuestionId: currentQuestionId });
     this.startTimer();
@@ -96,7 +111,7 @@ class GameController extends React.Component {
   async nextRound() {
     //end of game?
 
-    console.log("user pressed next round");
+    // console.log("user pressed next round");
 
     // Hide inbetween rounds scoreboard
     this.setState({ showScoreModal: false, everyOneGuessed: false });
@@ -117,7 +132,7 @@ class GameController extends React.Component {
         currentRound: response.data.round,
         gameMode: response.data.gameMode.name,
       });
-      console.log("Fetched this game round from BE: ", response.data.round);
+      // console.log("Fetched this game round from BE: ", response.data.round);
     } catch (error) {
       this.askWhetherToGoBackToHome(`Something went wrong while fetching the game with gameId: ${gameId}.`, error)
     }
@@ -137,7 +152,7 @@ class GameController extends React.Component {
         "/games/" + gameId + "/questions",
         getAuthConfig()
       );
-      console.log(response.data, "QUESTONS!");
+      // console.log(response.data, "QUESTONS!");
       this.setState({
         questions: response.data,
       });
@@ -146,13 +161,19 @@ class GameController extends React.Component {
     }
   }
   async getQuestion(questionId) {
+
+
+    if (this.state.nextQuestionId == questionId){
+      // console.log("using prefetched image", this.state.nextImageData)
+      return this.state.nextImageData
+    }
     //TODO: get the correct sizes of the user's screen
     const { height, width } = getWindowDimensions();
 
     let scaleFactor = width / 640;
     let actualWidth = width / scaleFactor;
     let actualHeight = height / scaleFactor - 20;
-    console.log("new scalefactor", actualWidth, actualHeight);
+    // console.log("new scalefactor", actualWidth, actualHeight);
 
     try {
       const response = await api
@@ -164,11 +185,7 @@ class GameController extends React.Component {
           },
           getAuthConfig()
         )
-        .then((response) => {
-          this.setState({
-            currentQuestionImage: "data:;base64," + response.data,
-          });
-        });
+        return response.data
     } catch (error) {
       alert(`Couldn't fetch image: \n${handleError(error)}`);
     }
@@ -271,7 +288,7 @@ class GameController extends React.Component {
       });
 
      
-      console.log(different, responseData);
+      // console.log(different, responseData);
       this.setState({
         scores: different,
       });
@@ -283,7 +300,7 @@ class GameController extends React.Component {
 
   //#region MiniMap
   handlePinPlacedOnMap(mapState) {
-    console.log("Received this pin from the MiniMap", mapState);
+    // console.log("Received this pin from the MiniMap", mapState);
     this.setState({ pin: mapState });
   }
   async handleGuessSubmit() {
@@ -308,17 +325,22 @@ class GameController extends React.Component {
     this.setState({ pin: null, solution: null });
 
     // Display the inbetween rounds scoreboard
+    if(this.state.currentRound != 3){
+
+      // console.log("CURRENTROUND",this.state.currentRound)
+      this.startPrefetch(this.state.currentRound)
+    }
     await this.fetchScore();
     this.setState({ showScoreModal: true });
 
     // Fetching incoming scores every second
-    console.log(
-      "START FETCHING SCORES",
-      this.state.showScoreModal,
-      this.state.gameOngoing,
-      this.mounted,
-      !this.state.everyOneGuessed
-    );
+    // console.log(
+    //   "START FETCHING SCORES",
+    //   this.state.showScoreModal,
+    //   this.state.gameOngoing,
+    //   this.mounted,
+    //   !this.state.everyOneGuessed
+    // );
     while (
       this.state.showScoreModal &&
       this.state.gameOngoing &&
@@ -353,11 +375,11 @@ class GameController extends React.Component {
 
     if (oldRound < this.state.currentRound) {
       this.setState({ everyOneGuessed: true });
-      console.log("EVERYONE GUESSED");
+      // console.log("EVERYONE GUESSED");
       return;
     } else {
       this.setState({ everyOneGuessed: false });
-      console.log("NOT EVERYONE GUESSED");
+      // console.log("NOT EVERYONE GUESSED");
     }
   }
 
@@ -380,7 +402,7 @@ class GameController extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log("unmounting");
+    // console.log("unmounting");
     this.mounted = false;
     this.setState({ showScoreModal: false, gameOngoing: false });
   }
@@ -482,7 +504,7 @@ class GameController extends React.Component {
 const Component = (props) => {
   const { height, width } = useWindowDimensions();
   let filter = props.gameMode == "Pixelation" ? 10 - props.timer * 0.4 : 0;
-  console.log(props.round, props.questionId, "ROUND IN COMPONENT COMPONENT");
+  // console.log("Cloud component", props.gameMode)
   return (
     <div
       style={{
@@ -495,7 +517,7 @@ const Component = (props) => {
         overflow: "hidden",
       }}
     >
-      {props.gameMode == "c" &&
+      {props.gameMode == "Clouds" &&
       props.round != -1 &&
       props.questionId != null ? (
    
