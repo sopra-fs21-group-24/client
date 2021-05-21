@@ -11,7 +11,6 @@ const BigContainer = styled.div`
 `;
 
 const HomeHeader = (props) => {
-  console.log("in home header", props);
 
   let username = props.user ? props.user.username : "Placeholder";
   let user = props.user ? props.user : { username: "", password: "" };

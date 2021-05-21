@@ -176,7 +176,6 @@ class MiniMap extends Component {
     const nextState = this.state;
     nextState.pin = latLng;
     this.setState(nextState);
-    console.log(this.state);
 
     this.props.pinMarkerOnClick(nextState.pin);
   }

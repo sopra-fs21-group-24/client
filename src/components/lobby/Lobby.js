@@ -79,11 +79,11 @@ class Lobby extends React.Component {
 
   listenForGameStart = async () => {
     let userId = localStorage.getItem("currentUserId");
-    console.log("start listening for games");
-    console.log(this.state.round, this.mounted);
+    // console.log("start listening for games");
+    // console.log(this.state.round, this.mounted);
     while (this.state.round == 0 && this.mounted) {
       await this.fetchGame();
-      console.log("Fetched Game and round is ", this.state.round);
+      // console.log("Fetched Game and round is ", this.state.round);
       // wait for 1 s and fetch scores again
       if (this.state.round == 1 && this.state.creator !== userId) {
         this.setState({ hasGameStarted: true });
@@ -206,7 +206,6 @@ class Lobby extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log("unmounting");
     this.setState({init: true});
     this.mounted = false;
   }
