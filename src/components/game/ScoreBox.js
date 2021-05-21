@@ -11,6 +11,7 @@ import {
   Progress,
   Segment,
 } from "semantic-ui-react";
+
 import { MapElem } from "./MiniMap";
 import Countdown from "./Countdown";
 import { useState, useEffect } from "react";
@@ -21,9 +22,13 @@ const ScoreBox = (props) => {
   const avatars=["lena.png","stevie.jpg","mark.png","helen.jpg","christian.jpg", "daniel.jpg","elliot.jpg","matthew.png"];
 
   useEffect(()=>{
+
+    
     setUsers(props.scores.sort((a,b)=>(a.score>b.score)?-1:1))
+   
     return()=>{
       setUsers([])
+      // confetti.clear();
     }
   })
 
@@ -122,6 +127,8 @@ const ScoreBox = (props) => {
   };
   //SCORE = NULL
   return (
+    <div style={{height:"100%", width:"100%"}}>
+    
     <Segment placeholder raised>
       <Header as="h2" color="teal" textAlign="center">
 
@@ -162,6 +169,8 @@ const ScoreBox = (props) => {
       <Divider horizontal> </Divider>
       <LowerPart/>
     </Segment>
+    
+    </div>
   );
 };
 
