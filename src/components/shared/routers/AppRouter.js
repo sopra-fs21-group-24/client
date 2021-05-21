@@ -12,6 +12,7 @@ import { LobbyGuard } from "../routeProtectors/LobbyGuard";
 import { LoginGuard } from "../routeProtectors/LoginGuard";
 import HomeRouter from "./HomeRouter";
 import LobbyRouter from "./LobbyRouter";
+import { api, getAuthConfig, handleError } from "../../../helpers/api";
 
 // import {GamepageGuard} from "../routeProtectors/GamepageGuard";
 // import GamepageRouter from "./GamepageRouter";
@@ -25,6 +26,23 @@ import LobbyRouter from "./LobbyRouter";
  * Documentation about routing in React: https://reacttraining.com/react-router/web/guides/quick-start
  */
 class AppRouter extends React.Component {
+
+  constructor(){
+    super();
+  
+
+   
+  }
+
+  async getUser(){
+    try {
+      let userId = localStorage.getItem("currentUserId");
+      const response =  api.get("/users/" + userId);
+      return response.data
+    } catch (error) {
+     return null
+    }
+  }
   render() {
     return (
       <BrowserRouter>
@@ -32,11 +50,13 @@ class AppRouter extends React.Component {
           <div>
             <Route
               path="/home"
-              render={() => (
-                <HomeGuard>
-                  <HomeRouter base={"/home"} />
-                </HomeGuard>
-              )}
+              render={() => {
+                if (this.getUser()){
+                  return <HomeRouter base={"/home"} />
+                } else {
+                  return <Launch/>
+                }
+              }}    
             />
             <Route
               path="/game"

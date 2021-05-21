@@ -119,11 +119,15 @@ class GameController extends React.Component {
       });
       console.log("Fetched this game round from BE: ", response.data.round);
     } catch (error) {
-      alert(
-        `Something went wrong while fetching the game with gameId: ${gameId}: \n${handleError(
-          error
-        )}`
-      );
+      this.askWhetherToGoBackToHome(`Something went wrong while fetching the game with gameId: ${gameId}.`, error)
+    }
+  }
+
+  askWhetherToGoBackToHome(errorMessage, err){
+    if (window.confirm(errorMessage) + " Would you like to go back to the HomeScreen?") {
+      this.exitGame()
+    } else {
+      alert(`More Information regarding your error: ${handleError(err)}`)
     }
   }
 
@@ -138,11 +142,7 @@ class GameController extends React.Component {
         questions: response.data,
       });
     } catch (error) {
-      alert(
-        `Something went wrong while fetching the questions for game with gameId: ${gameId}: \n${handleError(
-          error
-        )}`
-      );
+      this.askWhetherToGoBackToHome(`Something went wrong while fetching the questions for game with gameId: ${gameId}.`, error)
     }
   }
   async getQuestion(questionId) {
@@ -199,8 +199,8 @@ class GameController extends React.Component {
           getAuthConfig()
         );
       } catch (error) {
-        alert("All players left the game, you'll be redirected");
-        this.props.history.push("/home");
+        this.askWhetherToGoBackToHome("Your submitted guess couldn't be processed.", error)
+        // this.props.history.push("/home");
         return;
       }
 
@@ -237,10 +237,9 @@ class GameController extends React.Component {
 
       await this.fetchScore();
     } catch (error) {
-      alert(
-        `Something went wrong while submitting your guess: \n${handleError(
-          error
-        )}`
+
+      this.askWhetherToGoBackToHome(
+        "Something went wrong while preparing your guess.",error
       );
     }
   }
@@ -277,9 +276,7 @@ class GameController extends React.Component {
         scores: different,
       });
     } catch (error) {
-      alert(
-        `Something went wrong while fetching the users: \n${handleError(error)}`
-      );
+      this.askWhetherToGoBackToHome("Something went wrong while the game score of all players.",error);
     }
   }
   //#endregion API Calls

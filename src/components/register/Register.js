@@ -50,9 +50,10 @@ class Register extends React.Component {
       // After successful registration
       this.navigateToHomePage();
     } catch (error) {
-      alert(
-        `Something went wrong during the register process: \n${handleUserFriendlyError(error)}`
-      );
+      if (window.confirm("Something went wrong during the register process. Would you like to know more about the error?")){
+        alert(`Error Details: ${handleUserFriendlyError(error)}`)
+      }
+     
     }
   }
 
