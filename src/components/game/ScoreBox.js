@@ -110,6 +110,7 @@ const ScoreBox = (props) => {
       return props.everyOneGuessed ? (
         <Countdown
           nextRound={props.nextRound}
+          score={props.playerScore.score}
           />
       ) : (
         <h4 style={{ color: "black" }}>
