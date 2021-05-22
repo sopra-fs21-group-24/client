@@ -7,6 +7,42 @@ import {
   ComponentTransition,
   AnimationTypes,
 } from "react-component-transition";
+
+class HashTable {
+  constructor() {
+    this.values = {};
+    this.length = 0;
+    this.size = 5;
+  }
+
+  calculateHash(key) {
+    return key % this.size;
+  }
+
+  add(key, value) {
+    const hash = this.calculateHash(key);
+    if (!this.values.hasOwnProperty(hash)) {
+      this.values[hash] = {};
+    }
+    if (!this.values[hash].hasOwnProperty(key)) {
+      this.length++;
+    }
+    this.values[hash][key] = value;
+  }
+
+  search(key) {
+    const hash = this.calculateHash(key);
+    if (
+      this.values.hasOwnProperty(hash) &&
+      this.values[hash].hasOwnProperty(key)
+    ) {
+      return this.values[hash][key];
+    } else {
+      return null;
+    }
+  }
+}
+
 const style = {
   // maxWidth: "450px",
   // height: "350px",
@@ -20,13 +56,27 @@ const containerStyle = {
   "border-radius": "25px",
 };
 
+// Line colors are ordered in blue, pink, yellow, green and purple like the markers
+// Solution marker is RED
 export const lineColors = [
-  '#BB201B',
-  '#FECE02',
-  '#010101',
-  '#128254',
-  '#FA6223'
-]
+  "#1B4F72", // blue
+  "#FF69B4", // pink
+  "#DFFF00", // yellow
+  "#00FF00", // green
+  "#9B59B6", // purple
+];
+
+// Each player gets uniquely colored marker
+export const differentMarkers = [
+  "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+  "http://maps.google.com/mapfiles/ms/icons/pink-dot.png",
+  "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png",
+  "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
+  "http://maps.google.com/mapfiles/ms/icons/purple-dot.png",
+];
+
+// Initialize hash table for hashing user IDs to an index for differentMarkers
+export const hashTable = new HashTable();
 
 export const TopLeftButton = styled(Button)`
   margin-top: 50px;
@@ -37,21 +87,11 @@ export const TopLeftButton = styled(Button)`
   margin-bottom: 50px;
 `;
 
-
 const MiniMapContainer = styled.div`
   position: absolute;
   bottom: 15px;
-  
 `;
-// const guessIcon = {
-//   url: "https://loc8tor.co.uk/wp-content/uploads/2015/08/stencil.png",
-//   scaledSize: new this.props.google.maps.Size(90, 42)
-// };
 
-// const answerIcon = {
-//   url: "https://loc8tor.co.uk/wp-content/uploads/2015/08/stencil.png",
-//   scaledSize: new this.props.google.maps.Size(90, 42)
-// };
 export const MapElem = withGoogleMap((props) => (
   <div style={{ borderRadius: "25px" }}>
     <GoogleMap
@@ -75,70 +115,69 @@ export const MapElem = withGoogleMap((props) => (
         // gestureHandling: 'none'
       }}
     >
-      {props.results.length > 0 && props.showResults
-        ? 
-        props.results.map((value, index, array) => {
-          return (
-            <Polyline
-            path={[
-              { lat: props.results[index].lat, lng: props.results[index].lng },
-              { lat: props.markers[index].lat, lng: props.markers[index].lng },
-            ]}
-            options={{
-              strokeColor: lineColors[index],
-              strokeOpacity: '0.9',
-              strokeWeight: 4,
-              icons: [
-                {
-                  icon: "hello",
-                  offset: "0",
-                  repeat: "10px",
-                },
-              ],
-            }}
-          />
-       )} 
-  )
+      {props.everyOneGuessed && props.showResults
+        ? props.playerMarkers.map((user) => {
+            return (
+              <Polyline
+                path={[
+                  {
+                    lat: user.lastCoordinate.lat,
+                    lng: user.lastCoordinate.lon,
+                  },
+                  props.results[props.currentRound - 2],
+                ]}
+                options={{
+                  strokeColor: lineColors[hashTable.search(user.userId)],
+                  strokeOpacity: "0.9",
+                  strokeWeight: 4,
+                  icons: [
+                    {
+                      icon: "hello",
+                      offset: "0",
+                      repeat: "10px",
+                    },
+                  ],
+                }}
+              />
+            );
+          })
         : null}
 
-{props.results.length > 0&& props.showResults
-        ? 
-        props.results.map((value, index, array) => {
-          return (
-            <Marker
-            key={1}
-            position={value}
-            
-            // icon={answerIcon}
-            // title={`[${marker.lat.toFixed(2)}-ish, ${marker.lng.toFixed(2)}-ish]`}
-          />
-         
-       )} 
-  )
+      {/**Displays marker of the solution in RED */}
+      {props.everyOneGuessed && props.showResults ? (
+        <Marker
+          key={1}
+          position={props.results[props.currentRound - 2]}
+          icon={{ scaledSize: new window.google.maps.Size(1, 1) }}
+        />
+      ) : null}
+
+      {/* Displays marker where the users had guessed */}
+      {props.everyOneGuessed && props.showResults
+        ? props.playerMarkers.map((user) => {
+            return (
+              <Marker
+                key={2}
+                position={{
+                  lat: user.lastCoordinate.lat,
+                  lng: user.lastCoordinate.lon,
+                }}
+                icon={differentMarkers[hashTable.search(user.userId)]}
+              />
+            );
+          })
         : null}
 
-        {props.results.length > 0 && props.showResults
-        ? 
-        props.markers.map((value, index, array) => {
-          return (
-            <Marker
-            key={2}
-            
-            position={value}
-            icon={{  scaledSize: new window.google.maps.Size(1, 1) }}
-            // icon="https://campus-map.stanford.edu/images/new/cm-target.png"
-            // title={`[${marker.lat.toFixed(2)}-ish, ${marker.lng.toFixed(2)}-ish]`}
-          />
-         
-       )} 
-  )
-        : null}
-
+      {/* Displays a pin where user clicks on the map at the bottom right corner */}
       {props.marker ? (
         <Marker
           key={1}
           position={props.marker}
-          // icon="https://campus-map.stanford.edu/images/new/cm-target.png"
+          icon={
+            differentMarkers[
+              hashTable.search(localStorage.getItem("currentUserId"))
+            ]
+          }
           // title={`[${marker.lat.toFixed(2)}-ish, ${marker.lng.toFixed(2)}-ish]`}
         />
       ) : null}
@@ -161,8 +200,9 @@ class MiniMap extends Component {
       width: "450px",
       mapEnabled: true,
     };
-    // this.setState(props);
+    //this.setState(props);
 
+    //console.log(this.state.hashTable.search(1664));
     this.handleMapClick = this.handleMapClick.bind(this);
     this.handleMapMounted = this.handleMapMounted.bind(this);
   }
@@ -172,6 +212,13 @@ class MiniMap extends Component {
   }
 
   handleMapClick(event) {
+    // Adding all player IDs to the Hash Table so all players get different colored markers
+    for (let i = 0; i < this.props.state.playerIds.length; i++) {
+      hashTable.add(this.props.state.playerIds[i], i);
+    }
+    // For debug purposes
+    //console.log(this.props.state.playerIds);
+    //console.log(hashTable.search(localStorage.getItem("currentUserId")));
     const latLng = event.latLng.toJSON();
     const nextState = this.state;
     nextState.pin = latLng;
@@ -181,7 +228,7 @@ class MiniMap extends Component {
   }
 
   handleClick = () => {
-    this.setState(prevState => ({ open: !prevState.open }));
+    this.setState((prevState) => ({ open: !prevState.open }));
   };
 
   render() {
@@ -199,60 +246,62 @@ class MiniMap extends Component {
       center = pin;
     }
 
-    let w = this.state.open ? "600px":"350px"
-    let h = this.state.open ? "500px":"200px"
-    let r = this.state.open ? "20px":"20px"
+    let w = this.state.open ? "600px" : "350px";
+    let h = this.state.open ? "500px" : "200px";
+    let r = this.state.open ? "20px" : "20px";
     return (
-      <MiniMapContainer style={{right:r, width:w}}>
-
-      
-<ComponentTransition
+      <MiniMapContainer style={{ right: r, width: w }}>
+        <ComponentTransition
           animateOnMount={true}
           enterAnimation={AnimationTypes.slideDown.enter}
           exitAnimation={AnimationTypes.fade.exit}
         >
-      
-  
-      <Segment style={{ maxHeight: "700px"  }}>
-        <Header as="h4" textAlign="center">
-          Drop your Pin on the Map
-        </Header>
-        <TopLeftButton icon onClick={()=>{this.handleClick()}}><Icon name="expand" ></Icon></TopLeftButton>
-        <br></br>
-        {/* <AnimateHeight
+          <Segment style={{ maxHeight: "700px" }}>
+            <Header as="h4" textAlign="center">
+              Drop your Pin on the Map
+            </Header>
+            <TopLeftButton
+              icon
+              onClick={() => {
+                this.handleClick();
+              }}
+            >
+              <Icon name="expand"></Icon>
+            </TopLeftButton>
+            <br></br>
+            {/* <AnimateHeight
             // shouldChange={this.state.open}
             renderSpaceAfter
           > */}
 
             {/* {this.state.open && ( */}
-        <MapElem
-          containerElement={<div style={{height:h,  width: `100%` }} />}
-          mapElement={<div style={{ height: `100%` }} />}
-          onMapMounted={this.handleMapMounted}
-          onMapClick={this.handleMapClick}
-          center={center}
-          markers={this.props.state.pins}
-          marker={this.props.state.pin}
-          result={this.props.state.answer}
-          zoom={zoom}
-          results={this.props.state.answers}
-          showResults={false}
-        />
+            <MapElem
+              containerElement={<div style={{ height: h, width: `100%` }} />}
+              mapElement={<div style={{ height: `100%` }} />}
+              onMapMounted={this.handleMapMounted}
+              onMapClick={this.handleMapClick}
+              center={center}
+              markers={this.props.state.pins}
+              marker={this.props.state.pin}
+              result={this.props.state.answer}
+              zoom={zoom}
+              results={this.props.state.answers}
+              showResults={false}
+            />
             {/* )} */}
-        
 
-        <Button
-          style={{ marginTop: "15px" }}
-          fluid
-          onClick={() => {
-            this.props.handleGuessSubmit();
-          }}
-        >
-          Submit Guess!
-        </Button>
-        {/* </AnimateHeight> */}
-      </Segment>
-      </ComponentTransition>
+            <Button
+              style={{ marginTop: "15px" }}
+              fluid
+              onClick={() => {
+                this.props.handleGuessSubmit();
+              }}
+            >
+              Submit Guess!
+            </Button>
+            {/* </AnimateHeight> */}
+          </Segment>
+        </ComponentTransition>
       </MiniMapContainer>
     );
   }
