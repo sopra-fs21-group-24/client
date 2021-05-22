@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 import {
   ComponentTransition,
   AnimationTypes,
@@ -31,7 +31,7 @@ class GameController extends React.Component {
       gameOngoing: true,
       showCloud: true,
       currentRound: -1,
-      isPlaying:true,
+      isPlaying: true,
       questions: null,
       currentQuestionId: null,
       currentQuestionImage: null,
@@ -40,10 +40,12 @@ class GameController extends React.Component {
 
       scores: null,
       playerScore: null,
+      guessesOfAllPlayers: null,
       everyOneGuessed: false,
       solution: null,
       solutions: [],
-      difficultyFactor:null,
+      difficultyFactor: null,
+      playerIds: null,
 
       pin: null,
       pins: [],
@@ -77,23 +79,23 @@ class GameController extends React.Component {
     await this.getQuestionsForGame(this.state.gameId);
     await this.startRound(this.state.currentRound);
   }
-  async startPrefetch(currentRound){
+  async startPrefetch(currentRound) {
     // console.log("Prefetching for round" + (currentRound+1) + " currently" + currentRound)
-    let upcomingRound = currentRound + 1
+    let upcomingRound = currentRound + 1;
 
     let questionIndex = upcomingRound - 1;
     let currentQuestionId = this.state.questions[questionIndex];
     // console.log(questionIndex, currentQuestionId, "DATAAA");
     let imagedata = await this.getQuestion(currentQuestionId);
     this.setState({
-      nextImageData:imagedata,
-      nextQuestionId: currentQuestionId
+      nextImageData: imagedata,
+      nextQuestionId: currentQuestionId,
     });
   }
   async startRound(currentRound) {
     // console.log("Starting Game Round ", currentRound);
 
-    this.setState({isPlaying:true})
+    this.setState({ isPlaying: true });
     // Setting our current Question Id
     let questionIndex = currentRound - 1;
     let currentQuestionId = this.state.questions[questionIndex];
@@ -132,18 +134,25 @@ class GameController extends React.Component {
       this.setState({
         currentRound: response.data.round,
         gameMode: response.data.gameMode.name,
+        playerIds: response.data.players,
       });
       // console.log("Fetched this game round from BE: ", response.data.round);
     } catch (error) {
-      this.askWhetherToGoBackToHome(`Something went wrong while fetching the game with gameId: ${gameId}.`, error)
+      this.askWhetherToGoBackToHome(
+        `Something went wrong while fetching the game with gameId: ${gameId}.`,
+        error
+      );
     }
   }
 
-  askWhetherToGoBackToHome(errorMessage, err){
-    if (window.confirm(errorMessage) + " Would you like to go back to the HomeScreen?") {
-      this.exitGame()
+  askWhetherToGoBackToHome(errorMessage, err) {
+    if (
+      window.confirm(errorMessage) +
+      " Would you like to go back to the HomeScreen?"
+    ) {
+      this.exitGame();
     } else {
-      alert(`More Information regarding your error: ${handleError(err)}`)
+      alert(`More Information regarding your error: ${handleError(err)}`);
     }
   }
 
@@ -158,15 +167,16 @@ class GameController extends React.Component {
         questions: response.data,
       });
     } catch (error) {
-      this.askWhetherToGoBackToHome(`Something went wrong while fetching the questions for game with gameId: ${gameId}.`, error)
+      this.askWhetherToGoBackToHome(
+        `Something went wrong while fetching the questions for game with gameId: ${gameId}.`,
+        error
+      );
     }
   }
   async getQuestion(questionId) {
-
-
-    if (this.state.nextQuestionId == questionId){
+    if (this.state.nextQuestionId == questionId) {
       // console.log("using prefetched image", this.state.nextImageData)
-      return this.state.nextImageData
+      return this.state.nextImageData;
     }
     //TODO: get the correct sizes of the user's screen
     const { height, width } = getWindowDimensions();
@@ -177,37 +187,36 @@ class GameController extends React.Component {
     // console.log("new scalefactor", actualWidth, actualHeight);
 
     try {
-      const response = await api
-        .post(
-          `games/${this.state.gameId}/questions/${questionId}`,
-          {
-            width: actualWidth,
-            height: actualHeight,
-          },
-          getAuthConfig()
-        )
-        return response.data
+      const response = await api.post(
+        `games/${this.state.gameId}/questions/${questionId}`,
+        {
+          width: actualWidth,
+          height: actualHeight,
+        },
+        getAuthConfig()
+      );
+      return response.data;
     } catch (error) {
       alert(`Couldn't fetch image: \n${handleError(error)}`);
     }
   }
 
   handleDifficultyFactor = (difficulty) => {
-    this.setState({difficultyFactor: difficulty});
-}
+    this.setState({ difficultyFactor: difficulty });
+  };
   async sendGuess(guess, questionId) {
     try {
-
       let guessData = {
         questionId: questionId,
         coordGuess: {
           lon: guess.lng,
           lat: guess.lat,
         },
-        difficultyFactor: this.state.gameMode == "Clouds" ? this.state.difficultyFactor:1,
+        difficultyFactor:
+          this.state.gameMode == "Clouds" ? this.state.difficultyFactor : 1,
       };
 
-      this.setState({isPlaying:false})
+      this.setState({ isPlaying: false });
 
       let response;
       try {
@@ -217,7 +226,10 @@ class GameController extends React.Component {
           getAuthConfig()
         );
       } catch (error) {
-        this.askWhetherToGoBackToHome("Your submitted guess couldn't be processed.", error)
+        this.askWhetherToGoBackToHome(
+          "Your submitted guess couldn't be processed.",
+          error
+        );
         // this.props.history.push("/home");
         return;
       }
@@ -241,7 +253,6 @@ class GameController extends React.Component {
       let solutions = this.state.solutions;
       solutions.push(solution);
 
-      
       this.setState({
         playerScore: {
           score: responseData.tempScore,
@@ -255,9 +266,9 @@ class GameController extends React.Component {
 
       await this.fetchScore();
     } catch (error) {
-
       this.askWhetherToGoBackToHome(
-        "Something went wrong while preparing your guess.",error
+        "Something went wrong while preparing your guess.",
+        error
       );
     }
   }
@@ -268,8 +279,9 @@ class GameController extends React.Component {
         "games/" + this.state.gameId + "/scores/",
         getAuthConfig()
       );
-      // console.log(response.data);
+      //console.log(response.data);
       let responseData = response.data;
+      this.setState({ guessesOfAllPlayers: response.data });
       // TODO: Comment this once BE works
 
       let filtered = response.data.filter((value, index, array) => {
@@ -288,13 +300,15 @@ class GameController extends React.Component {
         };
       });
 
-     
       // console.log(different, responseData);
       this.setState({
         scores: different,
       });
     } catch (error) {
-      this.askWhetherToGoBackToHome("Something went wrong while the game score of all players.",error);
+      this.askWhetherToGoBackToHome(
+        "Something went wrong while the game score of all players.",
+        error
+      );
     }
   }
   //#endregion API Calls
@@ -326,10 +340,9 @@ class GameController extends React.Component {
     this.setState({ pin: null, solution: null });
 
     // Display the inbetween rounds scoreboard
-    if(this.state.currentRound != 3){
-
+    if (this.state.currentRound != 3) {
       // console.log("CURRENTROUND",this.state.currentRound)
-      this.startPrefetch(this.state.currentRound)
+      this.startPrefetch(this.state.currentRound);
     }
     await this.fetchScore();
     this.setState({ showScoreModal: true });
@@ -448,11 +461,11 @@ class GameController extends React.Component {
             playerScore={this.state.playerScore}
             currentRound={this.state.currentRound}
             exitGame={this.exitGame}
-            />
+          />
         </ComponentTransition>
-        
+
         <Component
-            isPlaying={this.state.isPlaying}
+          isPlaying={this.state.isPlaying}
           onHandleDifficulty={this.handleDifficultyFactor}
           questionId={this.state.currentQuestionId}
           round={this.state.currentRound}
@@ -466,9 +479,11 @@ class GameController extends React.Component {
         {this.state.showScoreModal ? (
           <Modal inverted basic open={true} size="small" trigger={null}>
             <ScoreBox
-              color='black'
+              color="black"
               everyOneGuessed={this.state.everyOneGuessed}
               playerScore={this.state.playerScore}
+              guessesOfAllPlayers={this.state.guessesOfAllPlayers}
+              currentRound={this.state.currentRound}
               scores={this.state.scores}
               nextRound={this.nextRound}
               lastRound={this.state.isLastRound}
@@ -483,22 +498,23 @@ class GameController extends React.Component {
           </Modal>
         ) : null}
 
-          <MiniMap
-            state={{
-              center: {
-                lat: 20.907646,
-                lng: -0.848103,
-              },
-              answer: this.state.solution,
-              pin: this.state.pin,
+        <MiniMap
+          state={{
+            center: {
+              lat: 20.907646,
+              lng: -0.848103,
+            },
+            answer: this.state.solution,
+            pin: this.state.pin,
 
-              answers: this.state.solutions,
-              pins: this.state.pins,
-              zoom: 2,
-            }}
-            handleGuessSubmit={this.handleGuessSubmit}
-            pinMarkerOnClick={this.handlePinPlacedOnMap}
-          />
+            answers: this.state.solutions,
+            pins: this.state.pins,
+            zoom: 2,
+            playerIds: this.state.playerIds,
+          }}
+          handleGuessSubmit={this.handleGuessSubmit}
+          pinMarkerOnClick={this.handlePinPlacedOnMap}
+        />
       </div>
     );
   }
@@ -508,17 +524,39 @@ const Component = (props) => {
   const { height, width } = useWindowDimensions();
   let filter = props.gameMode == "Pixelation" ? 10 - props.timer * 0.4 : 0;
   // console.log("Cloud component", props.gameMode)
-  useEffect(()=>{
-    let confetti
-    if (props.everyOneGuessed && props.lastRound){
-
-      const confettiSettings = { target: 'my-canvas' ,"max":"201","size":"1","animate":true,"props":["circle","square","triangle","line",{"type":"svg","src":"site/hat.svg","size":25,"weight":0.2}],"colors":[[165,104,246],[230,61,135],[0,199,228],[253,214,126]],"clock":"50","rotate":true,"width":"1440","height":"793","start_from_edge":false,"respawn":true}
+  useEffect(() => {
+    let confetti;
+    if (props.everyOneGuessed && props.lastRound) {
+      const confettiSettings = {
+        target: "my-canvas",
+        max: "201",
+        size: "1",
+        animate: true,
+        props: [
+          "circle",
+          "square",
+          "triangle",
+          "line",
+          { type: "svg", src: "site/hat.svg", size: 25, weight: 0.2 },
+        ],
+        colors: [
+          [165, 104, 246],
+          [230, 61, 135],
+          [0, 199, 228],
+          [253, 214, 126],
+        ],
+        clock: "50",
+        rotate: true,
+        width: "1440",
+        height: "793",
+        start_from_edge: false,
+        respawn: true,
+      };
       confetti = new ConfettiGenerator(confettiSettings);
       confetti.render();
       return () => confetti.clear();
     }
-   
-  })
+  });
 
   return (
     <div
@@ -537,7 +575,6 @@ const Component = (props) => {
       props.round != -1 &&
       props.questionId != null ? (
         <div>
-   
           <CloudCanvas
             key={props.questionId}
             questionId={props.questionId}
@@ -547,7 +584,7 @@ const Component = (props) => {
             isPlaying={props.isPlaying}
             onHandleDifficulty={props.onHandleDifficulty}
           ></CloudCanvas>
-          </div>
+        </div>
       ) : null}
     </div>
   );

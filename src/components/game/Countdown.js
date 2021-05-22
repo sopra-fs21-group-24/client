@@ -7,7 +7,7 @@ import roundstart from "../../sounds/roundstart.mp3";
 import sheesh from "../../sounds/sheesh.mp3";
 
 const Countdown = (props) => {
-  const { initialMinute = 0, initialSeconds = 5 } = props;
+  const { initialMinute = 0, initialSeconds = 10 } = props;
   const [minutes, setMinutes] = useState(initialMinute);
   const [seconds, setSeconds] = useState(initialSeconds);
   const [playCountdown] = useSound(boop);
@@ -15,13 +15,15 @@ const Countdown = (props) => {
   const [playSheesh] = useSound(sheesh,{ volume: 0.25 });
 
   useEffect(() => {
-    if (seconds == initialSeconds && props.score > 200){
+    if (seconds == initialSeconds && props.score > 450){
       playSheesh()
     }
     let myInterval = setInterval(() => {
       if (seconds > 0) {
         setSeconds(seconds - 1);
-        playCountdown();
+        if(seconds < 5 && seconds > 0) {
+          playCountdown();
+        }
       }
       if (seconds === 0) {
         if (minutes === 0) {
