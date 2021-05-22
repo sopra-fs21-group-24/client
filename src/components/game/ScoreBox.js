@@ -15,6 +15,7 @@ import {
 import { MapElem } from "./MiniMap";
 import Countdown from "./Countdown";
 import { useState, useEffect } from "react";
+import { differentMarkers, hashTable } from "./MiniMap";
 
 const ScoreBox = (props) => {
   const [users, setUsers] = useState(
@@ -30,6 +31,7 @@ const ScoreBox = (props) => {
     "elliot.jpg",
     "matthew.png",
   ];
+
 
   useEffect(() => {
     setUsers(props.scores.sort((a, b) => (a.score > b.score ? -1 : 1)));
@@ -60,6 +62,10 @@ const ScoreBox = (props) => {
                   <Header as="h4">Round: {user.score}</Header>
                 </List.Description>
               </List.Content>
+              <Image
+                floated="left"
+                src={differentMarkers[hashTable.search(user.name)]}
+              />
               <Button floated="right">
                 <List.Description>
                   {" "}
@@ -179,7 +185,7 @@ const ScoreBox = (props) => {
               <Form size="large">
                 <MapElem
                   containerElement={
-                    <div style={{ height: `180px`, width: `100%` }} />
+                    <div style={{ height: `200px`, width: `110%` }} />
                   }
                   mapElement={<div style={{ height: `100%` }} />}
                   center={{
