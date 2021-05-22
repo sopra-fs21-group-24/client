@@ -15,6 +15,7 @@ import {
   Container
 } from "semantic-ui-react";
 import User from "../shared/models/User";
+import swal from 'sweetalert';
 
 const FormContainer = styled.div`
   margin-top: 2em;
@@ -58,9 +59,7 @@ class Login extends React.Component {
 
       this.navigateToHomePage()
     } catch (error) {
-      if (window.confirm("Something went wrong during the login process. Would you like to know more about the error?")){
-        alert(`Error Details: ${handleUserFriendlyError(error)}`)
-      }
+      swal("Username or password incorrect","","error");
     }
   }
 

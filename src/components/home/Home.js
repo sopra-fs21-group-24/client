@@ -17,6 +17,7 @@ import {
   useWindowDimensions,
 } from "../shared/models/WindowSize";
 import styled from "styled-components";
+import swal from "sweetalert";
 
 const adsEnabled = false;
 
@@ -276,9 +277,6 @@ class Home extends React.Component {
       };
       this.setState({ user: response.data, userScore: userScore });
     } catch (error) {
-      // alert(
-      //   "While getting your user data we came across an error, you will be logged out and navigate to the landing page!"
-      // );
       this.logout();
     }
   }
@@ -302,9 +300,7 @@ class Home extends React.Component {
       this.getUser();
     } catch (error) {
       
-      if (window.confirm("Something went wrong while updating your user. Would you like to know more about the error?")){
-        alert(`Error Details: ${handleError(error)}`)
-      }
+      swal("Something went wrong while updating your user","Maybe the username is already taken","error")
     
     }
   }
