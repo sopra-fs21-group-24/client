@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { api, handleError, handleUserFriendlyError } from "../../helpers/api";
 import { BaseContainer } from "../../helpers/layout";
 import User from "../shared/models/User";
-
+import swal from 'sweetalert';
 
 const FormContainer = styled.div`
   margin-top: 2em;
@@ -50,12 +50,11 @@ class Register extends React.Component {
       // After successful registration
       this.navigateToHomePage();
     } catch (error) {
-      if (window.confirm("Something went wrong during the register process. Would you like to know more about the error?")){
-        alert(`Error Details: ${handleUserFriendlyError(error)}`)
+        swal("Username already Taken","","error");
       }
      
     }
-  }
+  
 
   navigateToLoginPage() {
     this.props.change();

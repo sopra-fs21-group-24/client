@@ -51,6 +51,7 @@ const Leaderboard = (props) => {
           </Menu>
           <List animated verticalAlign="middle">
             {users.map((user)=>{
+
               count++;
               return (
                 <List.Item>

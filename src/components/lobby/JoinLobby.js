@@ -19,6 +19,7 @@ import {
 import { getWindowDimensions } from "../shared/models/WindowSize";
 import "../../views/design/joinlobby.css";
 import { motion } from "framer-motion";
+import swal from 'sweetalert';
 
 class JoinLobby extends React.Component {
   constructor() {
@@ -42,15 +43,10 @@ class JoinLobby extends React.Component {
         });
         this.setState({ lobbies: response.data });
         // console.log(this.state.lobbies);
-      } catch (error) {
-        if (window.confirm("Something went wrong when fetching all public lobbies. Would you like to know more about the error?")){
-          
+      } catch (error) {        
           if(window.confirm(`Would you like to go back to the homescreen? Error Details: ${handleError(error)}.`)){
             return this.props.history.push(`/home`);
           }
-          
-        }
-        
       }
       await new Promise((resolve) => setTimeout(resolve, 100));
       this.setState({ init: false });
@@ -102,11 +98,9 @@ class JoinLobby extends React.Component {
 
       this.props.history.push(`/lobby`);
     } catch (error) {
-      if (window.confirm("Something went wrong when joining this lobby. Would you like to know more about the error?")){
-        alert(`Error Details: ${handleError(error)}`)
+        alert("there was an error joining the lobby")
       }
     }
-  };
 
   handleInputChange(key, value) {
     this.setState({
