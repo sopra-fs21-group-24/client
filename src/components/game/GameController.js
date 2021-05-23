@@ -477,7 +477,7 @@ class GameController extends React.Component {
         />
 
         {this.state.showScoreModal ? (
-          <Modal inverted basic open={true} size="small" trigger={null}>
+          <Modal inverted basic open={true} size="large" trigger={null}>
             <ScoreBox
               color="black"
               everyOneGuessed={this.state.everyOneGuessed}

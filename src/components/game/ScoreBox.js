@@ -32,7 +32,6 @@ const ScoreBox = (props) => {
     "matthew.png",
   ];
 
-
   useEffect(() => {
     setUsers(props.scores.sort((a, b) => (a.score > b.score ? -1 : 1)));
 
@@ -44,7 +43,7 @@ const ScoreBox = (props) => {
 
   const PlayerList = () => {
     return (
-      <List divided verticalAlign="middle">
+      <List divided verticalAlign="middle" style={{ textAlign: "left" }}>
         {users.map((user) => {
           return (
             <List.Item>
@@ -62,16 +61,19 @@ const ScoreBox = (props) => {
                   <Header as="h4">Round: {user.score}</Header>
                 </List.Description>
               </List.Content>
-              <Image
-                floated="left"
-                src={differentMarkers[hashTable.search(user.name)]}
-              />
-              <Button floated="right">
-                <List.Description>
-                  {" "}
-                  <Header as="h3">Total: {user.totalScore}</Header>
-                </List.Description>
-              </Button>
+
+              <List.Content floated="right">
+                <Image
+                  floated="left"
+                  src={differentMarkers[hashTable.search(user.name)]}
+                />
+                <Button floated="right" style={{ maxWidth: "140px" }}>
+                  <List.Description>
+                    {" "}
+                    <Header as="h3">Total: {user.totalScore}</Header>
+                  </List.Description>
+                </Button>
+              </List.Content>
             </List.Item>
           );
         })}
@@ -175,17 +177,17 @@ const ScoreBox = (props) => {
 
         <Grid columns={2} stackable textAlign="center">
           <Grid.Row verticalAlign="middle">
-            <Grid.Column style={{ maxWidth: 450 }}>
+            <Grid.Column style={{ maxWidth: 600 }}>
               <Form size="large">
                 <PlayerList />
               </Form>
             </Grid.Column>
 
-            <Grid.Column style={{ maxWidth: 300 }}>
+            <Grid.Column style={{ maxWidth: 450, marginLeft: "20px" }}>
               <Form size="large">
                 <MapElem
                   containerElement={
-                    <div style={{ height: `200px`, width: `110%` }} />
+                    <div style={{ height: `200px`, width: `100%` }} />
                   }
                   mapElement={<div style={{ height: `100%` }} />}
                   center={{
