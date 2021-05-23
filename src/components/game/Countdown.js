@@ -15,7 +15,7 @@ const Countdown = (props) => {
   const [playSheesh] = useSound(sheesh,{ volume: 0.25 });
 
   useEffect(() => {
-    if (seconds == initialSeconds && props.score > 475){
+    if (seconds == initialSeconds && props.score > 450){
       playSheesh()
     }
     let myInterval = setInterval(() => {
