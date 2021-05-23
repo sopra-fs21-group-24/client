@@ -210,13 +210,7 @@ class Lobby extends React.Component {
         localStorage.removeItem("gameId");
         localStorage.setItem("gameId", this.state.gameId);
       } catch (error) {
-        if (
-          window.confirm(
-            "Something went wrong when trying to fetch your lobby. Would you like to know more about the error?"
-          )
-        ) {
-          alert(`Error Details: ${handleError(error)}`);
-        }
+        console.log(`Error Details: ${handleError(error)}`);
       }
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
