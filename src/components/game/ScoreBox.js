@@ -67,7 +67,7 @@ const ScoreBox = (props) => {
                   floated="left"
                   src={differentMarkers[hashTable.search(user.name)]}
                 />
-                <Button floated="right" style={{ maxWidth: "140px" }}>
+                <Button floated="right" style={{ width: "140px" }}>
                   <List.Description>
                     {" "}
                     <Header as="h3">Total: {user.totalScore}</Header>
