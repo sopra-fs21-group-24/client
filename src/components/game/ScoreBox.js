@@ -11,6 +11,7 @@ import {
   Progress,
   Segment,
 } from "semantic-ui-react";
+import ConfettiGenerator from "confetti-js";
 
 import { MapElem } from "./MiniMap";
 import Countdown from "./Countdown";
@@ -34,7 +35,46 @@ const ScoreBox = (props) => {
 
   useEffect(() => {
     setUsers(props.scores.sort((a, b) => (a.score > b.score ? -1 : 1)));
+    let confetti;
+    let lastGameModeScore;
+    if (props.gameMode == "Pixelation"){
+      lastGameModeScore = localStorage.getItem("pixelationScore")
+    } else if (props.gameMode == "Clouds"){
+      lastGameModeScore = localStorage.getItem("cloudsScore")
+    } else {
+      lastGameModeScore = localStorage.getItem("timeScore")
+    }
 
+    if (props.everyOneGuessed && props.lastRound && props.playerScore.totalScore > lastGameModeScore) {
+      const confettiSettings = {
+        target: "my-canvas",
+        max: "201",
+        size: "1",
+        animate: true,
+        props: [
+          "circle",
+          "square",
+          "triangle",
+          "line",
+          { type: "svg", src: "site/hat.svg", size: 25, weight: 0.2 },
+        ],
+        colors: [
+          [165, 104, 246],
+          [230, 61, 135],
+          [0, 199, 228],
+          [253, 214, 126],
+        ],
+        clock: "50",
+        rotate: true,
+        width: "1440",
+        height: "793",
+        start_from_edge: false,
+        respawn: true,
+      };
+      confetti = new ConfettiGenerator(confettiSettings);
+      confetti.render();
+      return () => confetti.clear();
+    }
     return () => {
       setUsers([]);
       // confetti.clear();
@@ -43,6 +83,7 @@ const ScoreBox = (props) => {
 
   const PlayerList = () => {
     return (
+      
       <List divided verticalAlign="middle" style={{ textAlign: "left" }}>
         {users.map((user) => {
           return (
@@ -169,6 +210,7 @@ const ScoreBox = (props) => {
   //SCORE = NULL
   return (
     <div style={{ height: "100%", width: "100%" }}>
+      <canvas style={{zIndex: 3, position: "absolute", top:"0px", left: "0px", width: "100%", height: "100%", pointerEvents: "none"}} id="my-canvas"></canvas>
       <Segment placeholder raised>
         <Header as="h2" color="teal" textAlign="center">
           <Divider horizontal></Divider>
