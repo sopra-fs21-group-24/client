@@ -80,16 +80,13 @@ class GameController extends React.Component {
     await this.startRound(this.state.currentRound);
   }
   async startPrefetch(currentRound) {
-    // console.log("Prefetching for round" + (currentRound+1) + " currently" + currentRound)
     let upcomingRound = currentRound + 1;
-
-    let questionIndex = upcomingRound - 1;
-    let currentQuestionId = this.state.questions[questionIndex];
-    // console.log(questionIndex, currentQuestionId, "DATAAA");
-    let imagedata = await this.getQuestion(currentQuestionId);
+    let nextquestionIndex = upcomingRound - 1;
+    let nextQuestionId = this.state.questions[nextquestionIndex];
+    let preFetchedImageData = await this.getQuestion(nextQuestionId);
     this.setState({
-      nextImageData: imagedata,
-      nextQuestionId: currentQuestionId,
+      nextImageData: preFetchedImageData,
+      nextQuestionId: nextQuestionId,
     });
   }
   async startRound(currentRound) {
@@ -480,6 +477,7 @@ class GameController extends React.Component {
           <Modal inverted basic open={true} size="large" trigger={null}>
             <ScoreBox
               color="black"
+              gameMode={this.state.gameMode}
               everyOneGuessed={this.state.everyOneGuessed}
               playerScore={this.state.playerScore}
               guessesOfAllPlayers={this.state.guessesOfAllPlayers}
@@ -523,41 +521,7 @@ class GameController extends React.Component {
 const Component = (props) => {
   const { height, width } = useWindowDimensions();
   let filter = props.gameMode == "Pixelation" ? 10 - props.timer * 0.4 : 0;
-  // console.log("Cloud component", props.gameMode)
-  useEffect(() => {
-    let confetti;
-    if (props.everyOneGuessed && props.lastRound) {
-      const confettiSettings = {
-        target: "my-canvas",
-        max: "201",
-        size: "1",
-        animate: true,
-        props: [
-          "circle",
-          "square",
-          "triangle",
-          "line",
-          { type: "svg", src: "site/hat.svg", size: 25, weight: 0.2 },
-        ],
-        colors: [
-          [165, 104, 246],
-          [230, 61, 135],
-          [0, 199, 228],
-          [253, 214, 126],
-        ],
-        clock: "50",
-        rotate: true,
-        width: "1440",
-        height: "793",
-        start_from_edge: false,
-        respawn: true,
-      };
-      confetti = new ConfettiGenerator(confettiSettings);
-      confetti.render();
-      return () => confetti.clear();
-    }
-  });
-
+ 
   return (
     <div
       style={{
@@ -570,7 +534,7 @@ const Component = (props) => {
         overflow: "hidden",
       }}
     >
-      <canvas id="my-canvas"></canvas>
+      
       {props.gameMode == "Clouds" &&
       props.round != -1 &&
       props.questionId != null ? (
@@ -586,6 +550,8 @@ const Component = (props) => {
           ></CloudCanvas>
         </div>
       ) : null}
+
+      {/* <canvas style={{zIndex:100}} id="my-canvas"></canvas> */}
     </div>
   );
 };
