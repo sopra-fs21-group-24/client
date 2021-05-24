@@ -25,7 +25,7 @@ Data & Reports regarding the project: [Data Repository](https://github.com/sopra
 - [Illustrations](#illustrations)
 - [Roadmap](#roadmap)
     - [Question Type Selection Module](#question-type-selection-module)
-    - [Tinting of Satellite Image](####tinting-of-satellite-image)
+    - [Tinting of Satellite Image](#tinting-of-satellite-image)
 - [Authors and acknowledgment](#authors-and-acknowledgment)
 - [License](#license)
 # Technologies
