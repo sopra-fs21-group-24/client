@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Dropdown, Header, Menu, Popup } from "semantic-ui-react";
 import styled from "styled-components";
-import ProfileModal from "../components/profile/Profile";
+import ProfileModal from "../components/home/profile/Profile";
 
 const BigContainer = styled.div`
   height: 50px;

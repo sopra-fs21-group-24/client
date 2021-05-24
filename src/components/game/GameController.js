@@ -12,16 +12,13 @@ import {
   getWindowDimensions,
   useWindowDimensions,
 } from "../shared/models/WindowSize";
-import GameHeader from "./GameHeader";
-// import { key } from "./key";
-import MiniMap from "./MiniMap";
-import ScoreBox from "./ScoreBox";
+import GameHeader from "./header/GameHeader";
+import MiniMap from "./miniMap/MiniMap";
+import ScoreBox from "./score/ScoreBox";
 import { useState } from "react";
-import CloudSVGFilter from "./CloudSVGFilter";
-import CloudDisplay from "./CloudDisplay";
-import CloudCanvas from "./CloudCanvas";
+import CloudCanvas from "./clouds/CloudCanvas";
 import useSound from "use-sound";
-// import {useWindowDimensions} from '../shared/models/GeoMath';
+
 
 class GameController extends React.Component {
   constructor(props) {
@@ -56,10 +53,7 @@ class GameController extends React.Component {
       isLastRound: false,
     };
     let id = localStorage.getItem("gameId");
-    this.setState({ gameId: id });
-
-    // console.log("Starting up Game with GameId", id);
-    // console.log(this.state.gameId);
+    this.setState({ gameId: id })
 
     // Mini Map Method Binding
     this.handleGuessSubmit = this.handleGuessSubmit.bind(this);

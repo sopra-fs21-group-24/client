@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import CloudDisplay from "./CloudDisplay";
+// import CloudDisplay from "./CloudDisplay";
 import CloudModel from "./CloudModel";
 import CloudSVGFilter from "./CloudSVGFilter";
 
