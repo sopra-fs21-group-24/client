@@ -4,7 +4,7 @@
 <img width=30%" src="https://github.com/sopra-fs21-group-24/client/blob/master/public/logo.png" />
 </p>
 
-## Introduction
+# Introduction
 We created a game similair to [GeoGuessr](https://www.geoguessr.com/). The players will be randomly placed somewhere on Google maps (for example: a country, a city or a monumental place like the eiffel tower). At the beginning of the game the map won't be visible and there are some clouds over the map. The goal of the player is to brush away as little as possible of the clouds to recognize the place he is located in. The player will give his answer by placing a pin on a map that is displayed on the lower left side of the screen. The scoring will be based on points. Depending on the game mode points are computed by time, accuracy of guess and amount of clouds brushed away.
 
 
@@ -14,21 +14,21 @@ Associated Back End repository can be found here: [Server Repository](https://gi
 
 Data & Reports regarding the project: [Data Repository](https://github.com/sopra-fs21-group-24/data)
 
-- [Technologies](##Technologies)
-- [High-level components](##High-level-components)
+- [Technologies](#technologies)
+- [High-level components](#high-level-components)
     - [Authentication](####Authentication)
     - [Launch](####Launch)
     - [Home](####Home)
     - [Lobby](####Lobby)
     - [Game](####Game)
-- [Launch & Deployment](##Launch-&-Deployment)
-- [Illustrations](##Illustrations)
-- [Roadmap](##Roadmap)
+- [Launch & Deployment](#launch-&-deployment)
+- [Illustrations](#illustrations)
+- [Roadmap](#roadmap)
     - [Question Type Selection Module](####Question-Type-Selection-Module)
     - [Tinting of Satellite Image](####Tinting-of-Satellite-Image)
-- [Authors and acknowledgment](##Authors-and-acknowledgment)
-- [License](##License)
-## Technologies
+- [Authors and acknowledgment](#authors-and-acknowledgment)
+- [License](#license)
+# Technologies
 Our geography-game is a node application running React JS with Javascript. For our UI components we used semantic react. The remaining dependencies are rather small and serve just very niche purposes that accelerated our dev process (Playing Sounds/ Alerts / Animations).
 <p float="left">
 <img width="100" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/react/react.png" />
@@ -36,7 +36,7 @@ Our geography-game is a node application running React JS with Javascript. For o
 <img width="100" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/javascript/javascript.png"/>
 </p>
 
-## High-level components
+# High-level components
 Besides the general react project structure our application can be split into 5 different parts:
 * Authentication
 * Launch
@@ -45,7 +45,7 @@ Besides the general react project structure our application can be split into 5 
 * Game
 
 #### Authentication
-Authentication contains login and register components used to facilitate the entire login/register process for our application and they are implemented on the [Launch Screen](####Launch)
+Authentication contains login and register components used to facilitate the entire login/register process for our application and they are implemented on the Launch Screen.
 
 [Code: Authentication Module](https://github.com/sopra-fs21-group-24/client/tree/master/src/components/authentication)
 
@@ -65,7 +65,7 @@ The game screen is the most compley of all our components as it handles most of 
 
 [Code: Game Module](https://github.com/sopra-fs21-group-24/client/blob/master/src/components/game/GameController.js)
 
-## Launch & Deployment
+# Launch & Deployment
 We require latest node & react for bugfree running of our application (Date: June 2021).
 
 To get all the required dependecies needed for our application:
@@ -91,19 +91,19 @@ Our application requires a running BE. You can find our BE repo and installation
 
 To repoint the FE requests to a url of your liking (local/external URL) edit the [getDomain.js](https://github.com/sopra-fs21-group-24/client/blob/master/src/helpers/getDomain.js) File.
 
-## Illustrations
+# Illustrations
 #TODO:-------
 //TODO: add screenshots and some text store screenshots in public folder
 _Illustrations: In your client repository, briefly describe and illustrate the main user flow(s) of your interface. How does it work (without going into too much detail)? Feel free to include a few screenshots of your application._
 
-## Roadmap
+# Roadmap
 For the following two features help would be very much appreciated.
 #### Question Type Selection Module
 A component similair to the gameMode/userMode selection that lets the user select if they only want questions from places in **Switzerland**, **Europe** or **Worldwide**.
 
 #### Tinting of Satellite Image
 A gimmick to add would be red tinting the satelitte image more and more in the last 10s of each round, fo added game tension.
-## Authors and acknowledgment
+# Authors and acknowledgment
 This project was started using the following back end [template](https://github.com/HASEL-UZH/sopra-fs21-template-server) provided by the University of Zurich.
 #### Team Members
 * Claudio Gebbia - [@claudioge](https://github.com/claudioge)
@@ -111,5 +111,5 @@ This project was started using the following back end [template](https://github.
 * Hoàng Ben Lê Giang - [@benlegiang](https://github.com/benlegiang)
 * David Diener - [@Dave5252](https://github.com/Dave5252)
 * Philip Giryes - [@Pieli](https://github.com/Pieli)
-## License
+# License
 This project is licensed under the MIT license. Check out the License text [here](https://github.com/sopra-fs21-group-24/client/blob/master/LICENSE).
