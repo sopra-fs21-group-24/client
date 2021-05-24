@@ -2,8 +2,8 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import { Button, Modal } from "semantic-ui-react";
 import styled from "styled-components";
-import Login from "../login/Login";
-import Register from "../register/Register";
+import Login from "../authentication/login/Login";
+import Register from "../authentication/register/Register";
 import { getWindowDimensions } from "../shared/models/WindowSize";
 
 const Title = styled.h1`

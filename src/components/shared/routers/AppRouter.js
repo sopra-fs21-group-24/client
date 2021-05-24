@@ -4,8 +4,8 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 // import Game from "../../game/Game"
 import GameController from "../../game/GameController";
 import Launch from "../../launch/Launch";
-import Login from "../../login/Login";
-import Register from "../../register/Register";
+import Login from "../../authentication/login/Login";
+import Register from "../../authentication/register/Register";
 import { GameGuard } from "../routeProtectors/GameGuard";
 import { HomeGuard } from "../routeProtectors/HomeGuard";
 import { LobbyGuard } from "../routeProtectors/LobbyGuard";
@@ -14,24 +14,11 @@ import HomeRouter from "./HomeRouter";
 import LobbyRouter from "./LobbyRouter";
 import { api, getAuthConfig, handleError } from "../../../helpers/api";
 
-// import {GamepageGuard} from "../routeProtectors/GamepageGuard";
-// import GamepageRouter from "./GamepageRouter";
-/**
- * Main router of your application.
- * In the following class, different routes are rendered. In our case, there is a Login Route with matches the path "/login"
- * and another Router that matches the route "/home".
- * The main difference between these two routes is the following:
- * /login renders another component without any sub-route
- * /home renders a Router that contains other sub-routes that render in turn other react components
- * Documentation about routing in React: https://reacttraining.com/react-router/web/guides/quick-start
- */
+
 class AppRouter extends React.Component {
 
   constructor(){
     super();
-  
-
-   
   }
 
   async getUser(){

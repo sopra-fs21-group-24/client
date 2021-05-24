@@ -15,14 +15,31 @@ Associated Back End repository can be found here: [Server Repository](https://gi
 Data & Reports regarding the project: [Data Repository](https://github.com/sopra-fs21-group-24/data)
 
 ## Technologies
+Our geography-game is a node application running React JS with Javascript. For our UI components we used semantic react. The remaining dependencies are rather small and serve just very niche purposes that accelerated our dev process (Playing Sounds/ Alerts / Animations).
+<p float="left">
+<img width="100" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/react/react.png" />
 
-_used (short)_
-
-<img height="100px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/react/react.png"></img>
-
-<img height="100px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/javascript/javascript.png"></img>
+<img width="100" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/javascript/javascript.png"/>
+</p>
 
 ## High-level components
+Besides the general react project structure our application can be split into 5 different parts:
+* Authentication
+* Launch Screen
+* Home Screen
+* Lobby Screens
+* Game Screen
+
+#### Authentication
+Authentication contains login and register components used to facilitate the entire login/register process for our application and they are implemented on the [Launch Screen]()
+
+[]()
+
+#### Launch Screen
+#### Home Screen
+#### Game Screen
+
+
 
 _High-level components: Identify your project’s 3-5 main components. What is their role?
 How are they correlated? Reference the main class, file, or function in the README text

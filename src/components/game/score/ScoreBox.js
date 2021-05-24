@@ -13,10 +13,10 @@ import {
 } from "semantic-ui-react";
 import ConfettiGenerator from "confetti-js";
 
-import { MapElem } from "./MiniMap";
-import Countdown from "./Countdown";
+import { MapElem } from "../miniMap/MiniMap";
+import Countdown from "../header/Countdown";
 import { useState, useEffect } from "react";
-import { differentMarkers, hashTable } from "./MiniMap";
+import { differentMarkers, hashTable } from "../miniMap/MiniMap";
 
 const ScoreBox = (props) => {
   const [users, setUsers] = useState(
