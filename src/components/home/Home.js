@@ -166,7 +166,7 @@ class Home extends React.Component {
   };
 
   async componentDidMount() {
-    this.refs.player.playbackRate = 0.5
+    this.refs.player.playbackRate = 0.9
     this.getUser();
   }
 
