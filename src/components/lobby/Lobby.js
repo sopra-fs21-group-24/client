@@ -109,7 +109,6 @@ class Lobby extends React.Component {
 
     const requestBody = JSON.stringify({
       userId: localStorage.getItem("currentUserId"),
-      usermode: "Multiplayer",
       gamemode: this.state.selectedGamemode,
       publicStatus: this.state.isLobbyPublic,
     });
