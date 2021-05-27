@@ -75,9 +75,7 @@ class JoinLobby extends React.Component {
 
       this.props.history.push(`/lobby`);
     } catch (error) {
-      if (window.confirm("Something went wrong when joining this lobby with your roomkey. Would you like to know more about the error?")){
-        alert(`Error Details: ${handleError(error)}`)
-      }
+      swal("Something went wrong when joining this lobby with your roomkey","","error");
     }
   };
 
@@ -98,7 +96,7 @@ class JoinLobby extends React.Component {
 
       this.props.history.push(`/lobby`);
     } catch (error) {
-        alert("there was an error joining the lobby")
+        swal("there was an error joining the lobby","","error");
       }
     }
 
