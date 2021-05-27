@@ -42,7 +42,6 @@ class JoinLobby extends React.Component {
           },
         });
         this.setState({ lobbies: response.data });
-        // console.log(this.state.lobbies);
       } catch (error) {        
           if(window.confirm(`Would you like to go back to the homescreen? Error Details: ${handleError(error)}.`)){
             return this.props.history.push(`/home`);
@@ -54,7 +53,6 @@ class JoinLobby extends React.Component {
   }
 
   componentWillUnmount() {
-    // console.log("unmounting");
     this.mounted = false;
   }
 
@@ -136,7 +134,6 @@ class JoinLobby extends React.Component {
         <Modal
           className="ui fullscreen modal"
           basic
-          dimmer="blurring"
           open={true}
         >
           <Modal.Content>
@@ -186,7 +183,7 @@ class JoinLobby extends React.Component {
                                       {this.displayGamemode(lobby)}
                                       {lobby.gameMode}
                                     </Table.Cell>
-                                    <Table.Cell>{lobby.users}/4</Table.Cell>
+                                    <Table.Cell>{lobby.users}/3</Table.Cell>
                                   </Table.Row>
                                 );
                               })}

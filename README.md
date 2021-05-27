@@ -114,7 +114,7 @@ This is what you see during the game. You can place your guess on the minimap on
 <p align="center">
 <img width=60%" src="https://github.com/sopra-fs21-group-24/client/blob/master/public/ScoreScreen.png" />
 </p>
-After Submiting a guess you'll be navigated to the Score Screen. Here you can see your current score aswell as the distance between your guess and the solution.
+After Submiting a guess you'll be navigated to the Score Screen. Here you can see your current score aswell as the distance between your guess and the solution. After 10 seconds the next round starts.
 
 # Roadmap
 For the following two features help would be very much appreciated.
