@@ -92,8 +92,17 @@ Our application requires a running BE. You can find our BE repo and installation
 To repoint the FE requests to a url of your liking (local/external URL) edit the [getDomain.js](https://github.com/sopra-fs21-group-24/client/blob/master/src/helpers/getDomain.js) File.
 
 # Illustrations
-#TODO:-------
-//TODO: add screenshots and some text store screenshots in public folder
+<p align="center">
+<img width=30%" src="https://github.com/sopra-fs21-group-24/client/blob/master/public/HomeScreen.png" />
+</p>
+
+<p align="center">
+<img width=30%" src="https://github.com/sopra-fs21-group-24/client/blob/master/public/LobbyScreen.png" />
+</p>
+
+<p align="center">
+<img width=30%" src="https://github.com/sopra-fs21-group-24/client/blob/master/public/InGame.png" />
+</p>
 _Illustrations: In your client repository, briefly describe and illustrate the main user flow(s) of your interface. How does it work (without going into too much detail)? Feel free to include a few screenshots of your application._
 
 # Roadmap
