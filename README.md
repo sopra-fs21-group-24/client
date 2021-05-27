@@ -92,18 +92,24 @@ Our application requires a running BE. You can find our BE repo and installation
 To repoint the FE requests to a url of your liking (local/external URL) edit the [getDomain.js](https://github.com/sopra-fs21-group-24/client/blob/master/src/helpers/getDomain.js) File.
 
 # Illustrations
+#### Home
 <p align="center">
-<img width=30%" src="https://github.com/sopra-fs21-group-24/client/blob/master/public/HomeScreen.png" />
+<img width=60%" src="https://github.com/sopra-fs21-group-24/client/blob/master/public/HomeScreen.png" />
 </p>
+On the Application's Home Screen you can see the current leaderboard of all the Gamemodes. From here you can choose to start a Single- or Multiplayer Game.
 
+#### Lobby Screen
 <p align="center">
-<img width=30%" src="https://github.com/sopra-fs21-group-24/client/blob/master/public/LobbyScreen.png" />
+<img width=60%" src="https://github.com/sopra-fs21-group-24/client/blob/master/public/LobbyScreen.png" />
 </p>
+If you choose to join a Lobby you will see this lobby screen 
 
+#### In Game Screen
 <p align="center">
-<img width=30%" src="https://github.com/sopra-fs21-group-24/client/blob/master/public/InGame.png" />
+<img width=60%" src="https://github.com/sopra-fs21-group-24/client/blob/master/public/InGame.png" />
 </p>
-_Illustrations: In your client repository, briefly describe and illustrate the main user flow(s) of your interface. How does it work (without going into too much detail)? Feel free to include a few screenshots of your application._
+This is what you see during the game. You can place your guess on the minimap on the bottom right. In the header you see the most important stats about the current round.
+
 
 # Roadmap
 For the following two features help would be very much appreciated.
