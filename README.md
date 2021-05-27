@@ -4,7 +4,7 @@
 <img width=30%" src="https://github.com/sopra-fs21-group-24/client/blob/master/public/logo.png" />
 </p>
 
-## Introduction
+# Introduction
 We created a game similair to [GeoGuessr](https://www.geoguessr.com/). The players will be randomly placed somewhere on Google maps (for example: a country, a city or a monumental place like the eiffel tower). At the beginning of the game the map won't be visible and there are some clouds over the map. The goal of the player is to brush away as little as possible of the clouds to recognize the place he is located in. The player will give his answer by placing a pin on a map that is displayed on the lower left side of the screen. The scoring will be based on points. Depending on the game mode points are computed by time, accuracy of guess and amount of clouds brushed away.
 
 
@@ -14,37 +14,96 @@ Associated Back End repository can be found here: [Server Repository](https://gi
 
 Data & Reports regarding the project: [Data Repository](https://github.com/sopra-fs21-group-24/data)
 
-## Technologies
+- [Technologies](#technologies)
+- [High-level components](#high-level-components)
+    - [Authentication](#authentication)
+    - [Launch](#launch)
+    - [Home](#home)
+    - [Lobby](#lobby)
+    - [Game](#game)
+- [Launch & Deployment](#launch-&-deployment)
+- [Illustrations](#illustrations)
+- [Roadmap](#roadmap)
+    - [Question Type Selection Module](#question-type-selection-module)
+    - [Tinting of Satellite Image](#tinting-of-satellite-image)
+- [Authors and acknowledgment](#authors-and-acknowledgment)
+- [License](#license)
+# Technologies
+Our geography-game is a node application running React JS with Javascript. For our UI components we used semantic react. The remaining dependencies are rather small and serve just very niche purposes that accelerated our dev process (Playing Sounds/ Alerts / Animations).
+<p float="left">
+<img width="100" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/react/react.png" />
 
-_used (short)_
+<img width="100" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/javascript/javascript.png"/>
+</p>
 
-<img height="100px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/react/react.png"></img>
+# High-level components
+Besides the general react project structure our application can be split into 5 different parts:
+* Authentication
+* Launch
+* Home
+* Lobby
+* Game
 
-<img height="100px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/javascript/javascript.png"></img>
+#### Authentication
+Authentication contains login and register components used to facilitate the entire login/register process for our application and they are implemented on the Launch Screen.
 
-## High-level components
+[Code: Authentication Module](https://github.com/sopra-fs21-group-24/client/tree/master/src/components/authentication)
 
-_High-level components: Identify your project’s 3-5 main components. What is their role?
-How are they correlated? Reference the main class, file, or function in the README text
-with a link._
-TODO: insert a graphic
+#### Launch
+The Launch Screen is the first page a user lands on when navigating to our app. It displays a nice background video and allows the user to register or login.
 
-## Launch & Deployment
+[Code: Launch Module](https://github.com/sopra-fs21-group-24/client/blob/master/src/components/launch/Launch.js)
+#### Home
+The home screen has many responsibilities. It cycles in a lot of component leading up to the start of a game. The selection of the usermode/gamemode, updating ones profile, logging out and displaying a scoreboard of all user highscores for the different game modes.
+[Code: Home Module](https://github.com/sopra-fs21-group-24/client/blob/master/src/components/home/Home.js)
 
-_Launch & Deployment: Write down the steps a new developer joining your team would
-have to take to get started with your application. What commands are required to build and run your project locally? How can they run the tests? Do you have external dependencies or a database that needs to be running? How can they do releases?_
+#### Lobby
+The lobby screens module consists of two major components, a screen and associated react components to join a lobby and the lobby screen itself for waiting till the game start.
+[Code: Lobby Module](https://github.com/sopra-fs21-group-24/client/tree/master/src/components/lobby)
+#### Game
+The game screen is the most compley of all our components as it handles most of the FE gamelogic, displaying of satellite-imagery, interactive map for dropping pins, displaying of scores, playing sound-effects and manipulating the satellite image (clouds / pixelation).
 
-## Illustrations
+[Code: Game Module](https://github.com/sopra-fs21-group-24/client/blob/master/src/components/game/GameController.js)
 
+# Launch & Deployment
+We require latest node & react for bugfree running of our application (Date: June 2021).
+
+To get all the required dependecies needed for our application:
+```sh
+npm install
+```
+For hot reloading and running our application:
+```sh
+npm run dev
+```
+For building a "compiled" version of our application run:
+```sh
+npm run build
+```
+
+For running a "compiled" version of our application:
+```sh
+npm run start
+```
+
+### Connecting to BE
+Our application requires a running BE. You can find our BE repo and installation guide [here](https://github.com/sopra-fs21-group-24/server).
+
+To repoint the FE requests to a url of your liking (local/external URL) edit the [getDomain.js](https://github.com/sopra-fs21-group-24/client/blob/master/src/helpers/getDomain.js) File.
+
+# Illustrations
+#TODO:-------
+//TODO: add screenshots and some text store screenshots in public folder
 _Illustrations: In your client repository, briefly describe and illustrate the main user flow(s) of your interface. How does it work (without going into too much detail)? Feel free to include a few screenshots of your application._
 
-## Roadmap
+# Roadmap
+For the following two features help would be very much appreciated.
+#### Question Type Selection Module
+A component similair to the gameMode/userMode selection that lets the user select if they only want questions from places in **Switzerland**, **Europe** or **Worldwide**.
 
-\*Roadmap: The top 2-3 features that new developers who want to contribute to your project could add
-
--
-
-## Authors and acknowledgment
+#### Tinting of Satellite Image
+A gimmick to add would be red tinting the satelitte image more and more in the last 10s of each round, fo added game tension.
+# Authors and acknowledgment
 This project was started using the following back end [template](https://github.com/HASEL-UZH/sopra-fs21-template-server) provided by the University of Zurich.
 #### Team Members
 * Claudio Gebbia - [@claudioge](https://github.com/claudioge)
@@ -52,5 +111,5 @@ This project was started using the following back end [template](https://github.
 * Hoàng Ben Lê Giang - [@benlegiang](https://github.com/benlegiang)
 * David Diener - [@Dave5252](https://github.com/Dave5252)
 * Philip Giryes - [@Pieli](https://github.com/Pieli)
-## License
+# License
 This project is licensed under the MIT license. Check out the License text [here](https://github.com/sopra-fs21-group-24/client/blob/master/LICENSE).

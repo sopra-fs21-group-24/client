@@ -1,10 +1,20 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { Button, Form, Input,Grid,Segment,Header } from "semantic-ui-react";
 import styled from "styled-components";
-import { api, handleError, handleUserFriendlyError } from "../../helpers/api";
-import { BaseContainer } from "../../helpers/layout";
-import User from "../shared/models/User";
+import { api, handleError, handleUserFriendlyError } from "../../../helpers/api";
+import { BaseContainer } from "../../../helpers/layout";
+import {
+  Button,
+
+  Form,
+
+  Header,
+
+  Segment,
+  Input,
+  Container
+} from "semantic-ui-react";
+import User from "../../shared/models/User";
 import swal from 'sweetalert';
 
 const FormContainer = styled.div`
@@ -15,30 +25,30 @@ const FormContainer = styled.div`
   justify-content: center;
 `;
 
-
-
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 20px;
 `;
 
-class Register extends React.Component {
+
+class Login extends React.Component {
   constructor() {
     super();
     this.state = {
-      password: null,
       username: null,
+      password: null,
     };
   }
-  async register() {
-    const requestBody = JSON.stringify({
-      username: this.state.username,
-      password: this.state.password,
-    });
 
+  async login() {
     try {
-      let response = await api.post("/register", requestBody);
+      const requestBody = JSON.stringify({
+        username: this.state.username,
+        password: this.state.password
+      });
+      const response = await api.post("/login", requestBody);
+
       // Get the returned user and update a new object.
       const user = new User(response.data);
 
@@ -47,34 +57,31 @@ class Register extends React.Component {
       localStorage.setItem("username", user.username);
       localStorage.setItem("currentUserId", user.id);
 
-      // After successful registration
-      this.navigateToHomePage();
+      this.navigateToHomePage()
     } catch (error) {
-        swal("Username already Taken","","error");
-      }
-     
+      swal("Username or password incorrect","","error");
     }
-  
+  }
 
-  navigateToLoginPage() {
+  navigateToRegisterPage() {
     this.props.change();
   }
   navigateToHomePage() {
-    this.props.history.push(`/home`);
+    this.props.history.push("/home");
   }
 
   handleInputChange(key, value) {
     // Example: if the key is username, this statement is the equivalent to the following one:
-    this.setState({
-      [key]: value,
-    });
+    // this.setState({'username': value});
+    this.setState({ [key]: value });
   }
   componentDidMount() {}
 
   render() {
     return (
-      <Segment raised fluid >
-        <Header as="h2" color="black" textAlign="center">Register</Header>
+
+      <Segment fluid>
+      <Header as="h2" color="black" textAlign="center">Login</Header>
         <FormContainer>
           <Form>
             <Form.Field>
@@ -101,33 +108,28 @@ class Register extends React.Component {
                 disabled={!this.state.username || !this.state.password}
                 width="50%"
                 onClick={() => {
-                  this.register();
+                  this.login();
                 }}
               >
-                Register
+                Login
               </Button>
             </ButtonContainer>
-
             <ButtonContainer>
               <Button
                 secondary
                 width="50%"
                 onClick={() => {
-                  this.navigateToLoginPage();
+                  this.navigateToRegisterPage();
                 }}
               >
-                Already have an account ? Login here
+                Don't have an account? Register here
               </Button>
             </ButtonContainer>
           </Form>
         </FormContainer>
-      </Segment>
+        </Segment>
+
     );
   }
 }
-
-/**
- * You can get access to the history object's properties via the withRouter.
- * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
- */
-export default withRouter(Register);
+export default withRouter(Login);

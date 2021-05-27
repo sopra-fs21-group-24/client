@@ -2,9 +2,9 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Button, Divider } from "semantic-ui-react";
 import useSound from "use-sound";
-import boop from "../../sounds/boop.mp3";
-import roundstart from "../../sounds/roundstart.mp3";
-import sheesh from "../../sounds/sheesh.mp3";
+import boop from "../../../sounds/boop.mp3";
+import roundstart from "../../../sounds/roundstart.mp3";
+import sheesh from "../../../sounds/sheesh.mp3";
 
 const Countdown = (props) => {
   const { initialMinute = 0, initialSeconds = 10 } = props;
@@ -15,7 +15,7 @@ const Countdown = (props) => {
   const [playSheesh] = useSound(sheesh,{ volume: 0.25 });
 
   useEffect(() => {
-    if (seconds == initialSeconds && props.score > 475){
+    if (seconds == initialSeconds && props.score > 450){
       playSheesh()
     }
     let myInterval = setInterval(() => {

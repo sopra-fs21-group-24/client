@@ -166,6 +166,7 @@ class Home extends React.Component {
   };
 
   async componentDidMount() {
+    this.refs.player.playbackRate = 0.9
     this.getUser();
   }
 
@@ -174,6 +175,7 @@ class Home extends React.Component {
     return (
       <div>
         <video 
+        ref="player"
         autoPlay 
         loop 
         muted
@@ -184,7 +186,8 @@ class Home extends React.Component {
                 height:"100%",
                 objectFit:"cover",
                 transform:"translate(-50%,-50%)",
-                zIndex:"-1"
+                zIndex:"-1",
+                defaultPlaybackRate:0.1
         }}
          >
            <source src={window.location.origin + "/Earth3.mp4"} type="video/mp4"/>
@@ -275,6 +278,11 @@ class Home extends React.Component {
         pixelation: response.data.highscores.Pixelation,
         time: response.data.highscores.Time,
       };
+
+      localStorage.setItem("cloudsScore", userScore.clouds)
+      localStorage.setItem("pixelationScore", userScore.pixelation)
+      localStorage.setItem("timeScore", userScore.time)
+
       this.setState({ user: response.data, userScore: userScore });
     } catch (error) {
       this.logout();

@@ -11,11 +11,12 @@ import {
   Progress,
   Segment,
 } from "semantic-ui-react";
+import ConfettiGenerator from "confetti-js";
 
-import { MapElem } from "./MiniMap";
-import Countdown from "./Countdown";
+import { MapElem } from "../miniMap/MiniMap";
+import Countdown from "../header/Countdown";
 import { useState, useEffect } from "react";
-import { differentMarkers, hashTable } from "./MiniMap";
+import { differentMarkers, hashTable } from "../miniMap/MiniMap";
 
 const ScoreBox = (props) => {
   const [users, setUsers] = useState(
@@ -32,10 +33,48 @@ const ScoreBox = (props) => {
     "matthew.png",
   ];
 
-
   useEffect(() => {
     setUsers(props.scores.sort((a, b) => (a.score > b.score ? -1 : 1)));
+    let confetti;
+    let lastGameModeScore;
+    if (props.gameMode == "Pixelation"){
+      lastGameModeScore = localStorage.getItem("pixelationScore")
+    } else if (props.gameMode == "Clouds"){
+      lastGameModeScore = localStorage.getItem("cloudsScore")
+    } else {
+      lastGameModeScore = localStorage.getItem("timeScore")
+    }
 
+    if (props.everyOneGuessed && props.lastRound && props.playerScore.totalScore > lastGameModeScore) {
+      const confettiSettings = {
+        target: "my-canvas",
+        max: "201",
+        size: "1",
+        animate: true,
+        props: [
+          "circle",
+          "square",
+          "triangle",
+          "line",
+          { type: "svg", src: "site/hat.svg", size: 25, weight: 0.2 },
+        ],
+        colors: [
+          [165, 104, 246],
+          [230, 61, 135],
+          [0, 199, 228],
+          [253, 214, 126],
+        ],
+        clock: "50",
+        rotate: true,
+        width: "1440",
+        height: "793",
+        start_from_edge: false,
+        respawn: true,
+      };
+      confetti = new ConfettiGenerator(confettiSettings);
+      confetti.render();
+      return () => confetti.clear();
+    }
     return () => {
       setUsers([]);
       // confetti.clear();
@@ -44,7 +83,8 @@ const ScoreBox = (props) => {
 
   const PlayerList = () => {
     return (
-      <List divided verticalAlign="middle">
+      
+      <List divided verticalAlign="middle" style={{ textAlign: "left" }}>
         {users.map((user) => {
           return (
             <List.Item>
@@ -62,16 +102,19 @@ const ScoreBox = (props) => {
                   <Header as="h4">Round: {user.score}</Header>
                 </List.Description>
               </List.Content>
-              <Image
-                floated="left"
-                src={differentMarkers[hashTable.search(user.name)]}
-              />
-              <Button floated="right">
-                <List.Description>
-                  {" "}
-                  <Header as="h3">Total: {user.totalScore}</Header>
-                </List.Description>
-              </Button>
+
+              <List.Content floated="right">
+                <Image
+                  floated="left"
+                  src={differentMarkers[hashTable.search(user.name)]}
+                />
+                <Button floated="right" style={{ width: "140px" }}>
+                  <List.Description>
+                    {" "}
+                    <Header as="h3">Total: {user.totalScore}</Header>
+                  </List.Description>
+                </Button>
+              </List.Content>
             </List.Item>
           );
         })}
@@ -167,6 +210,7 @@ const ScoreBox = (props) => {
   //SCORE = NULL
   return (
     <div style={{ height: "100%", width: "100%" }}>
+      <canvas style={{zIndex: 3, position: "absolute", top:"0px", left: "0px", width: "100%", height: "100%", pointerEvents: "none"}} id="my-canvas"></canvas>
       <Segment placeholder raised>
         <Header as="h2" color="teal" textAlign="center">
           <Divider horizontal></Divider>
@@ -175,17 +219,17 @@ const ScoreBox = (props) => {
 
         <Grid columns={2} stackable textAlign="center">
           <Grid.Row verticalAlign="middle">
-            <Grid.Column style={{ maxWidth: 450 }}>
+            <Grid.Column style={{ maxWidth: 600 }}>
               <Form size="large">
                 <PlayerList />
               </Form>
             </Grid.Column>
 
-            <Grid.Column style={{ maxWidth: 300 }}>
+            <Grid.Column style={{ maxWidth: 450, marginLeft: "20px" }}>
               <Form size="large">
                 <MapElem
                   containerElement={
-                    <div style={{ height: `200px`, width: `110%` }} />
+                    <div style={{ height: `200px`, width: `100%` }} />
                   }
                   mapElement={<div style={{ height: `100%` }} />}
                   center={{

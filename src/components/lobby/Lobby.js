@@ -58,8 +58,12 @@ class Lobby extends React.Component {
       // if (error.response.status == 412) {
       //   alert("yooo");
       // }
-      if (window.confirm("Something went wrong when trying to start your game. Would you like to know more about the error?")){
-        alert(`Error Details: ${handleError(error)}`)
+      if (
+        window.confirm(
+          "Something went wrong when trying to start your game. Would you like to know more about the error?"
+        )
+      ) {
+        alert(`Error Details: ${handleError(error)}`);
       }
     }
   };
@@ -71,8 +75,12 @@ class Lobby extends React.Component {
       this.setState({ round: response.data.round });
       console.log("Fetched this round: ", this.state.round);
     } catch (error) {
-      if (window.confirm("Something went wrong when trying to fetch your game. Would you like to know more about the error?")){
-        alert(`Error Details: ${handleError(error)}`)
+      if (
+        window.confirm(
+          "Something went wrong when trying to fetch your game. Would you like to know more about the error?"
+        )
+      ) {
+        alert(`Error Details: ${handleError(error)}`);
       }
     }
   };
@@ -115,8 +123,12 @@ class Lobby extends React.Component {
       this.setState({ isUpdating: false });
       this.setState({ hasGameStarted: false });
     } catch (error) {
-      if (window.confirm("Something went wrong when trying to update the lobby configuration. Would you like to know more about the error?")){
-        alert(`Error Details: ${handleError(error)}`)
+      if (
+        window.confirm(
+          "Something went wrong when trying to update the lobby configuration. Would you like to know more about the error?"
+        )
+      ) {
+        alert(`Error Details: ${handleError(error)}`);
       }
     }
   };
@@ -128,10 +140,14 @@ class Lobby extends React.Component {
 
       localStorage.removeItem("lobbyId");
       localStorage.removeItem("gameId");
-      this.props.history.push('/lobby/join');
+      this.props.history.push("/lobby/join");
     } catch (error) {
-      if (window.confirm("Something went wrong when trying to leave the lobby. Would you like to know more about the error?")){
-        alert(`Error Details: ${handleError(error)}`)
+      if (
+        window.confirm(
+          "Something went wrong when trying to leave the lobby. Would you like to know more about the error?"
+        )
+      ) {
+        alert(`Error Details: ${handleError(error)}`);
       }
     }
   };
@@ -165,13 +181,11 @@ class Lobby extends React.Component {
         localStorage.removeItem("gameId");
         localStorage.setItem("gameId", this.state.gameId);
       } catch (error) {
-        if (window.confirm("Something went wrong when trying to fetch your lobby. Would you like to know more about the error?")){
-          alert(`Error Details: ${handleError(error)}`)
-        }
+        console.log(`Error Details: ${handleError(error)}`);
       }
     }
 
-    this.setState({init: false});
+    this.setState({ init: false });
     this.listenForGameStart();
 
     while (
@@ -196,10 +210,7 @@ class Lobby extends React.Component {
         localStorage.removeItem("gameId");
         localStorage.setItem("gameId", this.state.gameId);
       } catch (error) {
-        if (window.confirm("Something went wrong when trying to fetch your lobby. Would you like to know more about the error?")){
-          alert(`Error Details: ${handleError(error)}`)
-        }
-      
+        console.log(`Error Details: ${handleError(error)}`);
       }
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
@@ -254,9 +265,13 @@ class Lobby extends React.Component {
                               name="Time"
                               active={this.state.selectedGamemode === "Time"}
                               position="left"
+                              disabled={
+                                !localStorage.getItem("currentUserId") ===
+                                this.state.creator
+                              }
                               onClick={this.handleItemClick}
                             >
-                              <Icon name="clock outline"/>
+                              <Icon name="clock outline" />
                               Time
                             </Menu.Item>
                             <Menu.Item
@@ -266,7 +281,7 @@ class Lobby extends React.Component {
                               }
                               onClick={this.handleItemClick}
                             >
-                              <Icon name="chess board"/>
+                              <Icon name="chess board" />
                               Pixelation
                             </Menu.Item>
                             <Menu.Item
@@ -275,7 +290,7 @@ class Lobby extends React.Component {
                               position="right"
                               onClick={this.handleItemClick}
                             >
-                              <Icon name="cloud"/>
+                              <Icon name="cloud" />
                               Clouds
                             </Menu.Item>
                           </Menu>
@@ -403,7 +418,7 @@ class Lobby extends React.Component {
                   <Grid.Column centered textAlign="center" width="4">
                     <Segment raised padded="very" size="big">
                       <Header>Invite Key</Header>
-                      <Input type="text" fluid value={this.state.roomKey}/>
+                      <Input type="text" fluid value={this.state.roomKey} />
                       <CopyToClipboard text={this.state.roomKey}>
                         <Button icon color="teal" size="big" fluid>
                           <Icon name="copy" />
