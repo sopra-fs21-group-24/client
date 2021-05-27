@@ -96,13 +96,13 @@ To repoint the FE requests to a url of your liking (local/external URL) edit the
 <p align="center">
 <img width=60%" src="https://github.com/sopra-fs21-group-24/client/blob/master/public/HomeScreen.png" />
 </p>
-On the Application's Home Screen you can see the current leaderboard of all the Gamemodes. From here you can choose to start a Single- or Multiplayer Game.
+On the Application's Home Screen you can see the current leaderboard of all the Gamemodes. From here you can choose to start a Single- or Multiplayer Game. In the header your current Highscores are displayed. By clicking on your name you have the possibility to change your user data.
 
 #### Lobby Screen
 <p align="center">
 <img width=60%" src="https://github.com/sopra-fs21-group-24/client/blob/master/public/LobbyScreen.png" />
 </p>
-If you choose to join a Lobby you will see this lobby screen 
+If you choose to join a Lobby you will see this lobby screen. Choose the game mode / visibility on the left and see the invite key on the right to invite friends to your private game.
 
 #### In Game Screen
 <p align="center">
@@ -110,6 +110,11 @@ If you choose to join a Lobby you will see this lobby screen
 </p>
 This is what you see during the game. You can place your guess on the minimap on the bottom right. In the header you see the most important stats about the current round.
 
+#### ScoreScreen
+<p align="center">
+<img width=60%" src="https://github.com/sopra-fs21-group-24/client/blob/master/public/ScoreScreen.png" />
+</p>
+After Submiting a guess you'll be navigated to the Score Screen. Here you can see your current score aswell as the distance between your guess and the solution.
 
 # Roadmap
 For the following two features help would be very much appreciated.
