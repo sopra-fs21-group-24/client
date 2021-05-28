@@ -51,10 +51,9 @@ class GameController extends React.Component {
 
       isLastRound: false,
     };
-    
+
     this.child = React.createRef();
-    
-    
+
     let id = localStorage.getItem("gameId");
     this.setState({ gameId: id });
     // Mini Map Method Binding
@@ -65,7 +64,6 @@ class GameController extends React.Component {
     this.exitGame = this.exitGame.bind(this);
     this.endGame = this.endGame.bind(this);
     this.handleDifficultyFactor = this.handleDifficultyFactor.bind(this);
-
   }
   componentDidMount() {
     this.mounted = true;
@@ -97,7 +95,7 @@ class GameController extends React.Component {
     // console.log(questionIndex, currentQuestionId, "DATAAA");
 
     // Fetch Question Image
-    
+
     let imagedata = await this.getQuestion(currentQuestionId);
     this.setState({
       currentQuestionImage: "data:;base64," + imagedata,
@@ -105,8 +103,8 @@ class GameController extends React.Component {
     // Start Timer
     this.setState({ currentQuestionId: currentQuestionId });
     this.startTimer();
-    if (this.state.gameMode == "Clouds"){
-      this.child.current.loadACloud()
+    if (this.state.gameMode == "Clouds") {
+      this.child.current.loadACloud();
     }
   }
 
@@ -153,7 +151,7 @@ class GameController extends React.Component {
       window.confirm(errorMessage) +
       " Would you like to go back to the HomeScreen?"
     ) {
-      this.exitGame();
+      //this.exitGame();
     } else {
       alert(`More Information regarding your error: ${handleError(err)}`);
     }
@@ -181,7 +179,6 @@ class GameController extends React.Component {
       // console.log("using prefetched image", this.state.nextImageData)
       return this.state.nextImageData;
     }
-    //TODO: get the correct sizes of the user's screen
     const { height, width } = getWindowDimensions();
 
     let scaleFactor = width / 640;
@@ -229,10 +226,6 @@ class GameController extends React.Component {
           getAuthConfig()
         );
       } catch (error) {
-        this.askWhetherToGoBackToHome(
-          "Your submitted guess couldn't be processed.",
-          error
-        );
         // this.props.history.push("/home");
         return;
       }
@@ -267,6 +260,7 @@ class GameController extends React.Component {
         solutions: solutions,
       });
 
+      console.log(this.state.playerScore);
       await this.fetchScore();
     } catch (error) {
       this.askWhetherToGoBackToHome(
@@ -285,7 +279,6 @@ class GameController extends React.Component {
       //console.log(response.data);
       let responseData = response.data;
       this.setState({ guessesOfAllPlayers: response.data });
-      // TODO: Comment this once BE works
 
       let filtered = response.data.filter((value, index, array) => {
         return value.lastCoordinate != null;
@@ -374,7 +367,7 @@ class GameController extends React.Component {
         this.state.showScoreModal,
         this.state.gameOngoing
       );
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 500));
       if (!this.state.gameOngoing) return;
     }
   }
@@ -405,11 +398,10 @@ class GameController extends React.Component {
 
   //#region Timer
   async startTimer() {
-    this.setState({ questionTime: new Date().getTime() });
+    this.setState({ questionTime: new Date().getTime() + 31000 });
     this.setState({ timerRunning: true });
     while (this.state.timerRunning) {
-      // if we passed 30 s
-      if (this.state.timer > 25 && this.state.timer < 26) {
+      if (this.state.timer > 0 && this.state.timer < 1) {
         console.log("WE PASSED 30 S - send backup request");
         this.setState({ pin: { lat: null, lng: null } });
         this.handleGuessSubmit();
@@ -420,14 +412,13 @@ class GameController extends React.Component {
   }
 
   componentWillUnmount() {
-    // console.log("unmounting");
     this.mounted = false;
+    localStorage.removeItem("gameId");
     this.setState({ showScoreModal: false, gameOngoing: false });
   }
   updateSeconds() {
     if (this.state.questionTime) var now = new Date().getTime();
-    var difference = (now - this.state.questionTime) / 1000;
-    // console.log(difference)
+    var difference = (this.state.questionTime - now) / 1000;
     this.setState({ timer: difference });
   }
   stopTimer() {
@@ -436,11 +427,16 @@ class GameController extends React.Component {
   }
 
   async exitGame() {
+    // Send null, null guess when exiting so other players who have already guessed
+    // are not stuck in an infinite loop
+    // this.setState({ pin: { lat: null, lng: null } });
+    // this.handleGuessSubmit();
     try {
       await api.get("/games/" + this.state.gameId + "/exit", getAuthConfig());
     } catch (error) {
       this.props.history.push("/home");
     }
+
     console.log("ending game");
     this.setState({ showScoreModal: false, gameOngoing: false });
     localStorage.removeItem("gameId");

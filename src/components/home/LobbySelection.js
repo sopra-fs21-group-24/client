@@ -110,9 +110,7 @@ const LobbySelection = ({
                 cursor: "pointer",
               }}
               onClick={() => {
-                history.push({
-                  pathname: "/lobby/join",
-                });
+                history.push("/lobby/join");
               }}
             >
               Join Lobby
