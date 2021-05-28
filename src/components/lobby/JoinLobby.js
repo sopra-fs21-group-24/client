@@ -58,8 +58,7 @@ class JoinLobby extends React.Component {
 
   joinLobbyWithKey = async () => {
     try {
-      const response = await api.get(`/lobby/roomKey/${this.state.roomKey}`);
-      await api.post(
+      const response = await api.post(
         `/lobby/${this.state.roomKey}/roomkey`,
         {},
         {
@@ -69,7 +68,7 @@ class JoinLobby extends React.Component {
         }
       );
 
-      localStorage.setItem("lobbyId", response.data.id);
+      localStorage.setItem("lobbyId", response.data.lobbyId);
 
       this.props.history.push(`/lobby`);
     } catch (error) {
@@ -77,7 +76,6 @@ class JoinLobby extends React.Component {
     }
   };
 
-  // TODO: Implement clickable table that lets users join public lobbies
   joinPublicLobby = async (lobbyId) => {
     try {
       await api.post(

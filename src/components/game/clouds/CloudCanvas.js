@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import styled from "styled-components";
 // import CloudDisplay from "./CloudDisplay";
 import CloudModel from "./CloudModel";
-import CloudSVGFilter from "./CloudSVGFilter";
 
 // const sliderThumbStyles = props => props;
 const StyledCloudDisplay = styled.section`
@@ -57,8 +56,8 @@ class CloudCanvas extends React.Component {
   async startAnlysis(){
     // console.log("CHEEECK:" , this.mounted, this.props.isPlaying)
     while(this.mounted && this.props.isPlaying){
-      await new Promise((resolve) => setTimeout(resolve, 2000));
       this.getTransparencyCount()
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       // console.log("still checking transperancy")
     }
   }
@@ -81,6 +80,33 @@ class CloudCanvas extends React.Component {
       ctx.drawImage(img, width - width / 2, 0, width / 1.4, height / 1.8);
       ctx.drawImage(img, width - width / 2, height / 3, width / 2, height / 2);
     };
+  }
+
+
+  loadACloud(){
+    switch (this.props.questionId % 5) {
+      case 0:
+        this.setup5Dice();
+        break;
+      case 1:
+        this.setupGiantStormyCloud();
+        break;
+      case 2:
+        this.setupSchleierWolke();
+        break;
+      case 3:
+        this.setup5Dice();
+        break;
+      case 4:
+        this.setupLongCloud();
+        break;
+      default:
+        alert("no cloud for this");
+        break;
+    }
+
+  
+    // this.startAnlysis()
   }
 
   setupGiantStormyCloud() {
@@ -154,27 +180,7 @@ class CloudCanvas extends React.Component {
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
 
-    switch (this.props.questionId % 5) {
-      case 0:
-        this.setup5Dice();
-        break;
-      case 1:
-        this.setupGiantStormyCloud();
-        break;
-      case 2:
-        this.setupSchleierWolke();
-        break;
-      case 3:
-        this.setup5Dice();
-        break;
-      case 4:
-        this.setupLongCloud();
-        break;
-      default:
-        alert("no cloud for this");
-        break;
-    }
-
+    
 
     var isPress = false;
     var old = null;

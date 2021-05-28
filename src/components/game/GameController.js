@@ -19,7 +19,6 @@ import { useState } from "react";
 import CloudCanvas from "./clouds/CloudCanvas";
 import useSound from "use-sound";
 
-
 class GameController extends React.Component {
   constructor(props) {
     super(props);
@@ -52,16 +51,21 @@ class GameController extends React.Component {
 
       isLastRound: false,
     };
+    
+    this.child = React.createRef();
+    
+    
     let id = localStorage.getItem("gameId");
-    this.setState({ gameId: id })
-
+    this.setState({ gameId: id });
     // Mini Map Method Binding
+
     this.handleGuessSubmit = this.handleGuessSubmit.bind(this);
     this.handlePinPlacedOnMap = this.handlePinPlacedOnMap.bind(this);
     this.nextRound = this.nextRound.bind(this);
     this.exitGame = this.exitGame.bind(this);
     this.endGame = this.endGame.bind(this);
     this.handleDifficultyFactor = this.handleDifficultyFactor.bind(this);
+
   }
   componentDidMount() {
     this.mounted = true;
@@ -93,6 +97,7 @@ class GameController extends React.Component {
     // console.log(questionIndex, currentQuestionId, "DATAAA");
 
     // Fetch Question Image
+    
     let imagedata = await this.getQuestion(currentQuestionId);
     this.setState({
       currentQuestionImage: "data:;base64," + imagedata,
@@ -100,7 +105,14 @@ class GameController extends React.Component {
     // Start Timer
     this.setState({ currentQuestionId: currentQuestionId });
     this.startTimer();
+    if (this.state.gameMode == "Clouds"){
+      this.child.current.loadACloud()
+    }
   }
+
+  // async prepNextRound(){
+  //   await this.startRound(this.state.currentRound);
+  // }
 
   async nextRound() {
     //end of game?
@@ -337,6 +349,7 @@ class GameController extends React.Component {
     }
     await this.fetchScore();
     this.setState({ showScoreModal: true });
+    // this.prepNextRound()
 
     // Fetching incoming scores every second
     // console.log(
@@ -439,6 +452,10 @@ class GameController extends React.Component {
   }
 
   render() {
+    const { height, width } = getWindowDimensions();
+    let filter =
+      this.state.gameMode == "Pixelation" ? 10 - this.state.timer * 0.4 : 0;
+
     return (
       <div>
         <ComponentTransition
@@ -455,7 +472,37 @@ class GameController extends React.Component {
           />
         </ComponentTransition>
 
-        <Component
+        <div
+          style={{
+            width: width,
+            height: height - 50,
+            filter: `blur(${filter}px)`,
+            backgroundImage: `url(${this.state.currentQuestionImage})`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "contain",
+            overflow: "hidden",
+          }}
+        >
+          {this.state.gameMode == "Clouds" &&
+          this.state.currentRound != -1 &&
+          this.state.currentQuestionId != null ? (
+            <div>
+              <CloudCanvas
+                ref={this.child}
+                // key={props.questionId}
+                questionId={this.state.currentQuestionId}
+                round={this.state.currentRound}
+                height={height}
+                width={width}
+                isPlaying={this.state.isPlaying}
+                onHandleDifficulty={this.handleDifficultyFactor}
+              ></CloudCanvas>
+            </div>
+          ) : null}
+
+          {/* <canvas style={{zIndex:100}} id="my-canvas"></canvas> */}
+        </div>
+        {/* <Component
           isPlaying={this.state.isPlaying}
           onHandleDifficulty={this.handleDifficultyFactor}
           questionId={this.state.currentQuestionId}
@@ -465,7 +512,7 @@ class GameController extends React.Component {
           timer={this.state.timer}
           lastRound={this.state.isLastRound}
           everyOneGuessed={this.state.everyOneGuessed}
-        />
+        /> */}
 
         {this.state.showScoreModal ? (
           <Modal inverted basic open={true} size="large" trigger={null}>
@@ -515,7 +562,7 @@ class GameController extends React.Component {
 const Component = (props) => {
   const { height, width } = useWindowDimensions();
   let filter = props.gameMode == "Pixelation" ? 10 - props.timer * 0.4 : 0;
- 
+
   return (
     <div
       style={{
@@ -528,13 +575,12 @@ const Component = (props) => {
         overflow: "hidden",
       }}
     >
-      
       {props.gameMode == "Clouds" &&
       props.round != -1 &&
       props.questionId != null ? (
         <div>
           <CloudCanvas
-            key={props.questionId}
+            // key={props.questionId}
             questionId={props.questionId}
             round={props.round}
             height={height}
