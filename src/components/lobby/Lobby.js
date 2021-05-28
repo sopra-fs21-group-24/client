@@ -25,6 +25,9 @@ import { handleError, api, getAuthConfig } from "../../helpers/api";
 import { getWindowDimensions } from "../shared/models/WindowSize";
 import Loader from "react-loader-spinner";
 import "../../views/design/lobby.css";
+import axios from 'axios';
+
+let sourceLobby = axios.CancelToken.source();
 
 class Lobby extends React.Component {
   constructor() {
@@ -75,13 +78,8 @@ class Lobby extends React.Component {
       this.setState({ round: response.data.round });
       console.log("Fetched this round: ", this.state.round);
     } catch (error) {
-      if (
-        window.confirm(
-          "Something went wrong when trying to fetch your game. Would you like to know more about the error?"
-        )
-      ) {
-        alert(`Error Details: ${handleError(error)}`);
-      }
+      console.log(`Cannot fetch the game`)
+      
     }
   };
 
@@ -133,9 +131,10 @@ class Lobby extends React.Component {
   };
 
   // API Call to remove the user from the lobby list
-  leaveLobby = () => {
+  leaveLobby = async () => {
+    sourceLobby.cancel();
     try {
-      api.put(`/lobby/${this.state.lobbyId}`, {}, getAuthConfig());
+      await api.put(`/lobby/${this.state.lobbyId}`, {}, getAuthConfig());
 
       localStorage.removeItem("lobbyId");
       localStorage.removeItem("gameId");
@@ -157,10 +156,21 @@ class Lobby extends React.Component {
     setTimeout(this.updateLobbyConfiguration, 1500);
   };
 
+  handleTabClosing = () => {
+    this.leaveLobby();
+  }
+
+  alertUser = (event) => {
+    event.preventDefault();
+    event.returnValue = '';
+  }
+
   // API Call to fetch the lobby all four seconds for changes
   async componentDidMount() {
     this.mounted = true;
     const lobbyId = localStorage.getItem("lobbyId");
+    //window.addEventListener('unload', this.handleTabClosing);
+    
 
     if (!this.state.hasGameStarted && !this.state.isUpdating && this.mounted) {
       try {
@@ -180,7 +190,7 @@ class Lobby extends React.Component {
         localStorage.removeItem("gameId");
         localStorage.setItem("gameId", this.state.gameId);
       } catch (error) {
-        console.log(`Error Details: ${handleError(error)}`);
+        console.log(`Cannot fetch the lobby`);
       }
     }
 
@@ -197,6 +207,7 @@ class Lobby extends React.Component {
           headers: {
             initial: this.state.init,
           },
+          cancelToken: sourceLobby.token
         });
         this.setState({ lobbyId: response.data.id });
         this.setState({ creator: response.data.creator });
@@ -209,7 +220,7 @@ class Lobby extends React.Component {
         localStorage.removeItem("gameId");
         localStorage.setItem("gameId", this.state.gameId);
       } catch (error) {
-        console.log(`Error Details: ${handleError(error)}`);
+        console.log(`Cannot fetch the lobby`);
       }
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
@@ -217,6 +228,8 @@ class Lobby extends React.Component {
 
   componentWillUnmount() {
     this.mounted = false;
+    sourceLobby.cancel();
+    //window.removeEventListener('unload', this.handleTabClosing);
   }
 
   render() {
