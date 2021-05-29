@@ -178,7 +178,7 @@ class JoinLobby extends React.Component {
                                       {this.displayGamemode(lobby)}
                                       {lobby.gameMode}
                                     </Table.Cell>
-                                    <Table.Cell>{lobby.users}/3</Table.Cell>
+                                    <Table.Cell>{lobby.users}/4</Table.Cell>
                                   </Table.Row>
                                 );
                               })}
