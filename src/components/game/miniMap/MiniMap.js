@@ -7,41 +7,7 @@ import {
   ComponentTransition,
   AnimationTypes,
 } from "react-component-transition";
-
-class HashTable {
-  constructor() {
-    this.values = {};
-    this.length = 0;
-    this.size = 5;
-  }
-
-  calculateHash(key) {
-    return key % this.size;
-  }
-
-  add(key, value) {
-    const hash = this.calculateHash(key);
-    if (!this.values.hasOwnProperty(hash)) {
-      this.values[hash] = {};
-    }
-    if (!this.values[hash].hasOwnProperty(key)) {
-      this.length++;
-    }
-    this.values[hash][key] = value;
-  }
-
-  search(key) {
-    const hash = this.calculateHash(key);
-    if (
-      this.values.hasOwnProperty(hash) &&
-      this.values[hash].hasOwnProperty(key)
-    ) {
-      return this.values[hash][key];
-    } else {
-      return null;
-    }
-  }
-}
+import { hashTable } from "../GameController";
 
 const style = {
   // maxWidth: "450px",
@@ -74,9 +40,6 @@ export const differentMarkers = [
   "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
   "http://maps.google.com/mapfiles/ms/icons/purple-dot.png",
 ];
-
-// Initialize hash table for hashing user IDs to an index for differentMarkers
-export const hashTable = new HashTable();
 
 export const TopLeftButton = styled(Button)`
   margin-top: 50px;
@@ -116,31 +79,44 @@ export const MapElem = withGoogleMap((props) => (
       }}
     >
       {props.everyOneGuessed && props.showResults
-        ? props.playerMarkers.map((user) => {
-            return (
-              <Polyline
-                path={[
-                  {
-                    lat: user.lastCoordinate.lat,
-                    lng: user.lastCoordinate.lon,
-                  },
-                  props.results[props.currentRound - 2],
-                ]}
-                options={{
-                  strokeColor: lineColors[hashTable.search(user.userId)],
-                  strokeOpacity: "0.9",
-                  strokeWeight: 4,
-                  icons: [
+        ? props.playerMarkers
+            .filter(function (user) {
+              if (user.lastCoordinate == null) {
+                if (
+                  user.lastCoordinate.lat == null ||
+                  user.lastCoordinate.lon == null
+                ) {
+                  return false;
+                }
+                return false;
+              }
+              return true;
+            })
+            .map((user) => {
+              return (
+                <Polyline
+                  path={[
                     {
-                      icon: "hello",
-                      offset: "0",
-                      repeat: "10px",
+                      lat: user.lastCoordinate.lat,
+                      lng: user.lastCoordinate.lon,
                     },
-                  ],
-                }}
-              />
-            );
-          })
+                    props.results[props.currentRound - 2],
+                  ]}
+                  options={{
+                    strokeColor: lineColors[hashTable.search(user.userId)],
+                    strokeOpacity: "0.9",
+                    strokeWeight: 4,
+                    icons: [
+                      {
+                        icon: "hello",
+                        offset: "0",
+                        repeat: "10px",
+                      },
+                    ],
+                  }}
+                />
+              );
+            })
         : null}
 
       {/**Displays marker of the solution in RED */}
@@ -212,10 +188,6 @@ class MiniMap extends Component {
   }
 
   handleMapClick(event) {
-    // Adding all player IDs to the Hash Table so all players get different colored markers
-    for (let i = 0; i < this.props.state.playerIds.length; i++) {
-      hashTable.add(this.props.state.playerIds[i], i);
-    }
     // For debug purposes
     //console.log(this.props.state.playerIds);
     //console.log(hashTable.search(localStorage.getItem("currentUserId")));
