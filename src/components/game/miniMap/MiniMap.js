@@ -82,12 +82,11 @@ export const MapElem = withGoogleMap((props) => (
         ? props.playerMarkers
             .filter(function (user) {
               if (user.lastCoordinate == null) {
-                if (
-                  user.lastCoordinate.lat == null ||
-                  user.lastCoordinate.lon == null
-                ) {
-                  return false;
-                }
+                return false;
+              } else if (
+                user.lastCoordinate.lat == null ||
+                user.lastCoordinate.lon == null
+              ) {
                 return false;
               }
               return true;
