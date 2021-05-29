@@ -83,8 +83,7 @@ export const MapElem = withGoogleMap((props) => (
             .filter(function (user) {
               if (user.lastCoordinate == null) {
                 return false;
-              }
-              if (
+              } else if (
                 user.lastCoordinate.lat == null ||
                 user.lastCoordinate.lon == null
               ) {

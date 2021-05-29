@@ -169,6 +169,7 @@ class Lobby extends React.Component {
     this.mounted = true;
     const lobbyId = localStorage.getItem("lobbyId");
     //window.addEventListener('unload', this.handleTabClosing);
+
     
 
     if (!this.state.hasGameStarted && !this.state.isUpdating && this.mounted) {
