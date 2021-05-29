@@ -165,7 +165,6 @@ class Lobby extends React.Component {
     event.returnValue = '';
   }
 
-  // API Call to fetch the lobby all four seconds for changes
   async componentDidMount() {
     this.mounted = true;
     const lobbyId = localStorage.getItem("lobbyId");
@@ -228,7 +227,6 @@ class Lobby extends React.Component {
 
   componentWillUnmount() {
     this.mounted = false;
-    sourceLobby.cancel();
     //window.removeEventListener('unload', this.handleTabClosing);
   }
 

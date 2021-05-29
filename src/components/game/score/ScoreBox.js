@@ -16,7 +16,8 @@ import ConfettiGenerator from "confetti-js";
 import { MapElem } from "../miniMap/MiniMap";
 import Countdown from "../header/Countdown";
 import { useState, useEffect } from "react";
-import { differentMarkers, hashTable } from "../miniMap/MiniMap";
+import { differentMarkers } from "../miniMap/MiniMap";
+import { hashTable } from "../GameController";
 
 const ScoreBox = (props) => {
   const [users, setUsers] = useState(
