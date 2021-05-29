@@ -19,6 +19,44 @@ import { useState } from "react";
 import CloudCanvas from "./clouds/CloudCanvas";
 import useSound from "use-sound";
 
+class HashTable {
+  constructor() {
+    this.values = {};
+    this.length = 0;
+    this.size = 5;
+  }
+
+  calculateHash(key) {
+    return key % this.size;
+  }
+
+  add(key, value) {
+    const hash = this.calculateHash(key);
+    if (!this.values.hasOwnProperty(hash)) {
+      this.values[hash] = {};
+    }
+    if (!this.values[hash].hasOwnProperty(key)) {
+      this.length++;
+    }
+    this.values[hash][key] = value;
+  }
+
+  search(key) {
+    const hash = this.calculateHash(key);
+    if (
+      this.values.hasOwnProperty(hash) &&
+      this.values[hash].hasOwnProperty(key)
+    ) {
+      return this.values[hash][key];
+    } else {
+      return null;
+    }
+  }
+}
+
+// Initialize hash table for hashing user IDs to an index for differentMarkers
+export const hashTable = new HashTable();
+
 class GameController extends React.Component {
   constructor(props) {
     super(props);
@@ -35,7 +73,12 @@ class GameController extends React.Component {
       gameMode: null,
 
       scores: null,
-      playerScore: null,
+      playerScore: {
+        score: 0,
+        totalScore: 0,
+        userId: null,
+        name: null,
+      },
       guessesOfAllPlayers: null,
       everyOneGuessed: false,
       solution: null,
@@ -88,6 +131,7 @@ class GameController extends React.Component {
   async startRound(currentRound) {
     // console.log("Starting Game Round ", currentRound);
 
+
     this.setState({ isPlaying: true });
     // Setting our current Question Id
     let questionIndex = currentRound - 1;
@@ -119,6 +163,7 @@ class GameController extends React.Component {
 
     // Hide inbetween rounds scoreboard
     this.setState({ showScoreModal: false, everyOneGuessed: false });
+    
 
     // Start playing the next Round
     await this.startRound(this.state.currentRound);
@@ -137,6 +182,11 @@ class GameController extends React.Component {
         gameMode: response.data.gameMode.name,
         playerIds: response.data.players,
       });
+
+      // Adding all player IDs to the Hash Table so all players get different colored markers
+      for (let i = 0; i < this.state.playerIds.length; i++) {
+      hashTable.add(this.state.playerIds[i], i);
+    }
       // console.log("Fetched this game round from BE: ", response.data.round);
     } catch (error) {
       this.askWhetherToGoBackToHome(
@@ -218,6 +268,8 @@ class GameController extends React.Component {
 
       this.setState({ isPlaying: false });
 
+      
+
       let response;
       try {
         response = await api.post(
@@ -227,9 +279,10 @@ class GameController extends React.Component {
         );
       } catch (error) {
         // this.props.history.push("/home");
-        return;
+        console.log("Could not send guess")
       }
 
+      
       let responseData = response.data;
       // let responseData = {
       //   playerScore: {
@@ -240,12 +293,11 @@ class GameController extends React.Component {
       //   lat: 1,
       //   lng: 2,
       // };
-
       let solution = {
         lat: responseData.solutionCoordinate.lat,
         lng: responseData.solutionCoordinate.lon,
       };
-
+      
       let solutions = this.state.solutions;
       solutions.push(solution);
 
@@ -398,7 +450,7 @@ class GameController extends React.Component {
 
   //#region Timer
   async startTimer() {
-    this.setState({ questionTime: new Date().getTime() + 31000 });
+    this.setState({ questionTime: new Date().getTime() + 30000 });
     this.setState({ timerRunning: true });
     while (this.state.timerRunning) {
       if (this.state.timer > 0 && this.state.timer < 1) {
