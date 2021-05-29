@@ -140,16 +140,16 @@ class GameController extends React.Component {
 
     // Fetch Question Image
 
-    let imagedata = await this.getQuestion(currentQuestionId);
-    this.setState({
-      currentQuestionImage: "data:;base64," + imagedata,
-    });
     // Start Timer
     this.setState({ currentQuestionId: currentQuestionId });
     this.startTimer();
     if (this.state.gameMode == "Clouds") {
       this.child.current.loadACloud();
     }
+    let imagedata = await this.getQuestion(currentQuestionId);
+    this.setState({
+      currentQuestionImage: "data:;base64," + imagedata,
+    });
   }
 
   // async prepNextRound(){

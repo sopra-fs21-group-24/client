@@ -68,8 +68,10 @@ class Register extends React.Component {
     this.setState({
       [key]: value,
     });
-    if(this.state.username.length>10){
-      swal("Username too long","","error")
+    if (this.state.username != null){
+      if(this.state.username.length>10){
+        swal("Username too long","","error")
+      }
     }
   }
   componentDidMount() {}
