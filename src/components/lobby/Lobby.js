@@ -21,13 +21,13 @@ import {
   Modal,
   Header,
   Dimmer,
-  Loader as UILoader
+  Loader as UILoader,
 } from "semantic-ui-react";
 import { handleError, api, getAuthConfig } from "../../helpers/api";
 import { getWindowDimensions } from "../shared/models/WindowSize";
 import Loader from "react-loader-spinner";
 import "../../views/design/lobby.css";
-import axios from 'axios';
+import axios from "axios";
 
 let sourceLobby = axios.CancelToken.source();
 
@@ -81,8 +81,7 @@ class Lobby extends React.Component {
       this.setState({ round: response.data.round });
       console.log("Fetched this round: ", this.state.round);
     } catch (error) {
-      console.log(`Cannot fetch the game`)
-      
+      console.log(`Cannot fetch the game`);
     }
   };
 
@@ -134,11 +133,11 @@ class Lobby extends React.Component {
   };
 
   // API Call to remove the user from the lobby list
-  leaveLobby = async () => {
+  leaveLobby = () => {
     //sourceLobby.cancel();
-    this.setState({isLeaving: true});
+    this.setState({ isLeaving: true });
     try {
-      await api.put(`/lobby/${this.state.lobbyId}`, {}, getAuthConfig());
+      api.put(`/lobby/${this.state.lobbyId}/leave`, {}, getAuthConfig());
 
       localStorage.removeItem("lobbyId");
       localStorage.removeItem("gameId");
@@ -162,12 +161,11 @@ class Lobby extends React.Component {
 
   handleTabClosing = () => {
     this.leaveLobby();
-  }
+  };
   async componentDidMount() {
     this.mounted = true;
     const lobbyId = localStorage.getItem("lobbyId");
     window.addEventListener("beforeunload", this.handleTabClosing);
-    
 
     if (!this.state.hasGameStarted && !this.state.isUpdating && this.mounted) {
       try {
@@ -204,7 +202,7 @@ class Lobby extends React.Component {
           headers: {
             initial: this.state.init,
           },
-          cancelToken: sourceLobby.token
+          cancelToken: sourceLobby.token,
         });
         this.setState({ lobbyId: response.data.id });
         this.setState({ creator: response.data.creator });
@@ -217,18 +215,31 @@ class Lobby extends React.Component {
         localStorage.removeItem("gameId");
         localStorage.setItem("gameId", this.state.gameId);
       } catch (error) {
-        
         console.log(`Cannot fetch the lobby`);
-        //this.props.history.push("/lobby/join");
-        
+        await this.listenForGameStart2();
+        if (this.state.hasGameStarted) {
+          this.props.history.push("/game");
+        } else if (!this.state.hasGameStarted) {
+          this.props.history.push("/lobby/join");
+        }
       }
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
   }
 
+  listenForGameStart2 = async () => {
+    let userId = localStorage.getItem("currentUserId");
+
+      await this.fetchGame();
+      if (this.state.round == 1 && this.state.creator !== userId) {
+        this.setState({ hasGameStarted: true });
+        this.props.history.push("/game");
+      }
+  };
+
   componentWillUnmount() {
     this.mounted = false;
-    window.removeEventListener('beforeunload', this.handleTabClosing);
+    window.removeEventListener("beforeunload", this.handleTabClosing);
   }
 
   render() {
@@ -258,203 +269,219 @@ class Lobby extends React.Component {
               exitAnimation={AnimationTypes.fade.exit}
             >
               {this.state.isLeaving ? (
-                  <UILoader size='massive'>Leaving Lobby</UILoader>
-              ): (
-              <Grid centered columns={3} verticalAlign="top">
-                <Grid.Row>
-                  <Grid.Column 
-                    centered 
-                    textAlign="center" 
-                    width="4"
-                    style={{
-                      minWidth: "300px"
-                  }}>
-                    <Segment raised padded="very" size="big">
-                      <Header>Lobby Configuration</Header>
-                      {this.state.isUpdating ? (
-                        <Loader
-                          type="ThreeDots"
-                          color="#008080"
-                          height={50}
-                          width={50}
-                        />
-                      ) : (
-                        <div>
-                          <Menu color='teal' compact secondary vertical>
-                            <Menu.Item
-                              name="Time"
-                              active={this.state.selectedGamemode === "Time"}
-                              disabled={
-                                !localStorage.getItem("currentUserId") ===
-                                this.state.creator
-                              }
-                              onClick={this.handleItemClick}
-                              inverted
-                              
-                            >
-                              <Icon name="clock outline" />
-                              Time
-                            </Menu.Item>
-                            <Menu.Item
-                              name="Pixelation"
-                              active={
-                                this.state.selectedGamemode === "Pixelation"
-                              }
-                              onClick={this.handleItemClick}
-                              inverted
-                            >
-                              <Icon name="chess board" />
-                              Pixelation
-                            </Menu.Item>
-                            <Menu.Item
-                              name="Clouds"
-                              active={this.state.selectedGamemode === "Clouds"}
-                              position="right"
-                              onClick={this.handleItemClick}
-                              inverted
-                            >
-                              <Icon name="cloud" />
-                              Clouds
-                            </Menu.Item>
-                          </Menu>
-                          <p></p>
-                          <Checkbox
-                            toggle
-                            checked={this.state.isLobbyPublic}
-                            fitted
-                            label="Public Lobby"
-                            onChange={() => {
-                              this.setState({
-                                isLobbyPublic: !this.state.isLobbyPublic,
-                              });
-                              this.setState({ isUpdating: true });
-                              setTimeout(this.updateLobbyConfiguration, 1500);
-                            }}
-                          />
-                        </div>
-                      )}
-                    </Segment>
-                  </Grid.Column>
-                  <Grid.Column centered textAlign="center" width="7" style={{
-                      minWidth: "500px"
-                  }}>
-                    <Segment raised padded="very" size="big">
-                      <Header as="h1">
-                        Multiplayer -{" "}
-                        {this.state.isLobbyPublic === true
-                          ? "Public"
-                          : "Private"}{" "}
-                        Lobby
-                      </Header>
-                      <Header as="h3">
-                        Gamemode: {this.state.selectedGamemode}
-                      </Header>
-                      <Header as="h3">
-                        {this.state.users.length > 1 ? (
-                          <Loader
-                            type="Hearts"
-                            color="#008080"
-                            height={40}
-                            width={40}
-                          />
-                        ) : (
-                          <Loader
-                            type="Oval"
-                            color="#008080"
-                            height={30}
-                            width={30}
-                          />
-                        )}
-                        {this.state.users.length > 1 ? (
-                          <p> Waiting for host to start the game</p>
-                        ) : (
-                          <p> Waiting for more players to join</p>
-                        )}
-                      </Header>
-                      <Table singleLine size="big">
-                        <TableHeader>
-                          <Table.Row>
-                            <Table.HeaderCell>Player</Table.HeaderCell>
-                            <Table.HeaderCell>Personal Best</Table.HeaderCell>
-                            <Table.HeaderCell>Host</Table.HeaderCell>
-                          </Table.Row>
-                        </TableHeader>
-                        <Table.Body>
-                          {this.state.users.map((user) => {
-                            return (
-                              <Table.Row>
-                                <Table.Cell>{user.username}</Table.Cell>
-                                <Table.Cell>
-                                  {this.state.selectedGamemode === "Time" &&
-                                    user.highscores.Time}
-                                  {this.state.selectedGamemode ===
-                                    "Pixelation" && user.highscores.Pixelation}
-                                  {this.state.selectedGamemode === "Clouds" &&
-                                    user.highscores.Clouds}
-                                </Table.Cell>
-                                <Table.Cell>
-                                  {" "}
-                                  {this.state.creator == user.id ? (
-                                    <Image
-                                      src="./Crown.png"
-                                      rounded
-                                      size="mini"
-                                    />
-                                  ) : null}{" "}
-                                </Table.Cell>
-                              </Table.Row>
-                            );
-                          })}
-                        </Table.Body>
-                      </Table>
-                    </Segment>
-                    <br></br>
-                    {this.state.creator ==
-                    localStorage.getItem("currentUserId") ? (
-                      <Button
-                        disabled={this.state.users.length < 2}
-                        size="big"
-                        animated="fade"
-                        color="green"
-                        onClick={() => {
-                          this.startGame();
-                        }}
-                      >
-                        <Button.Content visible>Start Game</Button.Content>
-                        <Button.Content hidden>
-                          <Icon name="game" />
-                        </Button.Content>
-                      </Button>
-                    ) : null}
-                    <Button
-                      size="big"
-                      animated="fade"
-                      color="red"
-                      onClick={() => {
-                        this.leaveLobby();
+                <UILoader size="massive">Leaving Lobby</UILoader>
+              ) : (
+                <Grid centered columns={3} verticalAlign="top">
+                  <Grid.Row>
+                    <Grid.Column
+                      centered
+                      textAlign="center"
+                      width="4"
+                      style={{
+                        minWidth: "300px",
+                        marginTop: "50px",
                       }}
                     >
-                      <Button.Content visible>Leave Lobby</Button.Content>
-                      <Button.Content hidden>
-                        <Icon name="sign-out" />
-                      </Button.Content>
-                    </Button>
-                  </Grid.Column>
-                  <Grid.Column centered textAlign="center" width="4" style={{
-                      minWidth: "300px"
-                  }}>
-                    <Segment raised padded="very" size="big">
-                      <Header>Invite Key</Header>
-                      <Input type="text" fluid value={this.state.roomKey} />
-                      <CopyToClipboard text={this.state.roomKey}>
-                        <Button icon color="teal" size="big" fluid>
-                          <Icon name="copy" />
+                      <Segment raised padded="very" size="big">
+                        <Header>Lobby Configuration</Header>
+                        {this.state.isUpdating ? (
+                          <Loader
+                            type="ThreeDots"
+                            color="#008080"
+                            height={50}
+                            width={50}
+                          />
+                        ) : (
+                          <div>
+                            <Menu color="teal" compact secondary vertical>
+                              <Menu.Item
+                                name="Time"
+                                active={this.state.selectedGamemode === "Time"}
+                                disabled={
+                                  !localStorage.getItem("currentUserId") ===
+                                  this.state.creator
+                                }
+                                onClick={this.handleItemClick}
+                                inverted
+                              >
+                                <Icon name="clock outline" />
+                                Time
+                              </Menu.Item>
+                              <Menu.Item
+                                name="Pixelation"
+                                active={
+                                  this.state.selectedGamemode === "Pixelation"
+                                }
+                                onClick={this.handleItemClick}
+                                inverted
+                              >
+                                <Icon name="chess board" />
+                                Pixelation
+                              </Menu.Item>
+                              <Menu.Item
+                                name="Clouds"
+                                active={
+                                  this.state.selectedGamemode === "Clouds"
+                                }
+                                position="right"
+                                onClick={this.handleItemClick}
+                                inverted
+                              >
+                                <Icon name="cloud" />
+                                Clouds
+                              </Menu.Item>
+                            </Menu>
+                            <p></p>
+                            <Checkbox
+                              toggle
+                              checked={this.state.isLobbyPublic}
+                              fitted
+                              label="Public Lobby"
+                              onChange={() => {
+                                this.setState({
+                                  isLobbyPublic: !this.state.isLobbyPublic,
+                                });
+                                this.setState({ isUpdating: true });
+                                setTimeout(this.updateLobbyConfiguration, 1500);
+                              }}
+                            />
+                          </div>
+                        )}
+                      </Segment>
+                    </Grid.Column>
+                    <Grid.Column
+                      centered
+                      textAlign="center"
+                      width="7"
+                      style={{
+                        minWidth: "500px",
+                        marginTop: "50px",
+                      }}
+                    >
+                      <Segment raised padded="very" size="big">
+                        <Header as="h1">
+                          Multiplayer -{" "}
+                          {this.state.isLobbyPublic === true
+                            ? "Public"
+                            : "Private"}{" "}
+                          Lobby
+                        </Header>
+                        <Header as="h3">
+                          Gamemode: {this.state.selectedGamemode}
+                        </Header>
+                        <Header as="h3">
+                          {this.state.users.length > 1 ? (
+                            <Loader
+                              type="Hearts"
+                              color="#008080"
+                              height={40}
+                              width={40}
+                            />
+                          ) : (
+                            <Loader
+                              type="Oval"
+                              color="#008080"
+                              height={30}
+                              width={30}
+                            />
+                          )}
+                          {this.state.users.length > 1 ? (
+                            <p> Waiting for host to start the game</p>
+                          ) : (
+                            <p> Waiting for more players to join</p>
+                          )}
+                        </Header>
+                        <Table singleLine size="big">
+                          <TableHeader>
+                            <Table.Row>
+                              <Table.HeaderCell>Player</Table.HeaderCell>
+                              <Table.HeaderCell>Personal Best</Table.HeaderCell>
+                              <Table.HeaderCell>Host</Table.HeaderCell>
+                            </Table.Row>
+                          </TableHeader>
+                          <Table.Body>
+                            {this.state.users.map((user) => {
+                              return (
+                                <Table.Row>
+                                  <Table.Cell>{user.username}</Table.Cell>
+                                  <Table.Cell>
+                                    {this.state.selectedGamemode === "Time" &&
+                                      user.highscores.Time}
+                                    {this.state.selectedGamemode ===
+                                      "Pixelation" &&
+                                      user.highscores.Pixelation}
+                                    {this.state.selectedGamemode === "Clouds" &&
+                                      user.highscores.Clouds}
+                                  </Table.Cell>
+                                  <Table.Cell>
+                                    {" "}
+                                    {this.state.creator == user.id ? (
+                                      <Image
+                                        src="./Crown.png"
+                                        rounded
+                                        size="mini"
+                                      />
+                                    ) : null}{" "}
+                                  </Table.Cell>
+                                </Table.Row>
+                              );
+                            })}
+                          </Table.Body>
+                        </Table>
+                      </Segment>
+                      <br></br>
+                      {this.state.creator ==
+                      localStorage.getItem("currentUserId") ? (
+                        <Button
+                          disabled={this.state.users.length < 2}
+                          size="big"
+                          animated="fade"
+                          color="green"
+                          onClick={() => {
+                            this.startGame();
+                          }}
+                        >
+                          <Button.Content visible>Start Game</Button.Content>
+                          <Button.Content hidden>
+                            <Icon name="game" />
+                          </Button.Content>
                         </Button>
-                      </CopyToClipboard>
-                    </Segment>
-                  </Grid.Column>
-                </Grid.Row>
-              </Grid>
+                      ) : null}
+                      <Button
+                        size="big"
+                        animated="fade"
+                        color="red"
+                        onClick={() => {
+                          this.leaveLobby();
+                        }}
+                      >
+                        <Button.Content visible>Leave Lobby</Button.Content>
+                        <Button.Content hidden>
+                          <Icon name="sign-out" />
+                        </Button.Content>
+                      </Button>
+                    </Grid.Column>
+                    <Grid.Column
+                      centered
+                      textAlign="center"
+                      width="4"
+                      style={{
+                        minWidth: "300px",
+                        marginTop: "50px",
+                      }}
+                    >
+                      <Segment raised padded="very" size="big">
+                        <Header>Invite Key</Header>
+                        <Input type="text" fluid value={this.state.roomKey} />
+                        <CopyToClipboard text={this.state.roomKey}>
+                          <Button icon color="teal" size="big" fluid>
+                            <Icon name="copy" />
+                          </Button>
+                        </CopyToClipboard>
+                      </Segment>
+                    </Grid.Column>
+                  </Grid.Row>
+                </Grid>
               )}
             </ComponentTransition>
           </Modal.Content>
