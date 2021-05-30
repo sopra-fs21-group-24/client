@@ -502,7 +502,7 @@ class GameController extends React.Component {
   render() {
     const { height, width } = getWindowDimensions();
     let filter =
-      this.state.gameMode == "Pixelation" ? 10 + this.state.timer * 0.4 : 0;
+      this.state.gameMode == "Pixelation" ? 10 - (30-this.state.timer) * 0.4 : 0;
 
     return (
       <div>
@@ -609,7 +609,7 @@ class GameController extends React.Component {
 
 const Component = (props) => {
   const { height, width } = useWindowDimensions();
-  let filter = props.gameMode == "Pixelation" ? 10 - props.timer * 0.5 : 0;
+  let filter = props.gameMode == "Pixelation" ? props.timer -15 : 0;
 
   return (
     <div
