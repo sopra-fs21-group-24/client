@@ -138,7 +138,7 @@ class Lobby extends React.Component {
     //sourceLobby.cancel();
     this.setState({isLeaving: true});
     try {
-      api.put(`/lobby/${this.state.lobbyId}`, {}, getAuthConfig());
+      api.put(`/lobby/${this.state.lobbyId}/leave`, {}, getAuthConfig());
 
       localStorage.removeItem("lobbyId");
       localStorage.removeItem("gameId");
