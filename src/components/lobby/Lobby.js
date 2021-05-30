@@ -267,7 +267,8 @@ class Lobby extends React.Component {
                     textAlign="center" 
                     width="4"
                     style={{
-                      minWidth: "300px"
+                      minWidth: "300px",
+                      marginTop:"50px"
                   }}>
                     <Segment raised padded="very" size="big">
                       <Header>Lobby Configuration</Header>
@@ -336,7 +337,8 @@ class Lobby extends React.Component {
                     </Segment>
                   </Grid.Column>
                   <Grid.Column centered textAlign="center" width="7" style={{
-                      minWidth: "500px"
+                      minWidth: "500px",
+                      marginTop:"50px"
                   }}>
                     <Segment raised padded="very" size="big">
                       <Header as="h1">
@@ -441,7 +443,8 @@ class Lobby extends React.Component {
                     </Button>
                   </Grid.Column>
                   <Grid.Column centered textAlign="center" width="4" style={{
-                      minWidth: "300px"
+                      minWidth: "300px",
+                      marginTop:"50px"
                   }}>
                     <Segment raised padded="very" size="big">
                       <Header>Invite Key</Header>
