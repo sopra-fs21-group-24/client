@@ -78,6 +78,7 @@ export const MapElem = withGoogleMap((props) => (
         // gestureHandling: 'none'
       }}
     >
+      {/**Displays the lines from the solution pin to all player pins */}
       {props.everyOneGuessed && props.showResults
         ? props.playerMarkers
             .filter(function (user) {
@@ -129,18 +130,30 @@ export const MapElem = withGoogleMap((props) => (
 
       {/* Displays marker where the users had guessed */}
       {props.everyOneGuessed && props.showResults
-        ? props.playerMarkers.map((user) => {
-            return (
-              <Marker
-                key={2}
-                position={{
-                  lat: user.lastCoordinate.lat,
-                  lng: user.lastCoordinate.lon,
-                }}
-                icon={differentMarkers[hashTable.search(user.userId)]}
-              />
-            );
-          })
+        ? props.playerMarkers
+            .filter(function (user) {
+              if (user.lastCoordinate == null) {
+                return false;
+              } else if (
+                user.lastCoordinate.lat == null ||
+                user.lastCoordinate.lon == null
+              ) {
+                return false;
+              }
+              return true;
+            })
+            .map((user) => {
+              return (
+                <Marker
+                  key={2}
+                  position={{
+                    lat: user.lastCoordinate.lat,
+                    lng: user.lastCoordinate.lon,
+                  }}
+                  icon={differentMarkers[hashTable.search(user.userId)]}
+                />
+              );
+            })
         : null}
 
       {/* Displays a pin where user clicks on the map at the bottom right corner */}
