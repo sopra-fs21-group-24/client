@@ -61,6 +61,8 @@ class GameController extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      country :"",
+      city:"",
       gameId: localStorage.getItem("gameId"),
       gameOngoing: true,
       showCloud: true,
@@ -293,10 +295,20 @@ class GameController extends React.Component {
       //   lat: 1,
       //   lng: 2,
       // };
+      let city = responseData.city ? responseData.city : this.state.answer.city
+      let country = responseData.country? responseData.country : this.state.answer.country
+      console.log("GEO DATA", city, country)
+      this.setState({city:city, country:country})
       let solution = {
         lat: responseData.solutionCoordinate.lat,
         lng: responseData.solutionCoordinate.lon,
+        // city:responseData.city,
+        // country:responseData.country,
       };
+      if (city != null){
+        solution.city = city
+        solution.country = country
+      }
       
       let solutions = this.state.solutions;
       solutions.push(solution);
@@ -565,6 +577,8 @@ class GameController extends React.Component {
         {this.state.showScoreModal ? (
           <Modal inverted basic open={true} size="large" trigger={null}>
             <ScoreBox
+              city={this.state.city}
+              country={this.state.country}
               color="black"
               gameMode={this.state.gameMode}
               everyOneGuessed={this.state.everyOneGuessed}
@@ -575,6 +589,8 @@ class GameController extends React.Component {
               nextRound={this.nextRound}
               lastRound={this.state.isLastRound}
               endGame={this.endGame}
+              answer={this.state.solution}
+              answer={this.state.solutions}
               state={{
                 answer: this.state.solution,
                 pin: this.state.pin,
