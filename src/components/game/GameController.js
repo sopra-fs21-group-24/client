@@ -514,7 +514,7 @@ class GameController extends React.Component {
   render() {
     const { height, width } = getWindowDimensions();
     let filter =
-      this.state.gameMode == "Pixelation" ? 10 - (30-this.state.timer) * 0.4 : 0;
+      this.state.gameMode == "Pixelation" ? 10 - (30-this.state.timer) * 0.5 : 0;
 
     return (
       <div>
