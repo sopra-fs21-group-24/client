@@ -20,6 +20,8 @@ import {
   Menu,
   Modal,
   Header,
+  Dimmer,
+  Loader as UILoader
 } from "semantic-ui-react";
 import { handleError, api, getAuthConfig } from "../../helpers/api";
 import { getWindowDimensions } from "../shared/models/WindowSize";
@@ -44,6 +46,7 @@ class Lobby extends React.Component {
       hasGameStarted: false,
       gameId: null,
       init: true,
+      isLeaving: false,
     };
   }
 
@@ -132,7 +135,8 @@ class Lobby extends React.Component {
 
   // API Call to remove the user from the lobby list
   leaveLobby = async () => {
-    sourceLobby.cancel();
+    //sourceLobby.cancel();
+    this.setState({isLeaving: true});
     try {
       await api.put(`/lobby/${this.state.lobbyId}`, {}, getAuthConfig());
 
@@ -159,17 +163,10 @@ class Lobby extends React.Component {
   handleTabClosing = () => {
     this.leaveLobby();
   }
-
-  alertUser = (event) => {
-    event.preventDefault();
-    event.returnValue = '';
-  }
-
   async componentDidMount() {
     this.mounted = true;
     const lobbyId = localStorage.getItem("lobbyId");
-    //window.addEventListener('unload', this.handleTabClosing);
-
+    window.addEventListener("beforeunload", this.handleTabClosing);
     
 
     if (!this.state.hasGameStarted && !this.state.isUpdating && this.mounted) {
@@ -220,7 +217,10 @@ class Lobby extends React.Component {
         localStorage.removeItem("gameId");
         localStorage.setItem("gameId", this.state.gameId);
       } catch (error) {
+        
         console.log(`Cannot fetch the lobby`);
+        //this.props.history.push("/lobby/join");
+        
       }
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
@@ -228,7 +228,7 @@ class Lobby extends React.Component {
 
   componentWillUnmount() {
     this.mounted = false;
-    //window.removeEventListener('unload', this.handleTabClosing);
+    window.removeEventListener('beforeunload', this.handleTabClosing);
   }
 
   render() {
@@ -257,9 +257,18 @@ class Lobby extends React.Component {
               enterAnimation={AnimationTypes.slideDown.enter}
               exitAnimation={AnimationTypes.fade.exit}
             >
+              {this.state.isLeaving ? (
+                  <UILoader size='massive'>Leaving Lobby</UILoader>
+              ): (
               <Grid centered columns={3} verticalAlign="top">
                 <Grid.Row>
-                  <Grid.Column centered textAlign="center" width="4">
+                  <Grid.Column 
+                    centered 
+                    textAlign="center" 
+                    width="4"
+                    style={{
+                      minWidth: "300px"
+                  }}>
                     <Segment raised padded="very" size="big">
                       <Header>Lobby Configuration</Header>
                       {this.state.isUpdating ? (
@@ -271,16 +280,17 @@ class Lobby extends React.Component {
                         />
                       ) : (
                         <div>
-                          <Menu color="teal" compact secondary fluid>
+                          <Menu color='teal' compact secondary vertical>
                             <Menu.Item
                               name="Time"
                               active={this.state.selectedGamemode === "Time"}
-                              position="left"
                               disabled={
                                 !localStorage.getItem("currentUserId") ===
                                 this.state.creator
                               }
                               onClick={this.handleItemClick}
+                              inverted
+                              
                             >
                               <Icon name="clock outline" />
                               Time
@@ -291,6 +301,7 @@ class Lobby extends React.Component {
                                 this.state.selectedGamemode === "Pixelation"
                               }
                               onClick={this.handleItemClick}
+                              inverted
                             >
                               <Icon name="chess board" />
                               Pixelation
@@ -300,6 +311,7 @@ class Lobby extends React.Component {
                               active={this.state.selectedGamemode === "Clouds"}
                               position="right"
                               onClick={this.handleItemClick}
+                              inverted
                             >
                               <Icon name="cloud" />
                               Clouds
@@ -323,7 +335,9 @@ class Lobby extends React.Component {
                       )}
                     </Segment>
                   </Grid.Column>
-                  <Grid.Column centered textAlign="center" width="7">
+                  <Grid.Column centered textAlign="center" width="7" style={{
+                      minWidth: "500px"
+                  }}>
                     <Segment raised padded="very" size="big">
                       <Header as="h1">
                         Multiplayer -{" "}
@@ -426,7 +440,9 @@ class Lobby extends React.Component {
                       </Button.Content>
                     </Button>
                   </Grid.Column>
-                  <Grid.Column centered textAlign="center" width="4">
+                  <Grid.Column centered textAlign="center" width="4" style={{
+                      minWidth: "300px"
+                  }}>
                     <Segment raised padded="very" size="big">
                       <Header>Invite Key</Header>
                       <Input type="text" fluid value={this.state.roomKey} />
@@ -439,6 +455,7 @@ class Lobby extends React.Component {
                   </Grid.Column>
                 </Grid.Row>
               </Grid>
+              )}
             </ComponentTransition>
           </Modal.Content>
         </Modal>

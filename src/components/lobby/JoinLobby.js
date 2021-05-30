@@ -15,12 +15,12 @@ import {
   Icon,
   Table,
   Modal,
+  TableRow,
 } from "semantic-ui-react";
 import { getWindowDimensions } from "../shared/models/WindowSize";
 import "../../views/design/joinlobby.css";
 import { motion } from "framer-motion";
-import swal from 'sweetalert';
-
+import swal from "sweetalert";
 
 class JoinLobby extends React.Component {
   constructor() {
@@ -43,8 +43,8 @@ class JoinLobby extends React.Component {
           },
         });
         this.setState({ lobbies: response.data });
-      } catch (error) {        
-          console.log("Cannot fetch lobbies")
+      } catch (error) {
+        console.log("Cannot fetch lobbies");
       }
       await new Promise((resolve) => setTimeout(resolve, 100));
       this.setState({ init: false });
@@ -70,7 +70,11 @@ class JoinLobby extends React.Component {
       localStorage.setItem("lobbyId", response.data.lobbyId);
       this.props.history.push(`/lobby`);
     } catch (error) {
-      swal("Something went wrong when joining this lobby with your roomkey","","error");
+      swal(
+        "Something went wrong when joining this lobby with your roomkey",
+        "",
+        "error"
+      );
     }
   };
 
@@ -89,9 +93,9 @@ class JoinLobby extends React.Component {
       localStorage.setItem("lobbyId", lobbyId);
       this.props.history.push(`/lobby`);
     } catch (error) {
-        swal("there was an error joining the lobby","","error");
-      }
+      swal("there was an error joining the lobby", "", "error");
     }
+  };
 
   handleInputChange(key, value) {
     this.setState({
@@ -126,11 +130,7 @@ class JoinLobby extends React.Component {
           //soverflow: "hidden",
         }}
       >
-        <Modal
-          className="ui fullscreen modal"
-          basic
-          open={true}
-        >
+        <Modal className="ui fullscreen modal" basic open={true}>
           <Modal.Content>
             <ComponentTransition
               animateOnMount={true}
@@ -155,7 +155,7 @@ class JoinLobby extends React.Component {
                         <Icon name="search" />
                         Join a public lobby
                       </Header>
-                      <Table selectable>
+                      <Table selectable active padded color="black">
                         <Table.Header>
                           <Table.Row>
                             <Table.HeaderCell>Host</Table.HeaderCell>
@@ -164,24 +164,58 @@ class JoinLobby extends React.Component {
                           </Table.Row>
                         </Table.Header>
                         <Table.Body>
-                          {this.state.lobbies.length === 0
-                            ? "There are currently no public lobbies available"
-                            : this.state.lobbies.map((lobby) => {
-                                return (
-                                  <Table.Row
-                                    onClick={() => {
-                                      this.joinPublicLobby(lobby.id);
-                                    }}
-                                  >
-                                    <Table.Cell>{lobby.username}</Table.Cell>
+                          {this.state.lobbies.length === 0 ? (
+                            <Table.Row negative disabled>
+                              <Table.Cell>
+                                <Header>-</Header>
+                              </Table.Cell>
+                              <Table.Cell>
+                                <Header>-</Header>
+                              </Table.Cell>
+                              <Table.Cell>
+                                <Header>-</Header>
+                              </Table.Cell>
+                            </Table.Row>
+                          ) : (
+                            this.state.lobbies.map((lobby) => {
+                              return (
+                                <Table.Row
+                                  striped
+                                  disabled={lobby.users === 4}
+                                  onClick={() => {
+                                    this.joinPublicLobby(lobby.id);
+                                  }}
+                                >
+                                  <Table.Cell>{lobby.username}</Table.Cell>
+                                  <Table.Cell>
+                                    {this.displayGamemode(lobby)}
+                                    {lobby.gameMode}
+                                  </Table.Cell>
+                                  {lobby.users === 1 ? (
                                     <Table.Cell>
-                                      {this.displayGamemode(lobby)}
-                                      {lobby.gameMode}
+                                      {lobby.users}/4 &nbsp;
+                                      <Icon color="green" name="users" />
                                     </Table.Cell>
-                                    <Table.Cell>{lobby.users}/4</Table.Cell>
-                                  </Table.Row>
-                                );
-                              })}
+                                  ) : lobby.users === 2 ? (
+                                    <Table.Cell>
+                                      {lobby.users}/4 &nbsp;
+                                      <Icon color="yellow" name="users" />
+                                    </Table.Cell>
+                                  ) : lobby.users === 3 ? (
+                                    <Table.Cell>
+                                      {lobby.users}/4 &nbsp;
+                                      <Icon color="orange" name="users" />
+                                    </Table.Cell>
+                                  ) : (
+                                    <Table.Cell>
+                                      {lobby.users}/4 &nbsp;
+                                      <Icon color="red" name="users" />
+                                    </Table.Cell>
+                                  )}
+                                </Table.Row>
+                              );
+                            })
+                          )}
                         </Table.Body>
                       </Table>
                     </Grid.Column>

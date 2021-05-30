@@ -113,6 +113,11 @@ class GameController extends React.Component {
   componentDidMount() {
     this.mounted = true;
     this.init();
+    window.addEventListener("beforeunload", this.handleTabClosing);
+  }
+
+  handleTabClosing = () => {
+    this.exitGame();
   }
 
   async init() {
@@ -479,6 +484,7 @@ class GameController extends React.Component {
     this.mounted = false;
     localStorage.removeItem("gameId");
     this.setState({ showScoreModal: false, gameOngoing: false });
+    window.removeEventListener('beforeunload', this.handleTabClosing);
   }
   updateSeconds() {
     if (this.state.questionTime) var now = new Date().getTime();
@@ -514,7 +520,7 @@ class GameController extends React.Component {
   render() {
     const { height, width } = getWindowDimensions();
     let filter =
-      this.state.gameMode == "Pixelation" ? 10 - (30-this.state.timer) * 0.4 : 0;
+      this.state.gameMode == "Pixelation" ? 10 - (30-this.state.timer) * 0.5 : 0;
 
     return (
       <div>
