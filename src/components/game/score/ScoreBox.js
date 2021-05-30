@@ -124,12 +124,14 @@ const ScoreBox = (props) => {
   };
 
   const ProgressBar = () => {
+    console.log("PROOOOOPS",props)
     let color = props.playerScore.score > 250 ? "green" : "red";
     return (
       <div>
         <Header disabled as="h2">
           Your Score This Round
         </Header>
+       
         <Progress
           inverted
           active
@@ -139,6 +141,7 @@ const ScoreBox = (props) => {
           size="large"
           color={color}
         />
+        
       </div>
     );
   };
@@ -228,6 +231,7 @@ const ScoreBox = (props) => {
 
             <Grid.Column style={{ maxWidth: 450, marginLeft: "20px" }}>
               <Form size="large">
+              <Header  as="h2">{props.city}, {props.country}</Header>
                 <MapElem
                   containerElement={
                     <div style={{ height: `200px`, width: `100%` }} />
