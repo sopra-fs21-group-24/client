@@ -134,11 +134,11 @@ class Lobby extends React.Component {
   };
 
   // API Call to remove the user from the lobby list
-  leaveLobby = async () => {
+  leaveLobby = () => {
     //sourceLobby.cancel();
     this.setState({isLeaving: true});
     try {
-      await api.put(`/lobby/${this.state.lobbyId}`, {}, getAuthConfig());
+      api.put(`/lobby/${this.state.lobbyId}`, {}, getAuthConfig());
 
       localStorage.removeItem("lobbyId");
       localStorage.removeItem("gameId");
